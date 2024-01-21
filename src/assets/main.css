@@ -1,0 +1,23 @@
+html, body {
+  height: 100%;
+  font-family: Inter, sans-serif;
+}
+
+body {
+  background: var(--bluegray-900) !important;
+  margin: 0;
+}
+
+#app {
+  height: 100%;
+}
+
+.link-primary {
+  color: var(--primary-500) !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
