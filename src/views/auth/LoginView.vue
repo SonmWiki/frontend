@@ -37,7 +37,7 @@ const onSubmit = async () => {
       </template>
 
       <template #content>
-        <form class="flex flex-column align-items-center gap-3">
+        <form @submit.prevent="onSubmit" class="flex flex-column align-items-center gap-3">
 
           <InputGroup>
             <InputGroupAddon>
@@ -55,7 +55,7 @@ const onSubmit = async () => {
                       :class="{ 'p-invalid': v$.password.$errors[0] }" placeholder="Password" />
           </InputGroup>
 
-          <Button @click="onSubmit" label="Submit"/>
+          <Button type="submit" label="Submit"/>
 
           <div class="flex flex-column">
             <small>

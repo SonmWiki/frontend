@@ -48,7 +48,7 @@ const onSubmit = async () => {
       </template>
 
       <template #content>
-        <form class="flex flex-column align-items-center gap-3">
+        <form @submit.prevent="onSubmit" class="flex flex-column align-items-center gap-3">
           <InputGroup>
             <InputGroupAddon>
               <i class="pi pi-user"></i>
@@ -88,7 +88,7 @@ const onSubmit = async () => {
             * I've read and accept the <span @click="visibleTerms = true" class="link-primary">terms & conditions</span>
           </div>
 
-          <Button @click="onSubmit" label="Submit"/>
+          <Button type="submit" label="Submit"/>
 
           <div>
             <small>
