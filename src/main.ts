@@ -27,12 +27,9 @@ import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Tooltip from 'primevue/tooltip';
 import Tree from 'primevue/tree';
-import TreeSelect from 'primevue/treeselect';
-import TreeTable from 'primevue/treetable';
-import VirtualScroller from 'primevue/virtualscroller';
-import router from "./router";
 import router from "@/router";
 import Avatar from "primevue/avatar";
+import Keycloak from "@/keycloak";
 
 
 const app = createApp(App);
@@ -42,6 +39,7 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
 app.use(router);
+app.use(Keycloak)
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
