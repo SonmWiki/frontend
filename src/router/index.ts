@@ -4,6 +4,7 @@ import Register from "@/views/auth/RegisterView.vue";
 import Login from "@/views/auth/LoginView.vue";
 import Category from "@/views/category/CategoryView.vue";
 import CategoryArticles from "@/views/category/CategoryArticlesView.vue";
+import ArticleView from "@/views/article/ArticleView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,10 @@ const router = createRouter({
     {
       path: '/categories/:id',
       component: CategoryArticles
+    },
+    {
+      path: '/articles/:id',
+      component: ArticleView
     },
   ]
 })
