@@ -1,11 +1,14 @@
 html, body {
-  height: 100%;
   font-family: Inter, sans-serif;
 }
 
 body {
   background: var(--bluegray-900) !important;
   margin: 0;
+}
+
+.editor {
+  background: var(--bluegray-900) !important;
 }
 
 #app {

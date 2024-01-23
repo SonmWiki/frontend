@@ -114,6 +114,7 @@ export interface GetNavigationsTreeResponseElement {
     weight?: number;
     name?: string;
     uri?: string | null;
+    icon?: string | null;
     children?: GetNavigationsTreeResponseElement[];
 }
 

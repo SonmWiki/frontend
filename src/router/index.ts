@@ -11,15 +11,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: Home,
-    },
-    {
-      path: '/register',
-      component: Register,
-    },
-    {
-      path: '/login',
-      component: Login,
+      component: ArticleView,
     },
     {
       path: '/categories',

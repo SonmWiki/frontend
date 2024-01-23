@@ -12,7 +12,7 @@ provide("api", api)
 <template>
   <div class="h-full">
     <HeaderComponent />
-    <div class="flex flex-column justify-content-between ">
+    <div class="flex flex-column justify-content-between">
       <RouterView />
     </div>
   </div>

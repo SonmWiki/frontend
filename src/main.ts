@@ -1,6 +1,6 @@
 import './assets/main.css'
 import "primeflex/primeflex.css";
-import "primevue/resources/themes/soho-dark/theme.css";
+import "primevue/resources/themes/lara-dark-indigo/theme.css";
 import "primeicons/primeicons.css";
 
 import {createApp} from "vue";
@@ -29,12 +29,15 @@ import Tooltip from 'primevue/tooltip';
 import Tree from 'primevue/tree';
 import router from "@/router";
 import Avatar from "primevue/avatar";
+import OverlayPanel from 'primevue/overlaypanel';
 import Keycloak from "@/keycloak";
+import ConfirmDialog from 'primevue/confirmdialog';
+import Sidebar from "primevue/sidebar";
 
 
 const app = createApp(App);
 
-app.use(PrimeVue, { ripple: true  });
+app.use(PrimeVue, { ripple: false  });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
@@ -61,5 +64,8 @@ app.component('ScrollTop', ScrollTop);
 app.component('Skeleton', Skeleton);
 app.component('Toast', Toast);
 app.component('Tree', Tree);
+app.component('OverlayPanel', OverlayPanel);
+app.component('ConfirmDialog', ConfirmDialog)
+app.component('Sidebar', Sidebar)
 
 app.mount("#app");

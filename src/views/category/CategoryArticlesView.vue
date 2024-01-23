@@ -16,15 +16,9 @@ const categoryName = ref()
 
 const loading = ref(true)
 
-function delay(ms: number) {
-  return new Promise( resolve => setTimeout(resolve, ms) );
-}
-
 const load = async () => {
   categoryId.value = route.params.id;
   loading.value = true
-
-  await delay(1000)
 
   await loadArticles()
   await loadCategories()
