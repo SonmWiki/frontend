@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {ref, inject} from "vue";
 import type {Api} from "@/api";
+import type {TreeNode} from "primevue/treenode";
 
-const nodes = ref(null);
+const nodes = ref([]);
 const selectedKey = ref()
 const api = inject("api") as Api<any>
 
@@ -33,7 +34,7 @@ requestTree()
     <div class="md:w-30rem md:h-30rem">
       <Tree
           v-model:selectionKeys="selectedKey"
-          @nodeSelect="(node) => {$router.push(`/categories/${node.key}`)}"
+          @nodeSelect="(node: TreeNode) => {$router.push(`/categories/${node.key}`)}"
           :value="nodes"
           :filter="true"
           selectionMode="single"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {inject, ref, watch} from "vue";
-import {Api, GetCategoriesResponseElement} from "@/api";
+import {Api, type GetCategoriesResponseElement} from "@/api";
 import {useRoute} from "vue-router";
 
 const api = inject("api") as Api<any>
@@ -39,7 +39,7 @@ const loadCategories = async () => {
     if (category.id == categoryId.value ) {
       categoryName.value = category.name
       if (category.parentId !== null)
-        parentCategories.value.push(categories.value.find((it) => it.id == category.parentId))
+        parentCategories.value.push(categories.value.find((v: GetCategoriesResponseElement) => v.id == category.parentId))
     }
   })
 }

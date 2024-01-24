@@ -43,13 +43,15 @@ const loadNavigation = async () => {
 
 const onNodeSelect = (node: any) => {
   const v = node.uri
+  const key: string = node.key
+  const expandedKey: boolean = (expandedKeys as any).value[key]
 
   if (node.type == "ext") showDialog(v)
 
   else if (node.type == "int") router.push(v)
 
   if (node.children && node.children.length) {
-    expandedKeys.value[node.key as keyof string] = !expandedKeys.value[node.key as keyof string]
+    (expandedKeys as any).value[key]  = !expandedKey
   }
 };
 
