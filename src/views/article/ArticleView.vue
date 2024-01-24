@@ -61,6 +61,7 @@ load()
     <div class="menu left-menu border-right-1 surface-border">
       <NavigationComponent/>
     </div>
+    <Toast position="top-center"></Toast>
     <div class="container">
       <div class="content pt-4" v-if="article">
         <div class="title flex align-items-center justify-content-between ml-4 mr-4">
