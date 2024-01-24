@@ -63,9 +63,11 @@ const showDialog = (v: string) => {
     message: `${shownLink}`,
     header: 'External link will be opened',
     accept: () => {
-      window.open(`${v}`, '_blank', 'noreferrer')
+      window.open(v, '_blank')
+      confirm.close()
     },
     reject: () => {
+      confirm.close()
     }
   });
 }
