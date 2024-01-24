@@ -4,7 +4,7 @@ import {Api} from "@/api";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 
 const api = new Api();
-api.baseUrl = 'http://localhost:5216'
+api.baseUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : `http://${window.location.hostname}:5216`
 
 provide("api", api)
 </script>
