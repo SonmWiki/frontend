@@ -89,7 +89,7 @@ loadNavigation()
       <Tree
           :value="navigation"
           class="$style.p-treenode w-full p-0"
-          style="background: transparent; border: 0px; font-size: 0.9em; font-weight: 400"
+          style="background: transparent; border: 0; font-size: 0.9em; font-weight: 400"
           v-model:expandedKeys="expandedKeys"
           selectionMode="single"
           @nodeSelect="onNodeSelect"
