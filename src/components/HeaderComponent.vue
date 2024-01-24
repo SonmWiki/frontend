@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import NavigationComponent from "@/components/NavigationComponent.vue";
-import {ref} from "vue";
+import {ref, watch} from "vue";
+import {useRoute} from "vue-router";
 
+const route = useRoute()
 const sidebarVisible = ref(false)
+
+watch(
+    () => route.params.id,
+    () => {sidebarVisible.value = false},
+);
 </script>
 
 <template>
