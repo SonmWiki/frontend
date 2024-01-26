@@ -19,9 +19,6 @@ const v$ = useVuelidate(rules, {login: login, password: password}, {$lazy: true}
 const onSubmit = async () => {
   const isFormCorrect = await v$.value.$validate()
   if (!isFormCorrect) return
-
-  console.log("sending")
-
   toast.add({severity: 'info', summary: 'Form Submitted', life: 3000});
 };
 

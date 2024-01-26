@@ -1,6 +1,6 @@
 import './assets/main.css'
 import "primeflex/primeflex.css";
-import "primevue/resources/themes/lara-dark-indigo/theme.css";
+import "primevue/resources/themes/aura-dark-amber/theme.css";
 import "primeicons/primeicons.css";
 
 import {createApp} from "vue";
@@ -33,7 +33,7 @@ import OverlayPanel from 'primevue/overlaypanel';
 import Keycloak from "@/keycloak";
 import ConfirmDialog from 'primevue/confirmdialog';
 import Sidebar from "primevue/sidebar";
-
+import ToggleButton from "primevue/togglebutton";
 
 const app = createApp(App);
 
@@ -67,5 +67,6 @@ app.component('Tree', Tree);
 app.component('OverlayPanel', OverlayPanel);
 app.component('ConfirmDialog', ConfirmDialog)
 app.component('Sidebar', Sidebar)
+app.component('ToggleButton', ToggleButton)
 
 app.mount("#app");

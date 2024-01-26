@@ -57,28 +57,37 @@ load()
 </script>
 
 <template>
-  <div v-if="!loading" class="flex justify-content-center flex-column align-items-center text-center">
-    <h1>Articles in category "{{ categoryName }}"</h1>
+  <div v-if="!loading" class="flex justify-content-start flex-column align-items-start w-30rem" style="overflow-wrap: break-word; white-space: normal;">
+    <h1 class="max-w-full">Category: {{ categoryName }}</h1>
 
-    <div v-for="article in articles">
-      <p>
-        <RouterLink :to="'/articles/'+article.id" class="link-primary">{{ article.title }}</RouterLink>
-      </p>
+    <div class="flex flex-column align-items-start w-full gap-4 max-w-full">
+      <div v-if="articles.length > 0" class="flex flex-column align-items-start">
+        Articles:
+        <div v-for="article in articles">
+          <div>
+            <RouterLink :to="'/articles/'+article.id" class="link-primary">{{ article.title }}</RouterLink>
+          </div>
+        </div>
+      </div>
+
+      <h2 v-else>
+        No articles here!
+      </h2>
+
+      <div v-if="childrenCategories.length > 0" class="flex flex-column align-items-start">
+        Children Categories:
+        <div v-for="child in childrenCategories">
+          ➡️ <RouterLink :to="'/categories/'+child.id" class="link-primary">{{ child.name }}</RouterLink>;
+        </div>
+      </div>
+
+      <div v-if="parentCategories.length > 0" class="flex flex-column align-items-start">
+        Parent Category:
+        <div v-for="parent in parentCategories">
+          ➡️ <RouterLink :to="'/categories/'+parent.id" class="link-primary">{{ parent.name }}</RouterLink>
+        </div>
+      </div>
     </div>
-
-    <small v-if="childrenCategories.length > 0">
-      Children Categories:
-      <span v-for="child in childrenCategories">
-        <RouterLink :to="'/categories/'+child.id" class="link-primary">{{ child.name }}</RouterLink>;
-      </span>
-    </small>
-
-    <small v-if="parentCategories.length > 0">
-      Parent Category:
-      <span v-for="parent in parentCategories">
-        <RouterLink :to="'/categories/'+parent.id" class="link-primary">{{ parent.name }}</RouterLink>
-      </span>
-    </small>
   </div>
 
   <div v-if="loading" class="flex justify-content-center flex-column align-items-center text-center">

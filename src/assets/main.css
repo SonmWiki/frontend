@@ -3,12 +3,8 @@ html, body {
 }
 
 body {
-  background: var(--bluegray-900) !important;
+  background: var(--surface-ground) !important;
   margin: 0;
-}
-
-.editor {
-  background: var(--bluegray-900) !important;
 }
 
 #app {
@@ -23,4 +19,16 @@ body {
 
 .link-primary:hover {
   text-decoration: underline;
+}
+
+.md-editor-dark {
+  --md-bk-color: var(--surface-ground) !important;
+}
+
+.md-editor-catalog-active > span {
+  color: var(--primary-500) !important;
+}
+
+.md-editor-catalog-link span:hover {
+  color: var(--primary-300) !important;
 }

@@ -30,9 +30,6 @@ const v$ = useVuelidate(
 const onSubmit = async () => {
   const isFormCorrect = await v$.value.$validate()
   if (!isFormCorrect) return
-
-  console.log("sending")
-
   toast.add({severity: 'info', summary: 'Form Submitted', life: 3000})
 };
 

@@ -14,7 +14,6 @@ const confirm = useConfirm();
 
 const loadNavigation = async () => {
   let nav = (await api.api.getNavigationsTree()).data.data
-  console.log(nav)
 
   navigation.value = JSON.parse(JSON.stringify(nav), function (k, v) {
     if (k == "uri") {
@@ -25,8 +24,7 @@ const loadNavigation = async () => {
           this.selectable = false;
           this.type = "header"
         }
-      }
-      else if (v.match(`^https?://`)) this.type = "ext"
+      } else if (v.match(`^https?://`)) this.type = "ext"
       else this.type = "int"
     }
 
@@ -37,8 +35,6 @@ const loadNavigation = async () => {
     else
       return v;
   });
-
-  console.log(navigation.value)
 }
 
 const onNodeSelect = (node: any) => {
@@ -51,7 +47,7 @@ const onNodeSelect = (node: any) => {
   else if (node.type == "int") router.push(v)
 
   if (node.children && node.children.length) {
-    (expandedKeys as any).value[key]  = !expandedKey
+    (expandedKeys as any).value[key] = !expandedKey
   }
 };
 
@@ -61,7 +57,6 @@ const showDialog = (v: string) => {
 
   confirm.require({
     message: `${shownLink}`,
-    header: 'External link will be opened',
     accept: () => {
       window.open(v, '_blank')
       confirm.close()
@@ -76,24 +71,14 @@ loadNavigation()
 </script>
 
 <template>
-  <div class="w-full h-full">
-    <ScrollPanel
-        style="width: 100%; height: 100%"
-        :pt="{
-        wrapper: {
-            style: 'border-right: 10px solid var(--surface-50);'
-        },
-        bary: 'surface-300 opacity-100 border-round'
-    }"
-    >
-      <Tree
-          :value="navigation"
-          class="$style.p-treenode w-full p-0"
-          style="background: transparent; border: 0; font-size: 0.9em; font-weight: 400"
-          v-model:expandedKeys="expandedKeys"
-          selectionMode="single"
-          @nodeSelect="onNodeSelect"
-          :pt="{
+  <Tree
+      :value="navigation"
+      class="w-full p-2"
+      style="background: transparent; border: 0; font-size: 0.9em; font-weight: 400"
+      v-model:expandedKeys="expandedKeys"
+      selectionMode="single"
+      @nodeSelect="onNodeSelect"
+      :pt="{
             toggler: {
               style: 'margin: 0'
             },
@@ -101,23 +86,21 @@ loadNavigation()
               style: 'padding: 0;'
             }
           }"
-      >
-        <template #default="slotProps">
-          <div class="flex align-items-center" :class="{'gap-2': slotProps.node.icon}">
-            <span>{{ slotProps.node.icon }}</span>
-            <span>{{ slotProps.node.label }}</span>
-          </div>
-        </template>
-        <template #header="slotProps">
-          <div class="flex align-items-center font-bold uppercase" :class="{'gap-2': slotProps.node.icon}">
-            <span>{{ slotProps.node.icon }}</span>
-            <span>{{ slotProps.node.label }}</span>
-          </div>
-        </template>
-      </Tree>
-    </ScrollPanel>
-  </div>
-  <ExternalLinkDialog />
+  >
+    <template #default="slotProps">
+      <div class="flex align-items-center" :class="{'gap-2': slotProps.node.icon}">
+        <span>{{ slotProps.node.icon }}</span>
+        <span>{{ slotProps.node.label }}</span>
+      </div>
+    </template>
+    <template #header="slotProps">
+      <div class="flex align-items-center font-bold uppercase" :class="{'gap-2': slotProps.node.icon}">
+        <span>{{ slotProps.node.icon }}</span>
+        <span>{{ slotProps.node.label }}</span>
+      </div>
+    </template>
+  </Tree>
+  <ExternalLinkDialog/>
 </template>
 
 <style scoped>

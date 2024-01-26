@@ -1,29 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from "@/views/HomeView.vue";
-import Register from "@/views/auth/RegisterView.vue";
-import Login from "@/views/auth/LoginView.vue";
-import Category from "@/views/category/CategoryView.vue";
-import CategoryArticles from "@/views/category/CategoryArticlesView.vue";
-import ArticleView from "@/views/article/ArticleView.vue";
+import ArticleEditor from "@/views/article/ArticleEditor.vue";
+import HomeView from "@/views/HomeView.vue";
+import ArticleViewComponent from "@/components/ArticleViewComponent.vue";
+import CategoryArticlesView from "@/components/CategoryArticles.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      component: ArticleView,
+      component: HomeView,
+      children : [
+          {
+            path: 'articles/:id',
+            component: ArticleViewComponent
+          },
+        {
+          path: '/categories/:id',
+          component: CategoryArticlesView
+        },
+      ]
     },
     {
-      path: '/categories',
-      component: Category,
-    },
-    {
-      path: '/categories/:id',
-      component: CategoryArticles
-    },
-    {
-      path: '/articles/:id',
-      component: ArticleView
+      path: '/editor',
+      component: ArticleEditor
     },
   ]
 })
