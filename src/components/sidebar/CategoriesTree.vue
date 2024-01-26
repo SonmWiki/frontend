@@ -2,7 +2,6 @@
 
 import {inject, ref} from "vue";
 import type {Api} from "@/api";
-import {type TreeNode} from "primevue/treenode";
 import {useRouter} from "vue-router";
 
 const nodes = ref([]);
@@ -36,7 +35,7 @@ requestTree()
       class="$style.p-treenode w-full p-2"
       style="background: transparent; border: 0; font-size: 0.9em; font-weight: 400"
       selectionMode="single"
-      @nodeSelect="(node: TreeNode) => {router.push(`/categories/${node.key}`)}"
+      @nodeSelect="(node: any) => {router.push(`/categories/${node.key}`)}"
       :pt="{
             toggler: {
               style: 'margin: 0'
