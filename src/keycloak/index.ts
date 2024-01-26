@@ -1,12 +1,12 @@
 import Keycloak from "keycloak-js";
 import type {App} from "vue";
 
-const env = import.meta.env
+const env = () => import.meta.env
 
 const initOptions = {
-    url: env.VITE_KEYCLOAK_URL,
-    realm: env.VITE_KEYCLOAK_REALM,
-    clientId: env.VITE_KEYCLOAK_CLIENT_ID,
+    url: env().VITE_KEYCLOAK_URL,
+    realm: env().VITE_KEYCLOAK_REALM,
+    clientId: env().VITE_KEYCLOAK_CLIENT_ID,
 };
 
 const keycloak = new Keycloak(initOptions);
