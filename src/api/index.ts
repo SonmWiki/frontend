@@ -211,6 +211,21 @@ export enum ReviewStatus {
     Value2 = 2,
 }
 
+export interface SearchArticlesResponse {
+    /** @format int32 */
+    page?: number;
+    /** @format int32 */
+    count?: number;
+    /** @format int32 */
+    totalPages?: number;
+    data?: SearchArticlesResponseElement[];
+}
+
+export interface SearchArticlesResponseElement {
+    id?: string;
+    articleTitle?: string;
+}
+
 export interface SerArticleRedirectRequest {
     redirectArticleId?: string;
 }
@@ -222,6 +237,17 @@ export interface SetRedirectResponse {
 export interface UpdateCategoryRequest {
     name?: string;
     parentId?: string | null;
+}
+
+export interface UpdateNavigationsTreeCommandElement {
+    name?: string;
+    uri?: string | null;
+    icon?: string | null;
+    children?: UpdateNavigationsTreeCommandElement[];
+}
+
+export interface UpdateNavigationsTreeRequest {
+    data?: UpdateNavigationsTreeCommandElement[];
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -376,6 +402,39 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
                 body: data,
                 secure: true,
                 type: ContentType.Json,
+                format: "json",
+                ...params,
+            }),
+
+        /**
+         * No description
+         *
+         * @tags Article
+         * @name SearchArticles
+         * @request GET:/api/articles
+         * @secure
+         */
+        searchArticles: (
+            query: {
+                searchTerm: string;
+                /**
+                 * @format int32
+                 * @default 1
+                 */
+                page?: number;
+                /**
+                 * @format int32
+                 * @default 50
+                 */
+                pageSize?: number;
+            },
+            params: RequestParams = {},
+        ) =>
+            this.request<SearchArticlesResponse, any>({
+                path: `/api/articles`,
+                method: "GET",
+                query: query,
+                secure: true,
                 format: "json",
                 ...params,
             }),
@@ -649,6 +708,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
                 path: `/api/navigations/tree`,
                 method: "GET",
                 secure: true,
+                format: "json",
+                ...params,
+            }),
+
+        /**
+         * No description
+         *
+         * @tags Navigations
+         * @name UpdateNavigationsTree
+         * @request PUT:/api/navigations/tree
+         * @secure
+         */
+        updateNavigationsTree: (data: UpdateNavigationsTreeRequest, params: RequestParams = {}) =>
+            this.request<GetNavigationsTreeResponse, ProblemDetails>({
+                path: `/api/navigations/tree`,
+                method: "PUT",
+                body: data,
+                secure: true,
+                type: ContentType.Json,
                 format: "json",
                 ...params,
             }),
