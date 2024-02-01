@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import {inject, ref, watch} from "vue";
-import {Api} from "@/api";
+import {ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {MdCatalog, MdPreview} from "md-editor-v3";
 import 'md-editor-v3/lib/style.css';
 import {useToast} from "primevue/usetoast";
+import {api} from "@/api/api";
 
-const api = inject("api") as Api<any>
 const route = useRoute()
 const toast = useToast()
 
@@ -25,7 +24,7 @@ const loadArticle = async () => {
   article.value = undefined
   loading.value = true
   try {
-    article.value = (await api.api.getArticle(articleId.value)).data
+    article.value = (await api().api.getArticle(articleId.value)).data
   } catch (err) {
     console.log(err)
     error.value = err
@@ -59,7 +58,7 @@ load()
   <Toast position="top-center"></Toast>
 
   <div class="w-full">
-    <div class="content pt-4" v-if="article">
+    <div class="content pt-4" v-if="article && article.content != null">
       <div class="title flex align-items-center justify-content-between ml-4 mr-4">
         <div>
           <h1 class="font-bold mb-0 mt-0">{{ article.title }}</h1>

@@ -1,19 +1,18 @@
 <script setup lang="ts">
 
-import {inject, ref} from "vue";
-import {Api} from "@/api";
+import {ref} from "vue";
 import router from "@/router";
 import {useConfirm} from "primevue/useconfirm";
 import ExternalLinkDialog from "@/components/ExternalLinkDialog.vue";
+import {api} from "@/api/api";
 
 const expandedKeys = ref({})
 const navigation = ref()
 
-const api = inject("api") as Api<any>
 const confirm = useConfirm();
 
 const loadNavigation = async () => {
-  let nav = (await api.api.getNavigationsTree()).data.data
+  let nav = (await api().api.getNavigationsTree()).data.data
 
   navigation.value = JSON.parse(JSON.stringify(nav), function (k, v) {
     if (k == "uri") {

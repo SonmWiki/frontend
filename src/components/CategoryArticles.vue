@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {inject, ref, watch} from "vue";
-import {Api, type GetCategoriesResponseElement} from "@/api";
+import {ref, watch} from "vue";
+import {type GetCategoriesResponseElement} from "@/api";
 import {useRoute} from "vue-router";
+import {api} from "@/api/api";
 
-const api = inject("api") as Api<any>
 const route = useRoute()
 
 const articles = ref()
@@ -27,7 +27,7 @@ const load = async () => {
 }
 
 const loadCategories = async () => {
-  categories.value = (await api.api.getCategories()).data.data
+  categories.value = (await api().api.getCategories()).data.data
 
   if (categories.value === undefined || categories.value === null) return
 
@@ -45,7 +45,7 @@ const loadCategories = async () => {
 }
 
 const loadArticles = async () => {
-  articles.value = (await api.api.getCategoryArticles(categoryId.value)).data.data
+  articles.value = (await api().api.getCategoryArticles(categoryId.value)).data.data
 }
 
 watch(

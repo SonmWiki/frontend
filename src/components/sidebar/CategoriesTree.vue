@@ -1,17 +1,16 @@
 <script setup lang="ts">
 
-import {inject, ref} from "vue";
-import type {Api} from "@/api";
+import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {api} from "@/api/api";
 
 const nodes = ref([]);
-const api = inject("api") as Api<any>
 const router = useRouter()
 
 const loading = ref(true);
 const requestTree = async () => {
   loading.value = true
-  let tree = (await api.api.getCategoriesTree()).data.data
+  let tree = (await api().api.getCategoriesTree()).data.data
 
   if (tree == undefined) return
 

@@ -2,13 +2,12 @@
 import {inject, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import Keycloak from "keycloak-js";
-import type {Api} from "@/api";
 import SidebarComponent from "@/components/sidebar/SidebarComponent.vue";
+import {api} from "@/api/api";
 
 const route = useRoute()
 const sidebarVisible = ref(false)
 const keycloak = inject("keycloak") as Keycloak
-const api = inject("api") as Api<any>
 
 watch(
     () => route.params.id,
@@ -17,7 +16,7 @@ watch(
 
 const sus = async () => {
   try {
-    await api.api.createArticle({}).then((res) => {console.log(res)})
+    await api().api.createArticle({}).then((res) => {console.log(res)})
   } catch (err: any) {
     console.log(err.message)
   }

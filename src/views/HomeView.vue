@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
 import SidebarContainer from "@/components/sidebar/SidebarComponent.vue";
-
-const checked = ref(false);
 </script>
 
 <template>
