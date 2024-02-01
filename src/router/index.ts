@@ -12,16 +12,19 @@ const router = createRouter({
       component: HomeView,
       children : [
           {
+            name: 'articles',
             path: 'articles/:id',
             component: ArticleViewComponent
           },
         {
-          path: '/categories/:id',
+          name: 'categories',
+          path: 'categories/:id',
           component: CategoryArticlesView
         },
       ]
     },
     {
+      name: 'editor',
       path: '/editor',
       component: ArticleEditor
     },
