@@ -89,8 +89,8 @@ load()
       </div>
     </div>
   </div>
-  <div class="menu catalog pt-4">
-    <div v-if="article">
+  <div class="menu catalog">
+    <div v-if="article" class="pt-4 sticky" style="top: 80px;">
       <MdCatalog language="en-US" previewTheme='github' theme="dark" :editorId="id" :scrollElement="scrollElement" />
     </div>
   </div>

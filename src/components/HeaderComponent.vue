@@ -26,7 +26,7 @@ const sus = async () => {
 <template>
   <header class="flex flex-row border-bottom-1 surface-border p-4 align-items-center justify-content-between">
     <div class="logo flex flex-row gap-2 align-items-center">
-      <Button text icon="pi pi-bars" @click="sidebarVisible = true" class="small-screen-only flex align-items-center justify-content-center" />
+      <Button text icon="pi pi-bars" @click="sidebarVisible = true" class="flex align-items-center justify-content-center small-screen-only" />
       <RouterLink to='/' class="no-underline text-color flex flex-row justify-content-center align-items-center">
         <img class="p-overlay-badge flex align-items-center justify-content-center" src="https://scmc.dev/img/catfish.png" width=48 />
         <b class="2">Wiki</b>
@@ -60,8 +60,8 @@ img {
 }
 
 .small-screen-only {
-  display: none;
-  visibility: hidden;
+  display: none !important;
+  visibility: hidden !important;
 }
 
 @media only screen and (max-width: 700px) {
