@@ -34,6 +34,7 @@ import Keycloak from "@/keycloak";
 import ConfirmDialog from 'primevue/confirmdialog';
 import Sidebar from "primevue/sidebar";
 import ToggleButton from "primevue/togglebutton";
+import AutoComplete from 'primevue/autocomplete'
 
 const app = createApp(App);
 
@@ -68,5 +69,6 @@ app.component('OverlayPanel', OverlayPanel);
 app.component('ConfirmDialog', ConfirmDialog)
 app.component('Sidebar', Sidebar)
 app.component('ToggleButton', ToggleButton)
+app.component('AutoComplete', AutoComplete)
 
 app.mount("#app");

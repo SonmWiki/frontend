@@ -3,6 +3,7 @@ import {inject, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import Keycloak from "keycloak-js";
 import SidebarComponent from "@/components/sidebar/SidebarComponent.vue";
+import SearchComponent from '@/components/SearchComponent.vue'
 import {api} from "@/api/api";
 
 const route = useRoute()
@@ -34,6 +35,7 @@ const sus = async () => {
       <RouterLink to='/editor' class="link-primary">WIP</RouterLink>
     </div>
     <div class="flex flex-row gap-2 align-items-center">
+      <SearchComponent/>
       <span class="link-primary" @click="console.log(keycloak.token)">token</span>
       <span class="link-primary" @click="keycloak.login()">in</span>
       <span class="link-primary" @click="keycloak.logout()">out</span>
