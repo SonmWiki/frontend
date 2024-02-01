@@ -10,178 +10,178 @@
  */
 
 export interface CreateArticleRequest {
-    title?: string;
-    content?: string;
-    categoryIds?: string[];
+    title: string;
+    content: string;
+    categoryIds: string[];
 }
 
 export interface CreateArticleResponse {
-    id?: string;
+    id: string;
 }
 
 export interface CreateCategoryRequest {
-    name?: string;
+    name: string;
     parentId?: string | null;
 }
 
 export interface CreateCategoryResponse {
-    id?: string;
+    id: string;
 }
 
 export interface DeleteArticleResponse {
-    id?: string;
+    id: string;
 }
 
 export interface DeleteCategoryResponse {
-    id?: string;
+    id: string;
 }
 
 export interface EditArticleRequest {
-    content?: string;
-    categoryIds?: string[];
+    content: string;
+    categoryIds: string[];
 }
 
 export interface EditArticleResponse {
-    id?: string;
+    id: string;
 }
 
 export interface EditCategoryResponse {
-    id?: string;
+    id: string;
 }
 
 export interface GetArticleResponse {
-    id?: string;
-    title?: string;
+    id: string;
+    title: string;
     content?: string | null;
-    contributors?: GetArticleResponseAuthor[];
+    contributors: GetArticleResponseAuthor[];
     /** @format uuid */
     revisionId?: string | null;
-    reviewStatus?: ReviewStatus;
+    reviewStatus: ReviewStatus;
     /** @format date-time */
     submittedTimestamp?: string | null;
     /** @format date-time */
     reviewTimestamp?: string | null;
-    categories?: GetArticleResponseCategory[];
+    categories: GetArticleResponseCategory[];
 }
 
 export interface GetArticleResponseAuthor {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 
 export interface GetArticleResponseCategory {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 
 export interface GetCategoriesResponse {
-    data?: GetCategoriesResponseElement[];
+    data: GetCategoriesResponseElement[];
 }
 
 export interface GetCategoriesResponseElement {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
     parentId?: string | null;
 }
 
 export interface GetCategoriesTreeResponse {
-    data?: GetCategoriesTreeResponseElement[];
+    data: GetCategoriesTreeResponseElement[];
 }
 
 export interface GetCategoriesTreeResponseElement {
-    id?: string;
-    name?: string;
-    children?: GetCategoriesTreeResponseElement[];
+    id: string;
+    name: string;
+    children: GetCategoriesTreeResponseElement[];
 }
 
 export interface GetCategoryArticlesResponse {
-    data?: GetCategoryArticlesResponseElement[];
+    data: GetCategoryArticlesResponseElement[];
 }
 
 export interface GetCategoryArticlesResponseElement {
-    id?: string;
-    title?: string;
+    id: string;
+    title: string;
 }
 
 export interface GetNavigationsTreeResponse {
-    data?: GetNavigationsTreeResponseElement[];
+    data: GetNavigationsTreeResponseElement[];
 }
 
 export interface GetNavigationsTreeResponseElement {
     /** @format int32 */
-    id?: number;
+    id: number;
     /** @format int32 */
-    weight?: number;
-    name?: string;
+    weight: number;
+    name: string;
     uri?: string | null;
     icon?: string | null;
-    children?: GetNavigationsTreeResponseElement[];
+    children: GetNavigationsTreeResponseElement[];
 }
 
 export interface GetPendingRevisionsResponse {
-    data?: GetPendingRevisionsResponseElement[];
+    data: GetPendingRevisionsResponseElement[];
 }
 
 export interface GetPendingRevisionsResponseAuthor {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 
 export interface GetPendingRevisionsResponseElement {
-    articleId?: string;
-    articleIdTitle?: string;
+    articleId: string;
+    articleIdTitle: string;
     /** @format uuid */
-    revisionId?: string;
-    author?: GetPendingRevisionsResponseAuthor;
+    revisionId: string;
+    author: GetPendingRevisionsResponseAuthor;
     /** @format date-time */
-    timestamp?: string;
+    timestamp: string;
 }
 
 export interface GetRevisionHistoryResponse {
-    data?: GetRevisionHistoryResponseElement[];
+    data: GetRevisionHistoryResponseElement[];
 }
 
 export interface GetRevisionHistoryResponseAuthor {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 
 export interface GetRevisionHistoryResponseElement {
     /** @format uuid */
-    id?: string;
-    contributor?: GetRevisionHistoryResponseAuthor;
+    id: string;
+    contributor: GetRevisionHistoryResponseAuthor;
     /** @format date-time */
-    timestamp?: string;
-    latestReview?: GetRevisionHistoryResponseReview;
+    timestamp: string;
+    latestReview: GetRevisionHistoryResponseReview;
 }
 
 export interface GetRevisionHistoryResponseReview {
     /** @format uuid */
-    id?: string;
-    reviewer?: GetRevisionHistoryResponseAuthor;
-    status?: ReviewStatus;
-    message?: string;
+    id: string;
+    reviewer: GetRevisionHistoryResponseAuthor;
+    status: ReviewStatus;
+    message: string;
     /** @format date-time */
-    reviewTimestamp?: string;
+    reviewTimestamp: string;
 }
 
 export interface GetRevisionReviewHistoryResponse {
-    data?: GetRevisionReviewHistoryResponseElement[];
+    data: GetRevisionReviewHistoryResponseElement[];
 }
 
 export interface GetRevisionReviewHistoryResponseElement {
     /** @format uuid */
-    id?: string;
-    reviewer?: GetRevisionReviewHistoryResponseReviewer;
-    status?: ReviewStatus;
-    message?: string;
+    id: string;
+    reviewer: GetRevisionReviewHistoryResponseReviewer;
+    status: ReviewStatus;
+    message: string;
     /** @format date-time */
-    timestamp?: string;
+    timestamp: string;
 }
 
 export interface GetRevisionReviewHistoryResponseReviewer {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 
 export interface ProblemDetails {
@@ -195,13 +195,13 @@ export interface ProblemDetails {
 }
 
 export interface ReviewArticleRevisionRequest {
-    status?: ReviewStatus;
-    review?: string;
+    status: ReviewStatus;
+    review: string;
 }
 
 export interface ReviewRevisionResponse {
     /** @format uuid */
-    id?: string;
+    id: string;
 }
 
 /** @format int32 */
@@ -213,41 +213,41 @@ export enum ReviewStatus {
 
 export interface SearchArticlesResponse {
     /** @format int32 */
-    page?: number;
+    page: number;
     /** @format int32 */
-    count?: number;
+    count: number;
     /** @format int32 */
-    totalPages?: number;
-    data?: SearchArticlesResponseElement[];
+    totalPages: number;
+    data: SearchArticlesResponseElement[];
 }
 
 export interface SearchArticlesResponseElement {
-    id?: string;
-    articleTitle?: string;
+    id: string;
+    articleTitle: string;
 }
 
 export interface SerArticleRedirectRequest {
-    redirectArticleId?: string;
+    redirectArticleId: string;
 }
 
 export interface SetRedirectResponse {
-    id?: string;
+    id: string;
 }
 
 export interface UpdateCategoryRequest {
-    name?: string;
+    name: string;
     parentId?: string | null;
 }
 
 export interface UpdateNavigationsTreeCommandElement {
-    name?: string;
+    name: string;
     uri?: string | null;
     icon?: string | null;
-    children?: UpdateNavigationsTreeCommandElement[];
+    children: UpdateNavigationsTreeCommandElement[];
 }
 
 export interface UpdateNavigationsTreeRequest {
-    data?: UpdateNavigationsTreeCommandElement[];
+    data: UpdateNavigationsTreeCommandElement[];
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
