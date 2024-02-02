@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import {inject, ref, watch} from "vue";
+import { inject, ref, watch } from 'vue'
 import {useRoute} from "vue-router";
-import Keycloak from "keycloak-js";
 import SidebarComponent from "@/components/sidebar/SidebarComponent.vue";
 import SearchComponent from '@/components/navigation/SearchComponent.vue'
+import { type AuthService, authServiceKey } from '@/services/AuthService'
 
 const route = useRoute()
 const sidebarVisible = ref(false)
-const keycloak = inject("keycloak") as Keycloak
+const authService = inject(authServiceKey) as AuthService
 
 watch(
     () => route.params.id,
@@ -29,9 +29,9 @@ watch(
     </div>
     <div class="flex flex-row gap-2 align-items-center">
       <SearchComponent/>
-      <span class="link-primary" @click="console.log(keycloak.token)">token</span>
-      <span class="link-primary" @click="keycloak.login()">in</span>
-      <span class="link-primary" @click="keycloak.logout()">out</span>
+      <span class="link-primary" @click="console.log(authService.getAccessToken())">token</span>
+      <span class="link-primary" @click="authService.login()">in</span>
+      <span class="link-primary" @click="authService.logout()">out</span>
     </div>
   </header>
   <Sidebar v-model:visible="sidebarVisible">

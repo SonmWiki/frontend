@@ -30,12 +30,12 @@ import Tree from 'primevue/tree';
 import router from "@/router";
 import Avatar from "primevue/avatar";
 import OverlayPanel from 'primevue/overlaypanel';
-import Keycloak from "@/keycloak";
 import ConfirmDialog from 'primevue/confirmdialog';
 import Sidebar from "primevue/sidebar";
 import ToggleButton from "primevue/togglebutton";
 import MultiSelect from "primevue/multiselect";
 import AutoComplete from 'primevue/autocomplete'
+import authService from '@/services/AuthService'
 
 const app = createApp(App);
 
@@ -44,7 +44,7 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
 app.use(router);
-app.use(Keycloak)
+app.use(authService);
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
