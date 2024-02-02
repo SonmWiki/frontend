@@ -35,7 +35,10 @@ import Sidebar from "primevue/sidebar";
 import ToggleButton from "primevue/togglebutton";
 import MultiSelect from "primevue/multiselect";
 import AutoComplete from 'primevue/autocomplete'
-import authService from '@/services/AuthService'
+import Menu from "primevue/menu";
+import Splitter from 'primevue/splitter';
+import SplitterPanel from 'primevue/splitterpanel';
+import {CodeDiff} from "v-code-diff";
 
 const app = createApp(App);
 
@@ -44,7 +47,6 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
 app.use(router);
-app.use(authService);
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
@@ -72,5 +74,9 @@ app.component('Sidebar', Sidebar)
 app.component('ToggleButton', ToggleButton)
 app.component('MultiSelect', MultiSelect)
 app.component('AutoComplete', AutoComplete)
+app.component('Menu', Menu)
+app.component('Splitter', Splitter)
+app.component('SplitterPanel', SplitterPanel)
+app.component('CodeDiff', CodeDiff)
 
 app.mount("#app");

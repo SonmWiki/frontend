@@ -62,7 +62,7 @@ const createArticle = async () => {
 }
 
 const onCategoriesClick = async () => {
-  if (loadingCategories.value || categories.value != undefined) return
+  if (loadingCategories.value || categories.value.length != 0) return
 
   loadingCategories.value = true
 
@@ -76,7 +76,7 @@ const onCategoriesClick = async () => {
 
 setInterval (()=> {
   saveDraft(text.value)
-}, 300*1000);
+}, 30*1000);
 </script>
 
 <template>
