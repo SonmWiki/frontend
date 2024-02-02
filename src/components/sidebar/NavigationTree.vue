@@ -1,52 +1,57 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {type Ref, ref} from "vue";
 import router from "@/router";
 import {useConfirm} from "primevue/useconfirm";
 import ExternalLinkDialog from "@/components/ExternalLinkDialog.vue";
 import {api} from "@/api/api";
+import type {TreeExpandedKeys} from "primevue/tree";
+import type {TreeNode} from "primevue/treenode";
 
-const expandedKeys = ref({})
+const expandedKeys: Ref<TreeExpandedKeys> = ref({})
 const navigation = ref()
 
 const confirm = useConfirm();
 
 const loadNavigation = async () => {
-  let nav = (await api().api.getNavigationsTree()).data.data
+  try {
+    let nav = (await api().api.getNavigationsTree()).data.data
 
-  navigation.value = JSON.parse(JSON.stringify(nav), function (k, v) {
-    if (k == "uri") {
-      if (v == null) {
-        if (this.children.length > 0) this.type = "text"
+    navigation.value = JSON.parse(JSON.stringify(nav), function (k, v) {
+      if (k == "uri") {
+        if (v == null) {
+          if (this.children.length > 0) this.type = "text"
 
-        else {
-          this.selectable = false;
-          this.type = "header"
-        }
-      } else if (v.match(`^https?://`)) this.type = "ext"
-      else this.type = "int"
-    }
+          else {
+            this.selectable = false;
+            this.type = "header"
+          }
+        } else if (v.match(`^https?://`)) this.type = "ext"
+        else this.type = "int"
+      }
 
-    if (k === "name")
-      this.label = v;
-    else if (k === "id")
-      this.key = v;
-    else
-      return v;
-  });
+      if (k === "name")
+        this.label = v;
+      else if (k === "id")
+        this.key = v;
+      else
+        return v;
+    });
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-const onNodeSelect = (node: any) => {
+const onNodeSelect = (node: TreeNode) => {
   const v = node.uri
-  const key: string = node.key
-  const expandedKey: boolean = (expandedKeys as any).value[key]
+  const key = node.key
 
   if (node.type == "ext") showDialog(v)
-
   else if (node.type == "int") router.push(v)
 
-  if (node.children && node.children.length) {
-    (expandedKeys as any).value[key] = !expandedKey
+  if (key != undefined && node.children && node.children.length) {
+      const expandedKey: boolean = expandedKeys.value[key]
+      expandedKeys.value[key] = !expandedKey
   }
 };
 

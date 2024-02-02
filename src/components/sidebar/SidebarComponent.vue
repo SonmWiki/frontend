@@ -18,8 +18,8 @@ const checked = ref(false)
     }"
     >
       <ToggleButton v-model="checked" onLabel="Categories" offLabel="Navigation" :pt="{box: {style: 'background: none !important; border: 0;'}}" />
-      <NavigationComponent v-if="!checked" />
       <CategoriesComponent v-if="checked" />
+      <NavigationComponent v-else />
     </ScrollPanel>
   </div>
 </template>

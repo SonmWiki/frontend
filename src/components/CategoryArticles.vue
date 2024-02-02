@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
-import {type GetCategoriesResponseElement} from "@/api";
+import {type Ref, ref, watch} from "vue";
+import {type GetCategoriesResponseElement, type GetCategoryArticlesResponseElement} from "@/api";
 import {useRoute} from "vue-router";
 import {api} from "@/api/api";
 
 const route = useRoute()
 
-const articles = ref()
-const categories = ref()
-const parentCategories = ref()
-const childrenCategories = ref()
+const articles: Ref<GetCategoryArticlesResponseElement[]> = ref([])
+const categories: Ref<GetCategoriesResponseElement[]> = ref([])
+const parentCategory: Ref<GetCategoriesResponseElement | undefined> = ref()
+const childrenCategories: Ref<GetCategoriesResponseElement[]> = ref([])
 
 const categoryId = ref()
 const categoryName = ref()
@@ -27,25 +27,30 @@ const load = async () => {
 }
 
 const loadCategories = async () => {
-  categories.value = (await api().api.getCategories()).data.data
-
-  if (categories.value === undefined || categories.value === null) return
-
-  parentCategories.value = []
-  childrenCategories.value = []
+  try {
+    categories.value = (await api().api.getCategories()).data.data
+  } catch (error) {
+    console.error(error)
+  }
 
   categories.value.forEach((category: GetCategoriesResponseElement) => {
     if (category.parentId == categoryId.value) childrenCategories.value.push(category)
     if (category.id == categoryId.value ) {
       categoryName.value = category.name
-      if (category.parentId !== null)
-        parentCategories.value.push(categories.value.find((v: GetCategoriesResponseElement) => v.id == category.parentId))
+      if (category.parentId !== null) {
+        const t = categories.value.find((v) => v.id == category.parentId)
+        if (t) parentCategory.value = t
+      }
     }
   })
 }
 
 const loadArticles = async () => {
-  articles.value = (await api().api.getCategoryArticles(categoryId.value)).data.data
+  try {
+    articles.value = (await api().api.getCategoryArticles(categoryId.value)).data.data
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 watch(
@@ -63,10 +68,10 @@ load()
     <div class="flex flex-column align-items-start w-full gap-4 max-w-full">
       <div v-if="articles.length > 0" class="flex flex-column align-items-start">
         Articles:
-        <div v-for="article in articles">
-          <div>
-            <RouterLink :to="'/articles/'+article.id" class="link-primary">{{ article.title }}</RouterLink>
-          </div>
+        <div v-for="article in articles" :key="article.id">
+          <RouterLink :to="{name: 'articles', params: {id: article.id}}" class="link-primary">
+            {{ article.title }}
+          </RouterLink>
         </div>
       </div>
 
@@ -76,16 +81,18 @@ load()
 
       <div v-if="childrenCategories.length > 0" class="flex flex-column align-items-start">
         Children Categories:
-        <div v-for="child in childrenCategories">
-          ➡️ <RouterLink :to="'/categories/'+child.id" class="link-primary">{{ child.name }}</RouterLink>;
+        <div v-for="child in childrenCategories" :key="child.id">
+          <RouterLink :to="{name: 'categories', params: {id: child.id}}" class="link-primary">
+            ➡️ {{ child.name }}
+          </RouterLink>;
         </div>
       </div>
 
-      <div v-if="parentCategories.length > 0" class="flex flex-column align-items-start">
+      <div v-if="parentCategory" class="flex flex-column align-items-start">
         Parent Category:
-        <div v-for="parent in parentCategories">
-          ➡️ <RouterLink :to="'/categories/'+parent.id" class="link-primary">{{ parent.name }}</RouterLink>
-        </div>
+          <RouterLink :to="{name: 'categories', params: {id: parentCategory.id}}" class="link-primary">
+            ➡️ {{ parentCategory.name }}
+          </RouterLink>
       </div>
     </div>
   </div>

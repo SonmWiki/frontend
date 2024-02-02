@@ -23,7 +23,10 @@ async function select(event: AutoCompleteItemSelectEvent){
 </script>
 
 <template>
-  <AutoComplete placeholder="Search" v-model="value" optionLabel="articleTitle" :suggestions="foundArticles" @complete="search" @item-select="select" />
+  <InputGroup>
+    <AutoComplete placeholder="Search" v-model="value" optionLabel="articleTitle" :suggestions="foundArticles" @complete="search" @item-select="select" />
+    <InputGroupAddon><i class="pi pi-search"></i></InputGroupAddon>
+  </InputGroup>
 </template>
 
 <style scoped>

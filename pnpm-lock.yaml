@@ -18,8 +18,11 @@ dependencies:
     specifier: ^23.0.5
     version: 23.0.5
   md-editor-v3:
-    specifier: ^4.11.0
-    version: 4.11.0(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)(@lezer/common@1.2.1)(vue@3.4.15)
+    specifier: ^4.11.1
+    version: 4.11.1(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)(@lezer/common@1.2.1)(vue@3.4.15)
+  moment:
+    specifier: ^2.30.1
+    version: 2.30.1
   primeflex:
     specifier: ^3.3.1
     version: 3.3.1
@@ -2023,8 +2026,8 @@ packages:
       uc.micro: 1.0.6
     dev: false
 
-  /md-editor-v3@4.11.0(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)(@lezer/common@1.2.1)(vue@3.4.15):
-    resolution: {integrity: sha512-xSzmhqyHfx6r8AzI8/ioll/YScAVNHjc3Hob4qv7cyxigJDuDmk7aBWk3+uA8SzA7z6p6v+4cyvxHexVwPbWZw==}
+  /md-editor-v3@4.11.1(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)(@lezer/common@1.2.1)(vue@3.4.15):
+    resolution: {integrity: sha512-u5dScQNt7uwWEuKLEooAz7gzn+ImSv/CQy6+Uu0z1pe4unChyNBWUyKmCk1RhivqZpcBiI37Ix9jecIAEC8yyQ==}
     peerDependencies:
       vue: ^3.2.47
     dependencies:
@@ -2097,6 +2100,10 @@ packages:
     dependencies:
       brace-expansion: 2.0.1
     dev: true
+
+  /moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+    dev: false
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}

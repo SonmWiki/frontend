@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ArticleEditor from "@/views/article/ArticleEditor.vue";
 import HomeView from "@/views/HomeView.vue";
 import ArticleViewComponent from "@/components/ArticleViewComponent.vue";
 import CategoryArticlesView from "@/components/CategoryArticles.vue";
+import CreateArticle from "@/views/article/CreateArticle.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,9 +24,9 @@ const router = createRouter({
       ]
     },
     {
-      name: 'editor',
-      path: '/editor',
-      component: ArticleEditor
+      name: 'create',
+      path: '/create',
+      component: CreateArticle
     },
   ]
 })

@@ -3,6 +3,7 @@
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {api} from "@/api/api";
+import type {TreeNode} from "primevue/treenode";
 
 const nodes = ref([]);
 const router = useRouter()
@@ -10,19 +11,23 @@ const router = useRouter()
 const loading = ref(true);
 const requestTree = async () => {
   loading.value = true
-  let tree = (await api().api.getCategoriesTree()).data.data
 
-  if (tree == undefined) return
+  try {
+    let tree = (await api().api.getCategoriesTree()).data.data
 
-  nodes.value = JSON.parse(JSON.stringify(tree), function (k, v) {
-    if (k === "id")
-      this.key = v;
-    else if (k === "name")
-      this.label = v;
-    else
-      return v;
-  });
-  loading.value = false
+    nodes.value = JSON.parse(JSON.stringify(tree), function (k, v) {
+      if (k === "id")
+        this.key = v;
+      else if (k === "name")
+        this.label = v;
+      else
+        return v;
+    });
+    loading.value = false
+  }
+  catch (error) {
+    console.error(error)
+  }
 }
 
 requestTree()
@@ -34,7 +39,7 @@ requestTree()
       class="$style.p-treenode w-full p-2"
       style="background: transparent; border: 0; font-size: 0.9em; font-weight: 400"
       selectionMode="single"
-      @nodeSelect="(node: any) => {router.push(`/categories/${node.key}`)}"
+      @nodeSelect="(node: TreeNode) => {router.push({name: 'categories', params: {id: node.key}})}"
       :pt="{
             toggler: {
               style: 'margin: 0'
