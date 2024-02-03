@@ -39,6 +39,8 @@ import Menu from "primevue/menu";
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import {CodeDiff} from "v-code-diff";
+import type { AuthService } from '@/services/AuthService'
+import { KeycloakService } from '@/services/AuthService'
 
 const app = createApp(App);
 
@@ -79,4 +81,4 @@ app.component('Splitter', Splitter)
 app.component('SplitterPanel', SplitterPanel)
 app.component('CodeDiff', CodeDiff)
 
-app.mount("#app");
+export const authService = new KeycloakService(() => app.mount("#app")) as AuthService

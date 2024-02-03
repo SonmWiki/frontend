@@ -13,10 +13,10 @@ export interface AuthService{
   getUserRoles() : string[] | undefined;
 }
 
-class KeycloakService implements AuthService{
+export class KeycloakService implements AuthService{
   private readonly keycloakInstance: Keycloak
 
-  constructor() {
+  constructor(callback: ()=>void) {
     const initOptions: KeycloakConfig = {
       url: env().VITE_KEYCLOAK_URL,
       realm: env().VITE_KEYCLOAK_REALM,
@@ -31,6 +31,7 @@ class KeycloakService implements AuthService{
       })
       .then((authenticated) => {
         authenticated ? console.log("Authenticated " + this.getUsername() + " " + this.getUserRoles()) : console.log("Unauthenticated")
+        callback()
       })
       .catch((e) => {
         console.dir(e)
@@ -71,8 +72,4 @@ class KeycloakService implements AuthService{
 }
 
 export const authServiceKey = Symbol() as InjectionKey<AuthService>
-export default {
-  install(app: App) {
-    app.provide(authServiceKey, new KeycloakService() as AuthService)
-  }
-}
+

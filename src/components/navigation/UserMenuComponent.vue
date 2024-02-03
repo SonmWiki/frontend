@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {inject, ref} from "vue";
 import router from "@/router";
-import {authService} from "@/services/AuthService";
+import { authService } from '@/main'
 
 const menu = ref();
 //
