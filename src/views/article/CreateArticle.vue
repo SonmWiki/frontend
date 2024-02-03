@@ -10,7 +10,7 @@ import {maxLength, minLength, required} from "@vuelidate/validators";
 
 const text: Ref<string> = ref('Hello Editor! 👋');
 const dialogVisible = ref(false)
-const localArticleDraft: Ref<string>  = ref("")
+const localArticleDraft: Ref<string | null>  = ref(null)
 const title = ref('')
 const categories: Ref<GetCategoriesResponseElement[]> = ref([])
 const selectedCategories: Ref<GetCategoriesResponseElement[]> = ref([]);
@@ -19,9 +19,9 @@ const error = ref()
 const toast = useToast()
 const preview = ref(false)
 
-localArticleDraft.value = localStorage.getItem("article_draft") as string
+localArticleDraft.value = localStorage.getItem("article_draft")
 
-if (localArticleDraft.value != "") text.value = localArticleDraft.value
+if (localArticleDraft.value != null) text.value = localArticleDraft.value
 
 const rules = {
   title: {required, minLength: minLength(4), maxLength: maxLength(256)},
