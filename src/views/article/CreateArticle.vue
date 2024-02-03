@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {type Ref, ref} from 'vue';
-import {MdEditor} from 'md-editor-v3';
+import {MdPreview, MdEditor} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import {type CreateArticleRequest, type GetCategoriesResponseElement} from "@/api";
 import {useVuelidate} from "@vuelidate/core";
@@ -17,6 +17,7 @@ const selectedCategories: Ref<GetCategoriesResponseElement[]> = ref([]);
 const loadingCategories = ref(false)
 const error = ref()
 const toast = useToast()
+const preview = ref(false)
 
 localArticleDraft.value = localStorage.getItem("article_draft") as string
 
@@ -82,16 +83,19 @@ setInterval (()=> {
 <template>
   <Toast />
 
-  <div class="flex flex-column gap-2">
-    <div class="w-full flex flex-column align-items-center">
-      <h1>Create Article</h1>
-      <div class="flex flex-column align-items-center w-30rem">
-
+  <div class="flex w-full justify-content-center">
+    <div class="flex flex-column gap-2 p-2 w-full h-full" style="max-width: 1900px; min-height: calc(100vh - 80px)">
+      <div class="w-full flex flex-column align-items-center">
+        <h1>Create Article</h1>
       </div>
-    </div>
-    <MdEditor @onSave="saveDraft" v-model="text" language="en-US" previewTheme='github' theme="dark" />
-    <div class="flex justify-content-center">
-      <Button label="Create" @click="dialogVisible = true"></Button>
+      <div class="flex justify-content-between">
+        <ToggleButton v-model="preview" onLabel="Preview Mode" offLabel="Editor Mode" :pt="{box: {style: 'background: none !important; border: 0;'}}" />
+        <Button label="Create" @click="dialogVisible = true" />
+      </div>
+      <div class="h-full flex justify-content-center">
+        <MdPreview style="max-width: 750px;" v-if="preview" v-model="text" language="en-US" previewTheme='github' theme="dark" />
+        <MdEditor v-else :preview='false' @onSave="saveDraft" v-model="text" language="en-US" previewTheme='github' theme="dark" />
+      </div>
     </div>
   </div>
 
