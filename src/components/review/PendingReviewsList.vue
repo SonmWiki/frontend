@@ -1,33 +1,46 @@
 <script setup lang="ts">
 import moment from "moment/moment";
 import {api} from "@/api/api";
-import {GetPendingRevisionsResponseElement} from "@/api";
-import {type Ref, ref} from "vue";
+import {type GetPendingRevisionsResponseElement} from "@/api";
+import {type Ref, ref, watch} from "vue";
+import router from "@/router";
+import {useRoute} from "vue-router";
 
 const revisions: Ref<GetPendingRevisionsResponseElement[]> = ref([])
+const route = useRoute()
+const empty = ref(false)
 
-const revisionId = defineModel('revisionId')
-const articleId = defineModel('articleId')
+const revisionId = ref(route.params.revision)
 
 const select = async (revision: GetPendingRevisionsResponseElement) => {
   revisionId.value = revision.revisionId
-  articleId.value = revision.articleId
+
+  await router.push({name: 'reviewView', params: {article: revision.articleId, revision: revision.revisionId}})
 }
 const load = async () => {
   try {
     revisions.value = (await api().api.pendingRevisions()).data.data
-    if (revisions.value.length != 0) await select(revisions.value[0])
+    if (revisions.value.length == 0) return empty.value = true
+    if (route.params.revision == undefined) await select(revisions.value[0])
   } catch (error) {
     console.error(error)
   }
 }
+
+watch(
+    () => route.params.revision,
+    () => {
+      if (route.params.revision == undefined)
+        load()
+    }
+)
 
 load()
 </script>
 
 <template>
   <div class="w-full h-full">
-    <div class="flex flex-column gap-2 p-2">
+    <div v-if="!empty" class="flex flex-column gap-2 p-2">
       <div
           v-for="revision in revisions"
           :key="revision.revisionId"
@@ -47,6 +60,9 @@ load()
         <div class="text-sm"><i class="pi pi-user"></i> {{ revision.author.name }}</div>
         <div class="text-sm"><i class="pi pi-clock"></i> {{ moment(revision.timestamp, moment.ISO_8601).format("DD.MM.YYYY HH:mm") }}</div>
       </div>
+    </div>
+    <div class="p-2" v-else>
+      No articles here!
     </div>
   </div>
 </template>

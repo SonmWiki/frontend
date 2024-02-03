@@ -3,7 +3,7 @@ import HomeView from "@/views/HomeView.vue";
 import ArticleViewComponent from "@/components/ArticleViewComponent.vue";
 import CategoryArticlesView from "@/components/CategoryArticles.vue";
 import CreateArticle from "@/views/article/CreateArticle.vue";
-import ReviewArticleCard from "@/components/review/ReviewArticleView.vue";
+import ReviewView from "@/views/review/ReviewView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,7 +32,14 @@ const router = createRouter({
     {
       name: 'review',
       path: '/review',
-      component: ReviewArticleCard
+      component: ReviewView,
+      children: [
+        {
+          name: 'reviewView',
+          path: ':article/:revision',
+          component: ReviewView,
+        }
+      ]
     }
   ]
 })

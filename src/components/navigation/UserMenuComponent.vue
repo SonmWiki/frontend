@@ -1,36 +1,14 @@
 <script setup lang="ts">
-import {inject, ref} from "vue";
+import {ref} from "vue";
 import router from "@/router";
-import { authService } from '@/main'
+import {authService} from '@/main'
 
 const menu = ref();
-//
-// watch(
-//     () => !!localStorage.getItem("token"),
-//     () => {
-//       console.log(!!localStorage.getItem("token"))
-//       getCurrentInstance().proxy?.$forceUpdate()
-//     }
-// )
 
 const items = ref([
   {
-    label: "Options",
+    label: `${authService.isLoggedIn() ? 'Logged In as ' + authService.getUsername() : 'Not Logged In'}`,
     items: [
-      {
-        label: "Login",
-        icon: 'pi pi-sign-in',
-        command: () => {
-          authService.login()
-        }
-      },
-      {
-        label: "Logout",
-        icon: 'pi pi-sign-out',
-        command: () => {
-          authService.logout()
-        }
-      },
       {
         label: "Create",
         icon: 'pi pi-pencil',
@@ -52,7 +30,22 @@ const items = ref([
           console.log("KC: " + authService.getAccessToken())
           console.log("auth: " + authService)
         }
-      }
+      },
+      !authService.isLoggedIn() ?
+          {
+            label: "Login",
+            icon: 'pi pi-sign-in',
+            command: () => {
+              authService.login()
+            }
+          } :
+          {
+            label: "Logout",
+            icon: 'pi pi-sign-out',
+            command: () => {
+              authService.logout()
+            }
+          },
     ],
   }
 ]);
@@ -77,7 +70,7 @@ setItems()
       @click="toggle"
       class="flex align-items-center justify-content-center"
   />
-  <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
+  <Menu ref="menu" id="overlay_menu" :model="items" :popup="true"/>
 </template>
 
 <style scoped>

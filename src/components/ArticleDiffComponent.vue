@@ -5,17 +5,17 @@ import type {GetArticleResponse} from "@/api";
 import {api} from "@/api/api";
 
 const props = defineProps<{
-  newArticle: string
-  newRevision: string
-  oldArticle?: string
-  oldRevision?: string
+  newArticle: string | undefined
+  newRevision: string | undefined
+  oldArticle?: string | undefined
+  oldRevision?: string | undefined
 }>()
 
 const newArticleData: Ref<GetArticleResponse | undefined> = ref()
 const oldArticleData: Ref<GetArticleResponse | undefined> = ref()
 
 const loadArticles = async () => {
-  if (!props.newArticle || props.newArticle == "") return
+  if (!props.newArticle || props.newArticle == "" || props.newArticle == undefined) return
 
   try {
     newArticleData.value = (await api().api.getArticle(props.newArticle, {revisionId: props.newRevision})).data
