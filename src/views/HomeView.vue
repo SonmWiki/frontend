@@ -4,7 +4,7 @@ import SidebarContainer from "@/components/sidebar/SidebarComponent.vue";
 
 <template>
   <div class="flex-container">
-    <div class="menu left-menu border-right-1 surface-border">
+    <div class="menu left-menu md:block hidden border-right-1 surface-border">
       <SidebarContainer></SidebarContainer>
     </div>
     <div class="container flex flex-row justify-content-center">
@@ -22,13 +22,6 @@ import SidebarContainer from "@/components/sidebar/SidebarComponent.vue";
   height: 100%;
   margin: 0 auto;
 }
-
-@media only screen and (max-width: 700px) {
-  .left-menu {
-    display: none;
-  }
-}
-
 .left-menu {
   width: 300px;
 }

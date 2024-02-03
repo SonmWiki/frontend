@@ -42,9 +42,9 @@ loadArticles()
   <CodeDiff
       :old-string="oldArticleData?.content != null ? oldArticleData?.content : ''"
       :new-string="newArticleData?.content"
-      output-format="side-by-side"
+      output-format="line-by-line"
       theme="dark"
-      class="surface-border surface-ground"
+      class="surface-border surface-ground w-full"
   />
 </template>
 
