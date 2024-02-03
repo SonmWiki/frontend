@@ -2,7 +2,6 @@
 
 import {type Ref, ref} from "vue";
 import router from "@/router";
-import {useConfirm} from "primevue/useconfirm";
 import ExternalLinkDialog from "@/components/ExternalLinkDialog.vue";
 import {api} from "@/api/api";
 import type {TreeExpandedKeys} from "primevue/tree";
@@ -10,8 +9,7 @@ import type {TreeNode} from "primevue/treenode";
 
 const expandedKeys: Ref<TreeExpandedKeys> = ref({})
 const navigation = ref()
-
-const confirm = useConfirm();
+const url = ref("")
 
 const loadNavigation = async () => {
   try {
@@ -46,7 +44,7 @@ const onNodeSelect = (node: TreeNode) => {
   const v = node.uri
   const key = node.key
 
-  if (node.type == "ext") showDialog(v)
+  if (node.type == "ext") url.value = v
   else if (node.type == "int") router.push(v)
 
   if (key != undefined && node.children && node.children.length) {
@@ -54,22 +52,6 @@ const onNodeSelect = (node: TreeNode) => {
       expandedKeys.value[key] = !expandedKey
   }
 };
-
-const showDialog = (v: string) => {
-  let shownLink = v.substring(0, 36)
-  if (v.length > 36) shownLink += ".."
-
-  confirm.require({
-    message: `${shownLink}`,
-    accept: () => {
-      window.open(v, '_blank')
-      confirm.close()
-    },
-    reject: () => {
-      confirm.close()
-    }
-  });
-}
 
 loadNavigation()
 </script>
@@ -104,7 +86,7 @@ loadNavigation()
       </div>
     </template>
   </Tree>
-  <ExternalLinkDialog/>
+  <ExternalLinkDialog v-model:url="url" />
 </template>
 
 <style scoped>
