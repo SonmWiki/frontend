@@ -415,8 +415,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          * @secure
          */
         searchArticles: (
-            query: {
-                searchTerm: string;
+            query?: {
+                searchTerm?: string;
                 /**
                  * @format int32
                  * @default 1
