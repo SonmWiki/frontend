@@ -43,6 +43,7 @@ import type { AuthService } from '@/services/AuthService'
 import { KeycloakService } from '@/services/AuthService'
 import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
+import Fieldset from "primevue/fieldset";
 
 const app = createApp(App);
 
@@ -84,6 +85,6 @@ app.component('SplitterPanel', SplitterPanel)
 app.component('CodeDiff', CodeDiff)
 app.component('Textarea', Textarea)
 app.component('Dropdown', Dropdown)
-
+app.component('Fieldset', Fieldset)
 
 export const authService = new KeycloakService(() => app.mount("#app")) as AuthService
