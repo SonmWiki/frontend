@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {Ref, ref, watch} from "vue";
+import {type Ref, ref, watch} from "vue";
 import ArticleDiffComponent from "@/components/ArticleDiffComponent.vue";
 import ArticleViewComponent from "@/components/ArticleViewComponent.vue";
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue";
@@ -35,13 +35,13 @@ watch(
           <PendingReviewsList class="" />
       </SplitterPanel>
       <SplitterPanel class="flex justify-content-center p-3 h-full overflow-y-auto" :size="80" :minSize="50">
-        <div class="h-full w-full">
+        <div class="h-full w-full flex flex-column gap-2">
           <div class="flex justify-content-between">
             <ToggleButton v-model="diffView" onLabel="Diff View" offLabel="Normal View" :pt="{box: {style: 'background: none !important; border: 0;'}}" />
             <Button @click="dialogVisible = true" label="Leave Review"></Button>
           </div>
           <div class="w-full flex flex-row">
-            <ArticleDiffComponent v-if="diffView" v-bind:newRevision="revisionId" v-bind:newArticle="articleId" />
+            <ArticleDiffComponent v-if="diffView" v-bind:newRevision="revisionId" v-bind:article="articleId" />
             <ArticleViewComponent v-else v-bind:revision="revisionId" v-bind:article="articleId" :hide-catalog="true" />
           </div>
         </div>
