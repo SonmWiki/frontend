@@ -217,7 +217,7 @@ export interface SearchArticlesResponse {
     /** @format int32 */
     count: number;
     /** @format int32 */
-    totalPages: number;
+    totalCount: number;
     data: SearchArticlesResponseElement[];
 }
 
