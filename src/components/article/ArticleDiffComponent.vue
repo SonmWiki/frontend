@@ -3,7 +3,7 @@
 import {type Ref, ref, watch} from "vue";
 import type {GetArticleResponse, GetRevisionHistoryResponseElement} from "@/api";
 import {api} from "@/api/api";
-import RevisionHistoryList from "@/components/RevisionHistoryList.vue";
+import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue";
 
 const props = defineProps<{
   article: string | undefined
