@@ -7,6 +7,7 @@ import UserMenuComponent from "@/components/navigation/UserMenuComponent.vue";
 
 const route = useRoute()
 const sidebarVisible = ref(false)
+const appName = import.meta.env.VITE_APP_NAME ? import.meta.env.VITE_APP_NAME : "Wiki"
 
 watch(
     () => route.params,
@@ -22,7 +23,7 @@ watch(
         <Button text icon="pi pi-bars" @click="sidebarVisible = true" class="flex md:hidden align-items-center justify-content-center" />
         <RouterLink to='/' class="no-underline text-color flex flex-row justify-content-center align-items-center">
           <img class="p-overlay-badge flex align-items-center justify-content-center" src="https://scmc.dev/img/catfish.png" width=48 alt="logo" />
-          <b class="2">Wiki</b>
+          <b class="2">{{ appName }}</b>
         </RouterLink>
       </div>
       <div class="flex flex-row gap-2 align-items-center">
