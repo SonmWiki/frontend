@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import {type Ref, ref, watch} from "vue";
-import ArticleDiffComponent from "@/components/ArticleDiffComponent.vue";
-import ArticleViewComponent from "@/components/ArticleViewComponent.vue";
+import ArticleDiffComponent from "@/components/article/ArticleDiffComponent.vue";
+import ArticleViewComponent from "@/components/article/ArticleViewComponent.vue";
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue";
 import {useRoute} from "vue-router";
 import SendReviewModal from "@/components/review/SendReviewModal.vue";
