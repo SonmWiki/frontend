@@ -41,11 +41,10 @@ const loadNavigation = async () => {
 }
 
 const onNodeSelect = (node: TreeNode) => {
-  const v = node.uri
   const key = node.key
 
-  if (node.type == "ext") url.value = v
-  else if (node.type == "int") router.push(v)
+  if (node.type == "ext") url.value = node.uri
+  else if (node.type == "int") router.push(node.uri)
 
   if (key != undefined && node.children && node.children.length) {
       const expandedKey: boolean = expandedKeys.value[key]
@@ -74,13 +73,25 @@ loadNavigation()
           }"
   >
     <template #default="slotProps">
-      <div class="flex align-items-center" :class="{'gap-2': slotProps.node.icon}">
+      <div class="flex" :class="{'gap-2': slotProps.node.icon}">
         <span>{{ slotProps.node.icon }}</span>
         <span>{{ slotProps.node.label }}</span>
       </div>
     </template>
+    <template #ext="slotProps">
+      <a onclick="return false" :href="slotProps.node.uri" class="flex text-color no-underline" :class="{'gap-2': slotProps.node.icon}">
+        <span>{{ slotProps.node.icon }}</span>
+        <span>{{ slotProps.node.label }}</span>
+      </a>
+    </template>
+    <template #int="slotProps">
+      <RouterLink :to="slotProps.node.uri" class="flex text-color no-underline" :class="{'gap-2': slotProps.node.icon}">
+        <span>{{ slotProps.node.icon }}</span>
+        <span>{{ slotProps.node.label }}</span>
+      </RouterLink>
+    </template>
     <template #header="slotProps">
-      <div class="flex align-items-center font-bold uppercase" :class="{'gap-2': slotProps.node.icon}">
+      <div class="flex font-bold uppercase" :class="{'gap-2': slotProps.node.icon}">
         <span>{{ slotProps.node.icon }}</span>
         <span>{{ slotProps.node.label }}</span>
       </div>
