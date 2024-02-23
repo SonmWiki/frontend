@@ -4,6 +4,7 @@ import {type Ref, ref, watch} from "vue";
 import type {GetArticleResponse, GetRevisionHistoryResponseElement} from "@/api";
 import {api} from "@/api/api";
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue";
+import {themeService} from "@/main";
 
 const props = defineProps<{
   article: string | undefined
@@ -21,9 +22,6 @@ const loaded = ref(false)
 
 const loadArticles = async () => {
   if (!props.article || props.article == "" || props.article == undefined) return
-
-  console.log("ye")
-  console.log(selectedOldRevision.value)
 
   try {
     if (newArticleData.value == undefined || newArticleData.value?.revisionId != selectedNewRevision.value?.id)
@@ -59,16 +57,16 @@ watch(
 <template>
   <div class="flex flex-column w-full h-full">
     <div v-if="loaded" class="flex flex-row flex-wrap gap-2 justify-content-center w-full">
-      <RevisionHistoryList :onUpdate="loadArticles" :article="oldArticleData" v-model:selectedRevision="selectedOldRevision" />
+      <RevisionHistoryList v-if="oldArticleData" :onUpdate="loadArticles" :article="oldArticleData" v-model:selectedRevision="selectedOldRevision" />
       <Button @click="swap" icon="pi pi-arrow-right-arrow-left" aria-label="swap" text />
-      <RevisionHistoryList :onUpdate="loadArticles" :article="newArticleData" v-model:selectedRevision="selectedNewRevision" />
+      <RevisionHistoryList v-if="newArticleData" :onUpdate="loadArticles" :article="newArticleData" v-model:selectedRevision="selectedNewRevision" />
     </div>
 
     <CodeDiff
         :old-string="oldArticleData?.content != null ? oldArticleData?.content : ''"
         :new-string="newArticleData?.content"
         output-format="line-by-line"
-        theme="dark"
+        :theme="themeService.theme.value"
         class="surface-border surface-ground w-full"
     />
   </div>

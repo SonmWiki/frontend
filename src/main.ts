@@ -1,6 +1,6 @@
+/* eslint-disable vue/multi-word-component-names */
 import './assets/main.css'
 import "primeflex/primeflex.css";
-import "primevue/resources/themes/aura-dark-amber/theme.css";
 import "primeicons/primeicons.css";
 
 import {createApp} from "vue";
@@ -44,14 +44,18 @@ import { KeycloakService } from '@/services/AuthService'
 import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Fieldset from "primevue/fieldset";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import ThemeService from "@/services/ThemeService";
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 const app = createApp(App);
 
-app.use(PrimeVue, { ripple: false  });
+app.use(PrimeVue, { ripple: false });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
-app.use(router);
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
@@ -86,5 +90,11 @@ app.component('CodeDiff', CodeDiff)
 app.component('Textarea', Textarea)
 app.component('Dropdown', Dropdown)
 app.component('Fieldset', Fieldset)
+app.component('DataTable', DataTable)
+app.component('Column', Column)
+app.component('IconField', IconField)
+app.component('InputIcon', InputIcon)
 
-export const authService = new KeycloakService(() => app.mount("#app")) as AuthService
+export const themeService = new ThemeService()
+themeService.setTheme()
+export const authService = new KeycloakService(() => app.use(router).mount("#app")) as AuthService

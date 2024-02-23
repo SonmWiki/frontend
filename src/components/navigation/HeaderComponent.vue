@@ -4,6 +4,7 @@ import {useRoute} from "vue-router";
 import SidebarComponent from "@/components/sidebar/SidebarComponent.vue";
 import SearchComponent from '@/components/navigation/SearchComponent.vue'
 import UserMenuComponent from "@/components/navigation/UserMenuComponent.vue";
+import DarkModeSwitch from "@/components/navigation/DarkModeSwitch.vue";
 
 const route = useRoute()
 const sidebarVisible = ref(false)
@@ -13,7 +14,6 @@ watch(
     () => route.params,
     () => {sidebarVisible.value = false},
 );
-
 </script>
 
 <template>
@@ -26,8 +26,9 @@ watch(
           <b class="2">{{ appName }}</b>
         </RouterLink>
       </div>
-      <div class="flex flex-row gap-2 align-items-center">
-        <SearchComponent/>
+      <div class="flex flex-row gap-1 align-items-center">
+        <SearchComponent />
+        <DarkModeSwitch />
         <UserMenuComponent />
       </div>
     </div>

@@ -25,6 +25,10 @@ body {
   --md-bk-color: var(--surface-ground) !important;
 }
 
+.md-editor {
+  --md-bk-color: var(--surface-ground) !important;
+}
+
 .md-editor-catalog-active > span {
   color: var(--primary-500) !important;
 }
