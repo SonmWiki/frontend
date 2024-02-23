@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -16,30 +16,30 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.6.7",
-    "keycloak-js": "^23.0.6",
-    "md-editor-v3": "^4.11.2",
+    "keycloak-js": "^23.0.7",
+    "md-editor-v3": "^4.11.3",
     "moment": "^2.30.1",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
-    "primevue": "^3.47.2",
+    "primevue": "^3.49.0",
     "v-code-diff": "^1.9.0",
-    "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue": "^3.4.19",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.7.2",
     "@tsconfig/node18": "^18.2.2",
-    "@types/node": "^18.19.14",
+    "@types/node": "^18.19.18",
     "@vitejs/plugin-vue": "^4.6.2",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.56.0",
-    "eslint-plugin-vue": "^9.21.1",
+    "eslint-plugin-vue": "^9.22.0",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.2.5",
     "typescript": "~5.3.3",
-    "vite": "^5.0.12",
+    "vite": "^5.1.4",
     "vue-tsc": "^1.8.27"
   }
 }
