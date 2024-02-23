@@ -33,7 +33,7 @@ watch(
       </div>
     </div>
   </header>
-  <Sidebar v-model:visible="sidebarVisible">
+  <Sidebar header="Sidebar" v-model:visible="sidebarVisible" class="w-full">
     <SidebarComponent />
   </Sidebar>
 </template>
