@@ -1,7 +1,13 @@
 import Keycloak, { type KeycloakConfig } from 'keycloak-js'
-import type { App, InjectionKey } from 'vue'
+import type { InjectionKey } from 'vue'
 
 const env = () => import.meta.env
+
+export enum UserRole{
+  USER = 'user-role',
+  EDITOR = 'editor-role',
+  ADMIN = 'admin-role'
+}
 
 export interface AuthService{
   login(): void;
@@ -11,6 +17,7 @@ export interface AuthService{
   updateToken(successCallback: any): void;
   getUsername() : string | undefined;
   getUserRoles() : string[] | undefined;
+  hasRole(role: UserRole) : boolean;
 }
 
 export class KeycloakService implements AuthService{
@@ -68,6 +75,10 @@ export class KeycloakService implements AuthService{
 
   isLoggedIn(): boolean {
     return !!this.keycloakInstance.token
+  }
+
+  hasRole(role: UserRole): boolean {
+    return !!this.getUserRoles()?.includes(role)
   }
 }
 
