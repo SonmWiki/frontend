@@ -44,6 +44,7 @@ import { KeycloakService } from '@/services/AuthService'
 import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Fieldset from "primevue/fieldset";
+import { createPinia } from 'pinia'
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ThemeService from "@/services/ThemeService";
@@ -52,6 +53,7 @@ import InputIcon from 'primevue/inputicon';
 
 const app = createApp(App);
 
+app.use(createPinia)
 app.use(PrimeVue, { ripple: false });
 app.use(ConfirmationService);
 app.use(ToastService);
