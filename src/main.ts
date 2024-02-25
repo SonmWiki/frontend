@@ -39,23 +39,32 @@ import Menu from "primevue/menu";
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import {CodeDiff} from "v-code-diff";
-import type { AuthService } from '@/services/AuthService'
-import { KeycloakService } from '@/services/AuthService'
 import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Fieldset from "primevue/fieldset";
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import ThemeService from "@/services/ThemeService";
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import useKeycloakStore from '@/stores/KeycloakStore'
+import useAuthStore from '@/stores/AuthStore'
+import useThemeStore from '@/stores/ThemeStore'
 
-const app = createApp(App);
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+await useKeycloakStore(pinia).init()
+useAuthStore(pinia).loadUserData()
 
-app.use(PrimeVue, { ripple: false });
-app.use(ConfirmationService);
-app.use(ToastService);
-app.use(DialogService);
+const app = createApp(App)
+
+app.use(pinia)
+app.use(PrimeVue, { ripple: false })
+app.use(ConfirmationService)
+app.use(ToastService)
+app.use(DialogService)
+app.use(router)
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
@@ -95,6 +104,6 @@ app.component('Column', Column)
 app.component('IconField', IconField)
 app.component('InputIcon', InputIcon)
 
-export const themeService = new ThemeService()
-themeService.setTheme()
-export const authService = new KeycloakService(() => app.use(router).mount("#app")) as AuthService
+useThemeStore().applyTheme()
+
+app.mount('#app')

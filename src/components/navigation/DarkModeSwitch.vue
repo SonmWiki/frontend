@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import {themeService} from "@/main";
+import useThemeStore from '@/stores/ThemeStore'
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -8,9 +10,9 @@ import {themeService} from "@/main";
       aria-haspopup="true"
       aria-controls="overlay_menu"
       text
-      :icon="themeService.theme.value == 'light' ? 'pi pi-sun text-xl' : ' pi pi-moon'"
+      :icon="themeStore.theme == 'light' ? 'pi pi-sun text-xl' : ' pi pi-moon'"
       class="flex align-items-center justify-content-center"
-      @click="themeService.switchTheme()"
+      @click="themeStore.switchTheme()"
   />
 </template>
 

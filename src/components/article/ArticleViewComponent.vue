@@ -6,7 +6,7 @@ import 'md-editor-v3/lib/style.css';
 import {useToast} from "primevue/usetoast";
 import {api} from "@/api/api";
 import type {GetArticleResponse} from "@/api";
-import {themeService} from "@/main";
+import useThemeStore from '@/stores/ThemeStore'
 
 const props = defineProps<{
   article?: string
@@ -16,6 +16,7 @@ const props = defineProps<{
 
 const route = useRoute()
 const toast = useToast()
+const themeStore = useThemeStore()
 
 const popup = ref()
 const articleData: Ref<GetArticleResponse | undefined> = ref()
@@ -97,7 +98,7 @@ load()
         </div>
       </div>
       <div>
-        <MdPreview language="en-US" previewTheme='github' :theme="themeService.theme.value" :editorId="id" :modelValue="articleData.content"></MdPreview>
+        <MdPreview language="en-US" previewTheme='github' :theme="themeStore.theme" :editorId="id" :modelValue="articleData.content"></MdPreview>
       </div>
     </div>
     <div class="content pt-4" v-if="error && !articleData">
@@ -115,7 +116,7 @@ load()
   </div>
   <div class="menu catalog" v-if="!hideCatalog">
     <div v-if="articleData" class="pt-4 sticky" style="top: 80px;">
-      <MdCatalog language="en-US" previewTheme='github' :theme="themeService.theme.value" :editorId="id" :scrollElement="scrollElement" />
+      <MdCatalog language="en-US" previewTheme='github' :theme="themeStore.theme" :editorId="id" :scrollElement="scrollElement" />
     </div>
   </div>
 </template>
