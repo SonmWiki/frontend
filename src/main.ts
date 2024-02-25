@@ -45,6 +45,7 @@ import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Fieldset from "primevue/fieldset";
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ThemeService from "@/services/ThemeService";
@@ -52,12 +53,21 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 
 const app = createApp(App);
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 app.use(createPinia)
 app.use(PrimeVue, { ripple: false });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
+const app = createApp(App)
+
+app.use(pinia)
+app.use(PrimeVue, { ripple: false })
+app.use(ConfirmationService)
+app.use(ToastService)
+app.use(DialogService)
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
