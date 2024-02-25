@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import router from "@/router";
-import {authService} from '@/main'
-import {UserRole} from "@/services/AuthService";
+import { UserRole } from '@/types/UserRole'
+import useAuthStore from '@/stores/AuthStore'
 
 const menu = ref();
 
 const menuModel = ref([{}]);
+const authStore = useAuthStore()
 
 const setItems = () => {
   const items = []
@@ -21,18 +22,18 @@ const setItems = () => {
       }
   )
 
-  if (!authService.isLoggedIn())
+  if (!authStore.isAuthenticated)
     items.push(
         {
           label: "Login",
           icon: 'pi pi-sign-in',
           command: () => {
-            authService.login()
+            authStore.login()
           }
         }
     )
 
-  if (authService.hasRole(UserRole.USER))
+  if (authStore.hasRole(UserRole.USER))
     items.push(
         {
           label: "Create",
@@ -43,7 +44,7 @@ const setItems = () => {
         }
     )
 
-  if (authService.hasRole(UserRole.EDITOR))
+  if (authStore.hasRole(UserRole.EDITOR))
     items.push(
         {
           label: "Review",
@@ -54,32 +55,32 @@ const setItems = () => {
         }
     )
 
-  if (authService.hasRole(UserRole.ADMIN))
+  if (authStore.hasRole(UserRole.ADMIN))
     items.push(
         {
           label: 'Console Auth Info',
           icon: 'pi pi-key',
           command: () => {
-            console.log("KC: " + authService.getAccessToken())
-            console.log("auth: " + authService)
+            console.log("KC: " + authStore.token)
+            console.log("auth: " + authStore)
           }
         },
     )
 
-  if (authService.isLoggedIn())
+  if (authStore.isAuthenticated)
     items.push(
         {
           label: "Logout",
           icon: 'pi pi-sign-out',
           command: () => {
-            authService.logout()
+            authStore.logout()
           }
         }
     )
 
   menuModel.value = [
     {
-      label: `${authService.isLoggedIn() ? 'Logged In as ' + authService.getUsername() : 'Not Logged In'}`,
+      label: `${authStore.isAuthenticated ? 'Logged In as ' + authStore.userName : 'Not Logged In'}`,
       items: items,
     }
   ]

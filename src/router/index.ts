@@ -5,8 +5,8 @@ import CategoryArticlesView from "@/components/CategoryArticles.vue";
 import CreateArticle from "@/views/article/ArticleEditor.vue";
 import ReviewView from "@/views/review/ReviewView.vue";
 import ArticlesTable from "@/components/article/ArticlesTable.vue";
-import {authService} from "@/main";
-import {UserRole} from "@/services/AuthService";
+import { UserRole } from '@/types/UserRole'
+import { useAuthStore } from '@/stores/AuthStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,19 +36,19 @@ const router = createRouter({
       name: 'create',
       path: '/create',
       component: CreateArticle,
-      beforeEnter: (async () => authService.hasRole(UserRole.USER)),
+      beforeEnter: (async () => useAuthStore().hasRole(UserRole.USER)),
     },
     {
       name: 'review',
       path: '/review',
       component: ReviewView,
-      beforeEnter: (async () => authService.hasRole(UserRole.EDITOR)),
+      beforeEnter: (async () => useAuthStore().hasRole(UserRole.EDITOR)),
       children: [
         {
           name: 'reviewView',
           path: ':article/:revision',
           component: ReviewView,
-          beforeEnter: (async () => authService.hasRole(UserRole.EDITOR)),
+          beforeEnter: (async () => useAuthStore().hasRole(UserRole.EDITOR)),
         }
       ]
     }
