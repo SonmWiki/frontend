@@ -46,11 +46,11 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import ThemeService from "@/services/ThemeService";
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import useKeycloakStore from '@/stores/KeycloakStore'
 import useAuthStore from '@/stores/AuthStore'
+import useThemeStore from '@/stores/ThemeStore'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -104,6 +104,6 @@ app.component('Column', Column)
 app.component('IconField', IconField)
 app.component('InputIcon', InputIcon)
 
-export const authService = new KeycloakService(() => app.use(router).mount("#app")) as AuthService
+useThemeStore().applyTheme()
 
 app.mount('#app')

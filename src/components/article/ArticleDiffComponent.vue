@@ -4,13 +4,15 @@ import {type Ref, ref, watch} from "vue";
 import type {GetArticleResponse, GetRevisionHistoryResponseElement} from "@/api";
 import {api} from "@/api/api";
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue";
-import {themeService} from "@/main";
+import useThemeStore from '@/stores/ThemeStore'
 
 const props = defineProps<{
   article: string | undefined
   newRevision: string | undefined
   oldRevision?: string | undefined
 }>()
+
+const themeStore = useThemeStore()
 
 const newArticleData: Ref<GetArticleResponse | undefined> = ref()
 const oldArticleData: Ref<GetArticleResponse | undefined> = ref()
@@ -66,7 +68,7 @@ watch(
         :old-string="oldArticleData?.content != null ? oldArticleData?.content : ''"
         :new-string="newArticleData?.content"
         output-format="line-by-line"
-        :theme="themeService.theme.value"
+        :theme="themeStore.theme"
         class="surface-border surface-ground w-full"
     />
   </div>
