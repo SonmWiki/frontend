@@ -26,6 +26,7 @@
     "primevue": "^3.49.0",
     "v-code-diff": "^1.9.0",
     "vue": "^3.4.19",
+    "vue-draggable-plus": "^0.3.5",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
