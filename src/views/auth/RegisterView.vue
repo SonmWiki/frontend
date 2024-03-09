@@ -3,6 +3,7 @@ import {useToast} from "primevue/usetoast";
 import {email, maxLength, minLength, required, sameAs} from '@vuelidate/validators'
 import {useVuelidate} from '@vuelidate/core'
 import {ref} from "vue";
+import { AppConstants } from '@/constants/AppConstants'
 
 const toast = useToast();
 const visibleTerms = ref(false);
@@ -97,7 +98,7 @@ const onSubmit = async () => {
       <Toast/>
 
       <Dialog v-model:visible="visibleTerms" modal header="Terms & Conditions" :style="{ width: '50rem' }"
-              :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+              :breakpoints="AppConstants.dialogBreakpoints">
         <p class="mb-5">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo

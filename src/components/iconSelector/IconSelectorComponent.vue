@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { PrimeIcons } from 'primevue/api'
+import { computed, ref } from 'vue';
+import { PrimeIcons } from 'primevue/api';
+import { AppConstants } from '@/constants/AppConstants';
 
 const visible = defineModel<boolean>('visible')
 const selectedIcon = defineModel<string | undefined>('selectedIcon')
@@ -18,7 +19,7 @@ const filteredIcons = computed(() => {
 </script>
 
 <template>
-  <Dialog @update:hide="selectedIcon = undefined" v-model:visible="visible" modal maximizable header="Select an icon" class="w-full md:w-30rem" :breakpoints="{ '1199px': '75vw', '575px': '95vw' }">
+  <Dialog @update:hide="selectedIcon = undefined" v-model:visible="visible" modal maximizable header="Select an icon" class="w-full md:w-30rem" :breakpoints="AppConstants.dialogBreakpoints">
     <template #header>
       <div class="inline-flex align-items-center justify-content-center gap-2">
         <span class="font-bold white-space-nowrap">Select an icon</span>

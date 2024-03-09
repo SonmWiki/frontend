@@ -2,6 +2,7 @@
 import { api } from '@/api/api'
 import {ref, watch} from 'vue'
 import type { SearchArticlesResponseElement } from '@/api'
+import { AppConstants } from '@/constants/AppConstants'
 
 const active = ref(false)
 const value = ref("")
@@ -38,7 +39,7 @@ watch(
       @click="active = true"
   />
 
-  <Dialog v-model:visible="active" modal maximizable header="Search" class="w-full md:w-30rem" :breakpoints="{ '1199px': '75vw', '575px': '95vw' }">
+  <Dialog v-model:visible="active" modal maximizable header="Search" class="w-full md:w-30rem" :breakpoints="AppConstants.dialogBreakpoints">
 
     <IconField iconPosition="left">
       <InputIcon>
