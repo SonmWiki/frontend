@@ -21,7 +21,7 @@ export interface CreateArticleResponse {
 
 export interface CreateCategoryRequest {
     name: string;
-    parentId?: string | null;
+    parentId: string | null;
 }
 
 export interface CreateCategoryResponse {
@@ -52,15 +52,15 @@ export interface EditCategoryResponse {
 export interface GetArticleResponse {
     id: string;
     title: string;
-    content?: string | null;
+    content: string | null;
     contributors: GetArticleResponseAuthor[];
     /** @format uuid */
-    revisionId?: string | null;
+    revisionId: string | null;
     reviewStatus: ReviewStatus;
     /** @format date-time */
-    submittedTimestamp?: string | null;
+    submittedTimestamp: string | null;
     /** @format date-time */
-    reviewTimestamp?: string | null;
+    reviewTimestamp: string | null;
     categories: GetArticleResponseCategory[];
 }
 
@@ -81,7 +81,7 @@ export interface GetCategoriesResponse {
 export interface GetCategoriesResponseElement {
     id: string;
     name: string;
-    parentId?: string | null;
+    parentId: string | null;
 }
 
 export interface GetCategoriesTreeResponse {
@@ -113,8 +113,8 @@ export interface GetNavigationsTreeResponseElement {
     /** @format int32 */
     weight: number;
     name: string;
-    uri?: string | null;
-    icon?: string | null;
+    uri: string | null;
+    icon: string | null;
     children: GetNavigationsTreeResponseElement[];
 }
 
@@ -185,12 +185,12 @@ export interface GetRevisionReviewHistoryResponseReviewer {
 }
 
 export interface ProblemDetails {
-    type?: string | null;
-    title?: string | null;
+    type: string | null;
+    title: string | null;
     /** @format int32 */
-    status?: number | null;
-    detail?: string | null;
-    instance?: string | null;
+    status: number | null;
+    detail: string | null;
+    instance: string | null;
     [key: string]: any;
 }
 
@@ -236,13 +236,13 @@ export interface SetRedirectResponse {
 
 export interface UpdateCategoryRequest {
     name: string;
-    parentId?: string | null;
+    parentId: string | null;
 }
 
 export interface UpdateNavigationsTreeCommandElement {
     name: string;
-    uri?: string | null;
-    icon?: string | null;
+    uri: string | null;
+    icon: string | null;
     children: UpdateNavigationsTreeCommandElement[];
 }
 
