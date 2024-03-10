@@ -17,6 +17,7 @@
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.6.7",
     "keycloak-js": "^23.0.7",
+    "lodash.debounce": "^4.0.8",
     "md-editor-v3": "^4.11.3",
     "moment": "^2.30.1",
     "pinia": "^2.1.7",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.7.2",
     "@tsconfig/node18": "^18.2.2",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^18.19.18",
     "@vitejs/plugin-vue": "^4.6.2",
     "@vue/eslint-config-prettier": "^8.0.0",
