@@ -1,8 +1,12 @@
-import type { GetCategoriesTreeResponseElement, GetNavigationsTreeResponseElement } from '@/api'
+import type {
+  GetCategoriesTreeResponseElement,
+  GetNavigationsTreeResponseElement,
+  UpdateNavigationsTreeCommandElement
+} from '@/api'
 import type { TreeNode } from 'primevue/treenode'
 
 export class MapperService {
-    static mapGetNavigationsTreeResponseElementToTreeNode = (navigation: GetNavigationsTreeResponseElement) : TreeNode => {
+  static mapGetNavigationsTreeResponseElementToTreeNode = (navigation: GetNavigationsTreeResponseElement): TreeNode => {
     function getNodeType(navigation: GetNavigationsTreeResponseElement): string {
       if (navigation.uri == null) {
         return navigation.children.length > 0 ? 'text' : 'header'
@@ -17,17 +21,27 @@ export class MapperService {
       weight: navigation.weight,
       icon: navigation.icon ?? undefined,
       uri: navigation.uri,
-      children: navigation.children.map(x=> this.mapGetNavigationsTreeResponseElementToTreeNode(x))
+      children: navigation.children.map(x => this.mapGetNavigationsTreeResponseElementToTreeNode(x))
     }
   }
 
-  static mapGetCategoriesTreeResponseElementToTreeNode = (category: GetCategoriesTreeResponseElement) : TreeNode => {
-      return {
-        key: category.id.toString(),
-        label: category.name,
-        type: "int",
-        uri: `/category/${category.id}`,
-        children: category.children.map(x => this.mapGetCategoriesTreeResponseElementToTreeNode(x))
-      }
+  static mapGetNavigationsTreeResponseElementToUpdateNavigationsTreeCommandElement
+    = (navigation: GetNavigationsTreeResponseElement): UpdateNavigationsTreeCommandElement => {
+    return {
+      name: navigation.name,
+      uri: navigation.uri,
+      icon: navigation.icon,
+      children: navigation.children.map(this.mapGetNavigationsTreeResponseElementToUpdateNavigationsTreeCommandElement)
+    }
+  }
+
+  static mapGetCategoriesTreeResponseElementToTreeNode = (category: GetCategoriesTreeResponseElement): TreeNode => {
+    return {
+      key: category.id.toString(),
+      label: category.name,
+      type: 'int',
+      uri: `/category/${category.id}`,
+      children: category.children.map(x => this.mapGetCategoriesTreeResponseElementToTreeNode(x))
+    }
   }
 }
