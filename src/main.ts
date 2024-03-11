@@ -51,6 +51,10 @@ import InputIcon from 'primevue/inputicon';
 import useKeycloakStore from '@/stores/KeycloakStore'
 import useAuthStore from '@/stores/AuthStore'
 import useThemeStore from '@/stores/ThemeStore'
+import Listbox from 'primevue/listbox'
+import FloatLabel from 'primevue/floatlabel'
+import Paginator from 'primevue/paginator'
+import ButtonGroup from 'primevue/buttongroup'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -103,6 +107,10 @@ app.component('DataTable', DataTable)
 app.component('Column', Column)
 app.component('IconField', IconField)
 app.component('InputIcon', InputIcon)
+app.component('Listbox', Listbox)
+app.component('FloatLabel', FloatLabel)
+app.component('Paginator', Paginator)
+app.component('ButtonGroup', ButtonGroup)
 
 useThemeStore().applyTheme()
 

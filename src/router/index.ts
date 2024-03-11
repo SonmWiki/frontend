@@ -2,9 +2,10 @@ import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from "@/views/HomeView.vue";
 import ArticleViewComponent from "@/components/article/ArticleViewComponent.vue";
 import CategoryArticlesView from "@/components/CategoryArticles.vue";
-import CreateArticle from "@/views/article/ArticleEditor.vue";
+import CreateArticle from "@/views/article/CreateArticle.vue";
 import ReviewView from "@/views/review/ReviewView.vue";
 import ArticlesTable from "@/components/article/ArticlesTable.vue";
+import NavigationsEditor from '@/components/navigationsEditor/NavigationsEditor.vue'
 import { UserRole } from '@/types/UserRole'
 import useAuthStore from '@/stores/AuthStore'
 
@@ -31,6 +32,12 @@ const router = createRouter({
           component: CategoryArticlesView
         },
       ]
+    },
+    {
+      name: 'navigationsEditor',
+      path:  '/navigations/editor',
+      component: NavigationsEditor,
+      beforeEnter: (async () => useAuthStore().hasRole(UserRole.EDITOR)),
     },
     {
       name: 'create',
