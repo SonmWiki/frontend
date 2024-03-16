@@ -12,7 +12,7 @@ enum EditorMode {
   ARTICLE = 'article'
 }
 
-interface EditorOptions {
+interface EditorOption {
   label: String,
   mode: EditorMode
 }
@@ -22,12 +22,12 @@ const visible = defineModel<boolean>('visible', { default: false })
 const previewLink: Ref<string | null> = ref(null)
 const linkEditorDisabled = ref(false)
 
-const editorOptions: Ref<Array<EditorOptions>> = ref([
+const editorOptions: Array<EditorOption> = [
   { label: 'Manual', mode: EditorMode.MANUAL },
   { label: 'Category', mode: EditorMode.CATEGORY },
   { label: 'Article', mode: EditorMode.ARTICLE }
-])
-const selectedEditorOption: Ref<EditorOptions> = ref(editorOptions.value[0])
+]
+const selectedEditorOption: Ref<EditorOption> = ref(editorOptions[0])
 const categories: Ref<Array<GetCategoriesResponseElement>> = ref([])
 const articles: Ref<SearchArticlesResponse | null> = ref(null)
 const selectedPage: Ref<GetCategoriesResponseElement | SearchArticlesResponseElement | null> = ref(null)
@@ -74,6 +74,7 @@ watch(visible, () => {
     previewLink.value = link.value
   } else {
     selectedPage.value = null
+    selectedEditorOption.value = editorOptions[0]
   }
 })
 
