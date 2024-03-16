@@ -1,80 +1,80 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, ref } from 'vue'
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref
+} from 'vue'
 import { api } from '@/api/api'
-import type { GetNavigationsTreeResponseElement, UpdateNavigationsTreeCommandElement } from '@/api'
+import type { GetNavigationsTreeResponseElement } from '@/api'
 import { MapperService } from '@/service/MapperService'
 import SidebarTree from '@/components/sidebar/SidebarTree.vue'
-import useTreeEditorStore from '@/stores/NavigationsEditorStore'
-import { storeToRefs } from 'pinia'
 import { PrimeIcons } from 'primevue/api'
-import NestedComponent from '@/components/navigationsEditor/NavigationsEditorElement.vue'
-import LinkEditorComponent from '@/components/navigationsEditor/NavigationLinkEditor.vue'
+import NestedDraggable from '@/components/navigationsEditor/NestedDraggable.vue'
+import LinkEditor from '@/components/navigationsEditor/LinkEditor.vue'
 import { useToast } from 'primevue/usetoast'
+import { NavigationEditorService } from '@/service/NavigationEditorService'
+import { InsertNavigationCommand } from '@/commands/navigationsEditor/InsertNavigationCommand'
+import { EditIconCommand } from '@/commands/navigationsEditor/EditIconCommand'
+import { EditNameCommand } from '@/commands/navigationsEditor/EditNameCommand'
+import { MoveNavigationCommand } from '@/commands/navigationsEditor/MoveNavigationCommand'
+import { DeleteNavigationCommand } from '@/commands/navigationsEditor/DeleteNavigationCommand'
+import { EditUriCommand } from '@/commands/navigationsEditor/EditUriCommand'
 
-const store = useTreeEditorStore()
-const { navigations, lastId } = storeToRefs(store)
-const previewNavigation = computed(() => {
-  return navigations.value.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode)
-})
+const navigationsEditorService = new NavigationEditorService()
+const navigations = navigationsEditorService.navigations
+const undoStack = navigationsEditorService.undoStack
+const redoStack = navigationsEditorService.redoStack
+const previewNavigation = computed(() => navigations.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode))
 const linkEditorVisible = ref(false)
 const selectedId = ref(0)
 const link = ref()
 const toast = useToast()
 
-async function loadNavigations() {
-  try {
-    return (await api().api.getNavigationsTree()).data.data
-  } catch (error) {
-    console.log(error)
-    return new Array<GetNavigationsTreeResponseElement>()
-  }
-}
-
-const addNavigation = () => {
-  let newNavigation: GetNavigationsTreeResponseElement = {
-    id: ++lastId.value,
-    icon: null,
-    uri: null,
-    name: '',
-    weight: 0,
-    children: new Array<GetNavigationsTreeResponseElement>()
-  }
-  store.addElement(null, navigations.value.length, newNavigation)
-}
-
 const onIconChanged = (id: number, icon: string | null) => {
   if (icon?.length === 0) icon = null
-  store.editIcon(id, icon)
+  navigationsEditorService.performCommand(new EditIconCommand(navigationsEditorService, id, icon))
 }
 
-const onNameChanged = (id: number, newName: string) => {
-  store.editName(id, newName)
+const onNameChanged = (id: number, name: string) => {
+  navigationsEditorService.performCommand(new EditNameCommand(navigationsEditorService, id, name))
 }
 
-const onChangeLinkClicked = (id: number, selectedLink: string | null) => {
-  link.value = selectedLink
+const onChangeUriClicked = (id: number, uri: string | null) => {
+  link.value = uri
   selectedId.value = id
   linkEditorVisible.value = true
 }
 
 const onLinkChanged = (value: string | null) => {
   if (value?.length === 0) value = null
-  store.editLink(selectedId.value, value)
+  navigationsEditorService.performCommand(new EditUriCommand(navigationsEditorService, selectedId.value, value))
 }
 
 const onElementMoved = (id: number, oldIndex: number, newIndex: number, oldParent: number | null, newParent: number | null) => {
-  store.moveElement(id, oldIndex, newIndex, oldParent, newParent)
+  navigationsEditorService.performCommand(new MoveNavigationCommand(navigationsEditorService, id, oldParent, newParent, oldIndex, newIndex))
+}
+
+const onAddNavigationClicked = () => {
+  const newNavigation: GetNavigationsTreeResponseElement = {
+    id: navigationsEditorService.lastId,
+    icon: null,
+    uri: null,
+    name: '',
+    weight: 0,
+    children: new Array<GetNavigationsTreeResponseElement>()
+  }
+  navigationsEditorService.performCommand(new InsertNavigationCommand(navigationsEditorService, newNavigation, null, navigationsEditorService.navigations.length))
 }
 
 const onRemoveClicked = (id: number) => {
-  store.removeElement(id)
+  navigationsEditorService.performCommand(new DeleteNavigationCommand(navigationsEditorService, id))
 }
 
 const onSaveClicked = async () => {
   try {
     await api().api.updateNavigationsTree({
-      data: store.navigations
-        .map(MapperService.mapGetNavigationsTreeResponseElementToUpdateNavigationsTreeCommandElement)
+      data: navigations.map(MapperService.mapGetNavigationsTreeResponseElementToUpdateNavigationsTreeCommandElement)
     })
     toast.add({ severity: 'success', summary: 'Success', detail: 'Navagation tree was saved successfully' })
   } catch (err: any) {
@@ -83,25 +83,17 @@ const onSaveClicked = async () => {
 }
 
 onBeforeMount(async () => {
-  navigations.value = await loadNavigations()
-  store.clearHistory()
-  const findLastId = (arr: Array<GetNavigationsTreeResponseElement>) => {
-    arr.forEach(element => {
-      lastId.value = Math.max(element.id, lastId.value)
-      findLastId(element.children)
-    })
-  }
-  findLastId(navigations.value)
+  await navigationsEditorService.setup()
 })
 
 onMounted(() => {
   document.addEventListener('keydown', (event: KeyboardEvent) => {
     if (event.ctrlKey && event.code === 'KeyZ') {
       event.preventDefault()
-      store.undo()
+      navigationsEditorService.undo()
     } else if (event.ctrlKey && event.code === 'KeyY') {
       event.preventDefault()
-      store.redo()
+      navigationsEditorService.redo()
     }
   })
 })
@@ -121,15 +113,15 @@ onMounted(() => {
               v-tooltip="'Undo'"
               severity="secondary"
               :icon="PrimeIcons.REPLAY"
-              :disabled="store.undoStack.length == 0"
-              @click="store.undo()"
+              :disabled="undoStack.length == 0"
+              @click="navigationsEditorService.undo()"
             />
             <Button
               v-tooltip="'Redo'"
               severity="secondary"
               :icon="PrimeIcons.REFRESH"
-              :disabled="store.redoStack.length == 0"
-              @click="store.redo()"
+              :disabled="redoStack.length == 0"
+              @click="navigationsEditorService.redo()"
             />
           </ButtonGroup>
         </div>
@@ -144,12 +136,12 @@ onMounted(() => {
       </div>
       <div class="flex justify-content-between flex-wrap w-full">
         <div class="flex-1">
-          <NestedComponent
-            v-model="navigations"
+          <NestedDraggable
+            :model-value="navigations"
             class="flex-1"
             @icon-changed="onIconChanged"
             @name-changed="onNameChanged"
-            @change-link-clicked="onChangeLinkClicked"
+            @change-uri-clicked="onChangeUriClicked"
             @element-moved="onElementMoved"
             @remove-clicked="onRemoveClicked"
           />
@@ -159,14 +151,14 @@ onMounted(() => {
             type="button"
             label="Add navigation"
             icon="pi pi-plus"
-            @click="addNavigation"
+            @click="onAddNavigationClicked"
           />
         </div>
         <div class="flex-1">
           <SidebarTree v-model="previewNavigation" />
         </div>
       </div>
-      <LinkEditorComponent
+      <LinkEditor
         v-model:link="link"
         v-model:visible="linkEditorVisible"
         @update:link="onLinkChanged"
