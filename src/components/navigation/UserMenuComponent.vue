@@ -55,6 +55,17 @@ const setItems = () => {
         }
     )
 
+  if (authStore.hasRole(UserRole.EDITOR))
+    items.push(
+      {
+        label: "Edit Navigations",
+        icon: 'pi pi-list',
+        command: () => {
+          router.push({name: 'navigationsEditor'})
+        }
+      }
+    )
+
   if (authStore.hasRole(UserRole.ADMIN))
     items.push(
         {
