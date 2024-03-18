@@ -151,7 +151,12 @@ watch(articleQuery, async () => {
       option-label="label"
     />
     <FloatLabel class="mt-5">
-      <InputText id="uri" class="w-full" v-model="previewUri" :invalid="vuelidate.previewUri.$error" :disabled="inputDisabled" />
+      <InputText
+        id="uri"
+        v-model="previewUri"
+        class="w-full"
+        :invalid="vuelidate.previewUri.$error"
+        :disabled="inputDisabled" />
       <label for="uri">URI</label>
       <Tag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
         {{ error.$message }}

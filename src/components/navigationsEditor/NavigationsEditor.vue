@@ -104,8 +104,10 @@ onMounted(() => {
 
 <template>
   <div class="flex w-full justify-content-center">
-    <div class="flex flex-column align-items-center p-2 md:p-4 w-full"
-         style="max-width: 1900px; min-height: calc(100vh - 80px)">
+    <div
+      class="flex flex-column align-items-center p-2 md:p-4 w-full"
+      style="max-width: 1900px; min-height: calc(100vh - 80px)"
+    >
       <div class="w-full flex flex-column align-items-center">
         <h1>Navigation editor</h1>
       </div>
