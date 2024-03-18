@@ -17,10 +17,10 @@ interface EditorOption {
   mode: EditorMode
 }
 
-const link = defineModel<string | null>('link', { default: null })
+const uri = defineModel<string | null>('uri', { default: null })
 const visible = defineModel<boolean>('visible', { default: false })
-const previewLink: Ref<string | null> = ref(null)
-const linkEditorDisabled = ref(false)
+const previewUri: Ref<string | null> = ref(null)
+const inputDisabled = ref(false)
 
 const editorOptions: Array<EditorOption> = [
   { label: 'Manual', mode: EditorMode.MANUAL },
@@ -61,7 +61,7 @@ const onPageChange = (state: PageState) => {
 }
 
 const onConfirm = () => {
-  link.value = previewLink.value;
+  uri.value = previewUri.value;
   visible.value = false;
 }
 
@@ -71,16 +71,16 @@ const onCancel = () => {
 
 watch(visible, () => {
   if (visible.value) {
-    previewLink.value = link.value
+    previewUri.value = uri.value
   } else {
     selectedPage.value = null
     selectedEditorOption.value = editorOptions[0]
   }
 })
 
-watch(previewLink, () => {
-  if (isNullOrWhitespace(previewLink.value)) {
-    previewLink.value = null
+watch(previewUri, () => {
+  if (isNullOrWhitespace(previewUri.value)) {
+    previewUri.value = null
   }
 })
 
@@ -98,13 +98,13 @@ watch(selectedPage, () => {
         prefix = '/articles/'
         break
     }
-    previewLink.value = `${prefix}${selectedPage.value.id}`
+    previewUri.value = `${prefix}${selectedPage.value.id}`
   } else
-    previewLink.value = '/'
+    previewUri.value = '/'
 })
 
 watch(selectedEditorOption, async (newValue) => {
-  linkEditorDisabled.value = newValue.mode == EditorMode.CATEGORY || newValue.mode == EditorMode.ARTICLE
+  inputDisabled.value = newValue.mode == EditorMode.CATEGORY || newValue.mode == EditorMode.ARTICLE
 
   if (newValue.mode == EditorMode.CATEGORY) {
     await loadCategories()
@@ -128,7 +128,7 @@ watch(articleQuery, async () => {
     v-model:visible="visible"
     modal
     maximizable
-    header="Edit link"
+    header="Edit uri"
     :position="'top'"
     class="w-full md:w-30rem"
     :breakpoints="AppConstants.dialogBreakpoints"
@@ -140,8 +140,8 @@ watch(articleQuery, async () => {
       option-label="label"
     />
     <FloatLabel class="mt-5">
-      <InputText id="link" v-model="previewLink" :disabled="linkEditorDisabled" />
-      <label for="link">Link</label>
+      <InputText id="uri" v-model="previewUri" :disabled="inputDisabled" />
+      <label for="uri">URI</label>
     </FloatLabel>
     <div v-if="selectedEditorOption?.mode == EditorMode.MANUAL" class="w-full mt-2" />
     <div v-if="selectedEditorOption?.mode == EditorMode.CATEGORY" class="w-full mt-2">

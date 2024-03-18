@@ -11,7 +11,7 @@ import { MapperService } from '@/service/MapperService'
 import SidebarTree from '@/components/sidebar/SidebarTree.vue'
 import { PrimeIcons } from 'primevue/api'
 import NestedDraggable from '@/components/navigationsEditor/NestedDraggable.vue'
-import LinkEditor from '@/components/navigationsEditor/LinkEditor.vue'
+import UriEditor from '@/components/navigationsEditor/UriEditor.vue'
 import { useToast } from 'primevue/usetoast'
 import { NavigationEditorService } from '@/service/NavigationEditorService'
 import { InsertNavigationCommand } from '@/commands/navigationsEditor/InsertNavigationCommand'
@@ -27,8 +27,9 @@ const undoStack = navigationsEditorService.undoStack
 const redoStack = navigationsEditorService.redoStack
 const previewNavigation = computed(() => navigations.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode))
 const linkEditorVisible = ref(false)
+const uriEditorVisible = ref(false)
+const uriEditorUri = ref()
 const selectedId = ref(0)
-const link = ref()
 const toast = useToast()
 
 const onIconChanged = (id: number, icon: string | null) => {
@@ -41,12 +42,12 @@ const onNameChanged = (id: number, name: string) => {
 }
 
 const onChangeUriClicked = (id: number, uri: string | null) => {
-  link.value = uri
+  uriEditorUri.value = uri
   selectedId.value = id
-  linkEditorVisible.value = true
+  uriEditorVisible.value = true
 }
 
-const onLinkChanged = (value: string | null) => {
+const onUriChanged = (value: string | null) => {
   if (value?.length === 0) value = null
   navigationsEditorService.performCommand(new EditUriCommand(navigationsEditorService, selectedId.value, value))
 }
@@ -158,10 +159,10 @@ onMounted(() => {
           <SidebarTree v-model="previewNavigation" />
         </div>
       </div>
-      <LinkEditor
-        v-model:link="link"
-        v-model:visible="linkEditorVisible"
-        @update:link="onLinkChanged"
+      <UriEditor
+        v-model:uri="uriEditorUri"
+        v-model:visible="uriEditorVisible"
+        @update:uri="onUriChanged"
       />
     </div>
   </div>
