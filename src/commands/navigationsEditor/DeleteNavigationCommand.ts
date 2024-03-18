@@ -21,14 +21,12 @@ export class DeleteNavigationCommand extends NavigationCommand {
 
   public execute() {
     this.deletedData = this.receiver.deleteNavigation(this.id)
-    this.receiver.undoStack.push(this)
   }
 
   public undo() {
     if (this.deletedData) {
       const insertCommand = new InsertNavigationCommand(this.receiver, this.deletedData.element, this.deletedData.parentId, this.deletedData.index)
       insertCommand.execute()
-      this.receiver.redoStack.push(this)
     }
   }
 }
