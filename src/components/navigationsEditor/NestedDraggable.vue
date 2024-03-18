@@ -47,10 +47,8 @@ const onRemoveClicked = (id: number) => {
   >
     <li v-for="el in modelValue" :key="el.id">
       <EditorElement
-        :id="el.id"
         :icon="el.icon"
         :name="el.name"
-        :link="el.uri"
         @icon-changed="(icon) => onIconChanged(el.id, icon)"
         @name-changed="(name) => onNameChanged(el.id, name)"
         @change-uri-clicked="onChangeUriClicked(el.id, el.uri)"
