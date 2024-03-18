@@ -74,6 +74,7 @@ const onConfirm = () => {
 }
 
 const onCancel = () => {
+  previewUri.value = null
   visible.value = false;
 }
 
@@ -141,6 +142,7 @@ watch(articleQuery, async () => {
     :position="'top'"
     class="w-full md:w-30rem"
     :breakpoints="AppConstants.dialogBreakpoints"
+    @hide="onCancel"
   >
     <SelectButton
       v-model="selectedEditorOption"
