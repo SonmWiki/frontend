@@ -57,7 +57,7 @@ const onElementMoved = (id: number, oldIndex: number, newIndex: number, oldParen
 
 const onAddNavigationClicked = () => {
   const newNavigation: GetNavigationsTreeResponseElement = {
-    id: navigationsEditorService.lastId,
+    id: navigationsEditorService.lastId + 1,
     icon: null,
     uri: null,
     name: '',

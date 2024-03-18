@@ -7,11 +7,14 @@ export class NavigationEditorService {
   private _navigations: GetNavigationsTreeResponseElement[] = reactive([])
   private _undoStack: NavigationCommand[] = reactive([])
   private _redoStack: NavigationCommand[] = reactive([])
+  private _lastId: number = 0
   public navigations: DeepReadonly<GetNavigationsTreeResponseElement[]> = readonly(this._navigations)
   public undoStack: DeepReadonly<NavigationCommand[]> = readonly(this._undoStack)
   public redoStack: DeepReadonly<NavigationCommand[]> = readonly(this._redoStack)
 
-  public lastId = 0
+  get lastId(): number {
+    return this._lastId
+  }
 
   public async setup() {
     try {
@@ -23,7 +26,7 @@ export class NavigationEditorService {
     const nodesToVisit = [...this.navigations]
     while (nodesToVisit.length > 0) {
       const node = nodesToVisit.pop()!
-      this.lastId = Math.max(node.id, this.lastId)
+      this._lastId = Math.max(node.id, this._lastId)
       nodesToVisit.push(...node.children)
     }
   }
@@ -31,6 +34,9 @@ export class NavigationEditorService {
   public insertNavigation(element: GetNavigationsTreeResponseElement, parentId: number | null, index: number) {
     const root: { id: number | null, children: GetNavigationsTreeResponseElement[] }
       = { id: null, children: this._navigations }
+
+    if(element.id > this._lastId)
+      this._lastId++
 
     const nodesToVisit = [root]
     while (nodesToVisit.length > 0) {
