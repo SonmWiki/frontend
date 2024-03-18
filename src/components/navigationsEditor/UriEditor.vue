@@ -5,6 +5,8 @@ import { api } from '@/api/api'
 import type { GetCategoriesResponseElement, SearchArticlesResponse, SearchArticlesResponseElement } from '@/api'
 import type { PageState } from 'primevue/paginator'
 import { isNullOrWhitespace } from '@/utils/stringUtils'
+import { maxLength, required } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 
 enum EditorMode {
   MANUAL = 'manual',
@@ -21,6 +23,12 @@ const uri = defineModel<string | null>('uri', { default: null })
 const visible = defineModel<boolean>('visible', { default: false })
 const previewUri: Ref<string | null> = ref(null)
 const inputDisabled = ref(false)
+
+const rules = {
+  previewUri: { maxLength: maxLength(2048) }
+}
+
+const vuelidate = useVuelidate(rules, {required, previewUri: previewUri}, {$lazy: true})
 
 const editorOptions: Array<EditorOption> = [
   { label: 'Manual', mode: EditorMode.MANUAL },
@@ -82,6 +90,7 @@ watch(previewUri, () => {
   if (isNullOrWhitespace(previewUri.value)) {
     previewUri.value = null
   }
+  vuelidate.value.previewUri.$touch()
 })
 
 watch(selectedPage, () => {
@@ -128,7 +137,7 @@ watch(articleQuery, async () => {
     v-model:visible="visible"
     modal
     maximizable
-    header="Edit uri"
+    header="Edit URI"
     :position="'top'"
     class="w-full md:w-30rem"
     :breakpoints="AppConstants.dialogBreakpoints"
@@ -140,8 +149,11 @@ watch(articleQuery, async () => {
       option-label="label"
     />
     <FloatLabel class="mt-5">
-      <InputText id="uri" v-model="previewUri" :disabled="inputDisabled" />
+      <InputText id="uri" class="w-full" v-model="previewUri" :invalid="vuelidate.previewUri.$error" :disabled="inputDisabled" />
       <label for="uri">URI</label>
+      <Tag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
+        {{ error.$message }}
+      </Tag>
     </FloatLabel>
     <div v-if="selectedEditorOption?.mode == EditorMode.MANUAL" class="w-full mt-2" />
     <div v-if="selectedEditorOption?.mode == EditorMode.CATEGORY" class="w-full mt-2">
@@ -198,6 +210,7 @@ watch(articleQuery, async () => {
       <Button
         type="button"
         label="Confirm"
+        :disabled="vuelidate.$error"
         @click="onConfirm"
       />
     </div>

@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { isNullOrWhitespace } from '@/utils/stringUtils'
+import { maxLength, required } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { onMounted, watch } from 'vue'
 
-const props =  defineProps<{
+const props = defineProps<{
   icon: string | null
   name: string
+  uri: string | null
 }>()
+
+const rules = {
+  icon: { maxLength: maxLength(128) },
+  name: { required, maxLength: maxLength(128) },
+  uri: { maxLength: maxLength(2048) }
+}
+
+const vuelidate = useVuelidate(rules, props)
 
 const emit = defineEmits<{
   iconChanged: [icon: string | null]
@@ -18,6 +29,14 @@ const onNameChanged = (event: Event) => emit('nameChanged', event.target.value)
 const onChangeUriClicked = () => emit('changeUriClicked')
 const onRemoveClicked = () => emit('removeClicked')
 
+watch(props, () => {
+  vuelidate.value.$touch()
+})
+
+onMounted(() => {
+  vuelidate.value.$touch()
+})
+
 </script>
 
 <template>
@@ -28,6 +47,7 @@ const onRemoveClicked = () => emit('removeClicked')
     <InputText
       v-tooltip="'Icon'"
       :value="icon"
+      :invalid="vuelidate.icon.$error"
       class="w-3rem flex-none"
       maxlength="128"
       @change="onIconChanged($event)"
@@ -36,14 +56,14 @@ const onRemoveClicked = () => emit('removeClicked')
       v-tooltip="'Name'"
       :value="name"
       maxlength="128"
-      :invalid="isNullOrWhitespace(name)"
+      :invalid="vuelidate.name.$error"
       @change="onNameChanged($event)"
     />
     <Button
       v-tooltip="'Edit Uri'"
       class="border-200"
       icon="pi pi-link"
-      severity="secondary"
+      :severity="vuelidate.uri.$error ? 'danger' : 'secondary'"
       aria-label="Edit Uri"
       outlined
       @click="onChangeUriClicked"
@@ -58,6 +78,9 @@ const onRemoveClicked = () => emit('removeClicked')
       @click="onRemoveClicked"
     />
   </InputGroup>
+  <Tag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
+    {{ error.$property }} : {{ error.$message }}
+  </Tag>
 </template>
 
 <style scoped>

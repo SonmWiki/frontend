@@ -55,6 +55,7 @@ import Listbox from 'primevue/listbox'
 import FloatLabel from 'primevue/floatlabel'
 import Paginator from 'primevue/paginator'
 import ButtonGroup from 'primevue/buttongroup'
+import Tag from 'primevue/tag'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -111,6 +112,7 @@ app.component('Listbox', Listbox)
 app.component('FloatLabel', FloatLabel)
 app.component('Paginator', Paginator)
 app.component('ButtonGroup', ButtonGroup)
+app.component('Tag', Tag)
 
 useThemeStore().applyTheme()
 

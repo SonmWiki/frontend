@@ -20,17 +20,18 @@ import { EditNameCommand } from '@/commands/navigationsEditor/EditNameCommand'
 import { MoveNavigationCommand } from '@/commands/navigationsEditor/MoveNavigationCommand'
 import { DeleteNavigationCommand } from '@/commands/navigationsEditor/DeleteNavigationCommand'
 import { EditUriCommand } from '@/commands/navigationsEditor/EditUriCommand'
+import { useVuelidate } from '@vuelidate/core'
 
 const navigationsEditorService = new NavigationEditorService()
 const navigations = navigationsEditorService.navigations
 const undoStack = navigationsEditorService.undoStack
 const redoStack = navigationsEditorService.redoStack
 const previewNavigation = computed(() => navigations.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode))
-const linkEditorVisible = ref(false)
 const uriEditorVisible = ref(false)
 const uriEditorUri = ref()
 const selectedId = ref(0)
 const toast = useToast()
+const vuelidate = useVuelidate()
 
 const onIconChanged = (id: number, icon: string | null) => {
   if (icon?.length === 0) icon = null
@@ -130,6 +131,7 @@ onMounted(() => {
           <Button
             severity="primary"
             label="Save"
+            :disabled="vuelidate.$error || undoStack.length == 0"
             :icon="PrimeIcons.SAVE"
             @click="onSaveClicked"
           />

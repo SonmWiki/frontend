@@ -49,6 +49,7 @@ const onRemoveClicked = (id: number) => {
       <EditorElement
         :icon="el.icon"
         :name="el.name"
+        :uri="el.uri"
         @icon-changed="(icon) => onIconChanged(el.id, icon)"
         @name-changed="(name) => onNameChanged(el.id, name)"
         @change-uri-clicked="onChangeUriClicked(el.id, el.uri)"
