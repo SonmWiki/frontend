@@ -24,6 +24,7 @@ import { useVuelidate } from '@vuelidate/core'
 
 const navigationsEditorService = new NavigationEditorService()
 const navigations = navigationsEditorService.navigations
+const loadingNavigations = ref(true)
 const undoStack = navigationsEditorService.undoStack
 const redoStack = navigationsEditorService.redoStack
 const previewNavigation = computed(() => navigations.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode))
@@ -86,7 +87,12 @@ const onSaveClicked = async () => {
 }
 
 onBeforeMount(async () => {
-  await navigationsEditorService.setup()
+  const loaded = await navigationsEditorService.setup()
+  if(loaded){
+    loadingNavigations.value = false
+  }else {
+    toast.add({ severity: 'error', summary: 'An error occured', detail: 'Couldn\'t load navigation' })
+  }
 })
 
 onMounted(() => {
@@ -118,14 +124,14 @@ onMounted(() => {
               v-tooltip="'Undo'"
               severity="secondary"
               :icon="PrimeIcons.REPLAY"
-              :disabled="undoStack.length == 0"
+              :disabled="loadingNavigations || undoStack.length == 0"
               @click="navigationsEditorService.undo()"
             />
             <Button
               v-tooltip="'Redo'"
               severity="secondary"
               :icon="PrimeIcons.REFRESH"
-              :disabled="redoStack.length == 0"
+              :disabled="loadingNavigations || redoStack.length == 0"
               @click="navigationsEditorService.redo()"
             />
           </ButtonGroup>
@@ -143,7 +149,7 @@ onMounted(() => {
           <Button
             severity="primary"
             label="Save"
-            :disabled="vuelidate.$errors.length != 0 || undoStack.length == 0"
+            :disabled="loadingNavigations || vuelidate.$errors.length != 0 || undoStack.length == 0"
             :icon="PrimeIcons.SAVE"
             @click="onSaveClicked"
           />
@@ -151,9 +157,17 @@ onMounted(() => {
       </div>
       <div class="flex justify-content-between flex-wrap w-full">
         <div class="flex-1">
+          <div v-if="loadingNavigations">
+            <Skeleton
+              v-for="i in 7"
+              width="full"
+              height="2rem"
+              class="mt-2"
+            />
+          </div>
           <NestedDraggable
             :model-value="navigations"
-            class="flex-1"
+            class="flex-1 pt-2"
             @icon-changed="onIconChanged"
             @name-changed="onNameChanged"
             @change-uri-clicked="onChangeUriClicked"
@@ -166,6 +180,7 @@ onMounted(() => {
             type="button"
             label="Add navigation"
             icon="pi pi-plus"
+            :disabled="loadingNavigations"
             @click="onAddNavigationClicked"
           />
         </div>

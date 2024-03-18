@@ -38,7 +38,7 @@ const onRemoveClicked = (id: number) => {
 <template>
   <VueDraggable
     :model-value="[...model]"
-    class="drag-area list-none p-0"
+    class="drag-area list-none p-0 m-0"
     tag="ul"
     group="g1"
     :animation="150"

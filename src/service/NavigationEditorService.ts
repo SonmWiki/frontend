@@ -22,6 +22,7 @@ export class NavigationEditorService {
       this._navigations.push(...data)
     } catch (error) {
       console.log(error)
+      return false
     }
     const nodesToVisit = [...this.navigations]
     while (nodesToVisit.length > 0) {
@@ -29,6 +30,7 @@ export class NavigationEditorService {
       this._lastId = Math.max(node.id, this._lastId)
       nodesToVisit.push(...node.children)
     }
+    return true
   }
 
   public insertNavigation(element: GetNavigationsTreeResponseElement, parentId: number | null, index: number) {
