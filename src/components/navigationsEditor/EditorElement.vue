@@ -60,7 +60,7 @@ onMounted(() => {
       @change="onNameChanged($event)"
     />
     <Button
-      v-tooltip="'Edit Uri'"
+      v-tooltip.left="'Edit URI'"
       class="border-200"
       icon="pi pi-link"
       :severity="vuelidate.uri.$error ? 'danger' : 'secondary'"

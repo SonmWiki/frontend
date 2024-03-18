@@ -130,6 +130,15 @@ onMounted(() => {
         </div>
         <div>
           <Button
+            label="Preview"
+            severity="secondary"
+            class="md:hidden"
+            :icon="PrimeIcons.LIST"
+            @click="previewDialogVisible = true"
+          />
+        </div>
+        <div>
+          <Button
             severity="primary"
             label="Save"
             :disabled="vuelidate.$errors.length != 0 || undoStack.length == 0"
@@ -158,9 +167,19 @@ onMounted(() => {
             @click="onAddNavigationClicked"
           />
         </div>
-        <div class="flex-1">
+        <div class="flex-1 hidden md:block">
           <SidebarTree v-model="previewNavigation" />
         </div>
+        <Dialog
+          v-model:visible="previewDialogVisible"
+          modal
+          maximizable
+          header="Preview Navigations"
+          :position="'top'"
+          class="w-full md:w-30rem"
+        >
+          <SidebarTree v-model="previewNavigation" />
+        </Dialog>
       </div>
       <UriEditor
         v-model:uri="uriEditorUri"
