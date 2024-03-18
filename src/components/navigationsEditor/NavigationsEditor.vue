@@ -27,6 +27,7 @@ const navigations = navigationsEditorService.navigations
 const undoStack = navigationsEditorService.undoStack
 const redoStack = navigationsEditorService.redoStack
 const previewNavigation = computed(() => navigations.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode))
+const previewDialogVisible = ref(false)
 const uriEditorVisible = ref(false)
 const uriEditorUri = ref()
 const selectedId = ref(0)
@@ -131,7 +132,7 @@ onMounted(() => {
           <Button
             severity="primary"
             label="Save"
-            :disabled="vuelidate.$error || undoStack.length == 0"
+            :disabled="vuelidate.$errors.length != 0 || undoStack.length == 0"
             :icon="PrimeIcons.SAVE"
             @click="onSaveClicked"
           />
