@@ -160,6 +160,7 @@ onMounted(() => {
           <div v-if="loadingNavigations">
             <Skeleton
               v-for="i in 7"
+              :key="i"
               width="full"
               height="2rem"
               class="mt-2"
