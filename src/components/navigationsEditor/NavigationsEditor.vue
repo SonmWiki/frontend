@@ -155,8 +155,8 @@ onMounted(() => {
           />
         </div>
       </div>
-      <div class="flex justify-content-between flex-wrap w-full">
-        <div class="flex-1">
+      <div class="flex justify-content-between flex-row w-full">
+        <div class="flex flex-column flex-1">
           <div v-if="loadingNavigations">
             <Skeleton
               v-for="i in 7"
@@ -184,20 +184,20 @@ onMounted(() => {
             @click="onAddNavigationClicked"
           />
         </div>
-        <div class="flex-1 hidden md:block">
+        <div class="flex-1 hidden md:flex">
           <SidebarTree v-model="previewNavigation" />
         </div>
-        <Dialog
-          v-model:visible="previewDialogVisible"
-          modal
-          maximizable
-          header="Preview Navigations"
-          :position="'top'"
-          class="w-full md:w-30rem"
-        >
-          <SidebarTree v-model="previewNavigation" />
-        </Dialog>
       </div>
+      <Dialog
+        v-model:visible="previewDialogVisible"
+        modal
+        maximizable
+        header="Preview Navigations"
+        :position="'top'"
+        class="w-full md:w-30rem"
+      >
+        <SidebarTree v-model="previewNavigation" />
+      </Dialog>
       <UriEditor
         v-model:uri="uriEditorUri"
         v-model:visible="uriEditorVisible"
