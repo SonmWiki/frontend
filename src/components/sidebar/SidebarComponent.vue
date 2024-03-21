@@ -1,13 +1,39 @@
 <script setup lang="ts">
-import NavigationComponent from "@/components/sidebar/NavigationTree.vue";
-import CategoriesComponent from "@/components/sidebar/CategoriesTree.vue";
-import {ref} from "vue";
+import { onBeforeMount, ref } from 'vue'
 import {useRoute} from "vue-router";
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue";
+import { api } from '@/api/api'
+import { MapperService } from '@/service/MapperService'
+import type { TreeNode } from 'primevue/treenode'
+import SidebarTree from '@/components/sidebar/SidebarTree.vue'
 
-const checked = ref(false)
-
+const navigation = ref(new Array<TreeNode>())
+const categories = ref(new Array<TreeNode>());
+const isNavigations = ref(true)
 const route = useRoute()
+
+const loadNavigation = async () => {
+  try {
+    let nav = (await api().api.getNavigationsTree()).data.data
+    navigation.value = nav.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const loadCategories = async () => {
+  try {
+    let cat = (await api().api.getCategoriesTree()).data.data
+    categories.value = cat.map(MapperService.mapGetCategoriesTreeResponseElementToTreeNode)
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
+
+onBeforeMount(async () => {
+  await Promise.all([loadNavigation(), loadCategories()])
+})
 </script>
 
 <template>
@@ -25,9 +51,9 @@ const route = useRoute()
         <PendingReviewsList />
       </div>
       <div v-else>
-        <ToggleButton v-model="checked" onLabel="Categories" offLabel="Navigation" :pt="{box: {style: 'background: none !important; border: 0;'}}" />
-        <CategoriesComponent v-if="checked" />
-        <NavigationComponent v-else />
+        <ToggleButton v-model="isNavigations" onLabel="Navigation" offLabel="Categories" :pt="{box: {style: 'background: none !important; border: 0;'}}" />
+        <SidebarTree v-model="navigation" v-if="isNavigations" />
+        <SidebarTree v-model="categories" v-else />
       </div>
     </ScrollPanel>
   </div>
