@@ -24,8 +24,8 @@ const emit = defineEmits<{
   removeClicked: []
 }>()
 
-const onIconChanged = (event: Event) => emit('iconChanged', event.target.value)
-const onNameChanged = (event: Event) => emit('nameChanged', event.target.value)
+const onIconChanged = (event: Event) => emit('iconChanged', (<HTMLInputElement>event.target).value)
+const onNameChanged = (event: Event) => emit('nameChanged', (<HTMLInputElement>event.target).value)
 const onChangeUriClicked = () => emit('changeUriClicked')
 const onRemoveClicked = () => emit('removeClicked')
 
