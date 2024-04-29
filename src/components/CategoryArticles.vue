@@ -2,7 +2,7 @@
 import {type Ref, ref, watch} from "vue";
 import {type GetCategoriesResponseElement, type GetCategoryArticlesResponseElement} from "@/api";
 import {useRoute} from "vue-router";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 
 const route = useRoute()
 
@@ -28,7 +28,7 @@ const load = async () => {
 
 const loadCategories = async () => {
   try {
-    categories.value = (await api().api.getCategories()).data.data
+    categories.value = (await wikiApi.api.getCategories()).data.data
   } catch (error) {
     console.error(error)
   }
@@ -48,7 +48,7 @@ const loadCategories = async () => {
 const loadArticles = async () => {
   reset()
   try {
-    articles.value = (await api().api.getCategoryArticles(categoryId.value)).data.data
+    articles.value = (await wikiApi.api.getCategoryArticles(categoryId.value)).data.data
   } catch (error) {
     console.error(error)
   }

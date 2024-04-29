@@ -5,7 +5,7 @@ import {
   onMounted,
   ref
 } from 'vue'
-import { api } from '@/api/api'
+import { wikiApi } from '@/api/wikiApi'
 import type { GetNavigationsTreeResponseElement } from '@/api'
 import { MapperService } from '@/service/MapperService'
 import SidebarTree from '@/components/sidebar/SidebarTree.vue'
@@ -77,7 +77,7 @@ const onRemoveClicked = (id: number) => {
 
 const onSaveClicked = async () => {
   try {
-    await api().api.updateNavigationsTree({
+    await wikiApi.api.updateNavigationsTree({
       data: navigations.map(MapperService.mapGetNavigationsTreeResponseElementToUpdateNavigationsTreeCommandElement)
     })
     toast.add({ severity: 'success', summary: 'Success', detail: 'Navagation tree was saved successfully' })

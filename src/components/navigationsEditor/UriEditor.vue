@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { AppConstants } from '@/constants/AppConstants'
 import { type Ref, ref, watch } from 'vue'
-import { api } from '@/api/api'
+import { wikiApi } from '@/api/wikiApi'
 import type { GetCategoriesResponseElement, SearchArticlesResponse, SearchArticlesResponseElement } from '@/api'
 import type { PageState } from 'primevue/paginator'
 import { isNullOrWhitespace } from '@/utils/stringUtils'
@@ -47,7 +47,7 @@ const loadCategories = async () => {
   try {
     loadingCategories.value = true
     categories.value = []
-    categories.value = (await api().api.getCategories()).data.data
+    categories.value = (await wikiApi.api.getCategories()).data.data
     loadingCategories.value = false
   } catch (error) {
     console.error(error)
@@ -57,7 +57,7 @@ const loadCategories = async () => {
 const loadArticles = async (searchTerm: string = '', page: number = 1, pageSize: number = 10) => {
   try {
     loadingArticles.value = true
-    articles.value = (await api().api.searchArticles({ searchTerm, page, pageSize })).data
+    articles.value = (await wikiApi.api.searchArticles({ searchTerm, page, pageSize })).data
     loadingArticles.value = false
   } catch (error) {
     console.error(error)

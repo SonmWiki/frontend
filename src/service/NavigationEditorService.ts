@@ -1,5 +1,5 @@
 import type { GetNavigationsTreeResponseElement } from '@/api'
-import { api } from '@/api/api'
+import { wikiApi } from '@/api/wikiApi'
 import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
 import { type DeepReadonly, reactive, readonly } from 'vue'
 
@@ -18,7 +18,7 @@ export class NavigationEditorService {
 
   public async setup() {
     try {
-      const data = (await api().api.getNavigationsTree()).data.data
+      const data = (await wikiApi.api.getNavigationsTree()).data.data
       this._navigations.push(...data)
     } catch (error) {
       console.log(error)

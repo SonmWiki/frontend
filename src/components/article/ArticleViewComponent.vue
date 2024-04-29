@@ -4,7 +4,7 @@ import {useRoute} from "vue-router";
 import {MdCatalog, MdPreview} from "md-editor-v3";
 import 'md-editor-v3/lib/style.css';
 import {useToast} from "primevue/usetoast";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import type {GetArticleResponse} from "@/api";
 import useThemeStore from '@/stores/ThemeStore'
 
@@ -43,7 +43,7 @@ const loadArticle = async () => {
 
   try {
     error.value = undefined
-    articleData.value = (await api().api.getArticle(articleId.value, {revisionId: revisionId.value})).data
+    articleData.value = (await wikiApi.api.getArticle(articleId.value, {revisionId: revisionId.value})).data
   } catch (err) {
     console.log(err)
     error.value = err

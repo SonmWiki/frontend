@@ -2,7 +2,7 @@
 
 import {type Ref, ref, watch} from "vue";
 import type {GetArticleResponse, GetRevisionHistoryResponseElement} from "@/api";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue";
 import useThemeStore from '@/stores/ThemeStore'
 
@@ -27,12 +27,12 @@ const loadArticles = async () => {
 
   try {
     if (newArticleData.value == undefined || newArticleData.value?.revisionId != selectedNewRevision.value?.id)
-      newArticleData.value = (await api().api.getArticle(props.article,
+      newArticleData.value = (await wikiApi.api.getArticle(props.article,
           {revisionId: selectedNewRevision.value?.id ? selectedNewRevision.value.id : props.newRevision}
       )).data
 
     if (oldArticleData.value == undefined || oldArticleData.value?.revisionId != selectedOldRevision.value?.id)
-      oldArticleData.value = (await api().api.getArticle(props.article,
+      oldArticleData.value = (await wikiApi.api.getArticle(props.article,
           {revisionId: selectedOldRevision.value?.id ? selectedOldRevision.value.id : props.oldRevision}
       )).data
 

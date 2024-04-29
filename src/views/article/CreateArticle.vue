@@ -4,7 +4,7 @@ import {MdPreview, MdEditor} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import {type CreateArticleRequest, type GetCategoriesResponseElement} from "@/api";
 import {useVuelidate} from "@vuelidate/core";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import {useToast} from "primevue/usetoast";
 import {maxLength, minLength, required} from "@vuelidate/validators";
 
@@ -51,7 +51,7 @@ const createArticle = async () => {
   console.log(data)
 
    try {
-     const result = (await api().api.createArticle(data)).data
+     const result = (await wikiApi.api.createArticle(data)).data
      dialogVisible.value = false
 
      toast.add({ severity: 'success', summary: 'Article Created!', detail: `id: ${result.id}`, life: 3000 });
@@ -68,7 +68,7 @@ const onCategoriesClick = async () => {
   loadingCategories.value = true
 
   try {
-    categories.value = (await api().api.getCategories()).data.data
+    categories.value = (await wikiApi.api.getCategories()).data.data
     loadingCategories.value = false
   } catch (error) {
     console.log(error)

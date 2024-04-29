@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ModelRef, ref} from "vue";
 import {maxLength, minLength, required} from "@vuelidate/validators";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import {useVuelidate} from "@vuelidate/core";
 import {useToast} from "primevue/usetoast";
 import router from "@/router";
@@ -35,7 +35,7 @@ const sendReview = async () => {
   if (!isFormCorrect) return
 
   try {
-    const result = (await api().api.reviewArticleRevision(revisionId.value, {status: status.value.code, review: message.value})).data
+    const result = (await wikiApi.api.reviewArticleRevision(revisionId.value, {status: status.value.code, review: message.value})).data
     dialogVisible.value = false
     toast.add({ severity: 'success', summary: 'Review Submitted!', detail: `id: ${result.id}`, life: 3000 });
 

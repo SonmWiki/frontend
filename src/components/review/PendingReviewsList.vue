@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import moment from "moment/moment";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import {type GetPendingRevisionsResponseElement} from "@/api";
 import {type Ref, ref, watch} from "vue";
 import router from "@/router";
@@ -19,7 +19,7 @@ const select = async (revision: GetPendingRevisionsResponseElement) => {
 }
 const load = async () => {
   try {
-    revisions.value = (await api().api.pendingRevisions()).data.data
+    revisions.value = (await wikiApi.api.pendingRevisions()).data.data
     if (revisions.value.length == 0) return empty.value = true
     if (route.params.revision == undefined) await select(revisions.value[0])
   } catch (error) {

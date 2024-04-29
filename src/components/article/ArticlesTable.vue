@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {type Ref, ref, watch} from "vue";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import type {SearchArticlesResponse} from "@/api";
 import type {DataTablePageEvent} from "primevue/datatable";
 
@@ -10,7 +10,7 @@ const count: Ref<number> = ref(5)
 
 const load = async (event?: DataTablePageEvent) => {
   try {
-    articles.value = (await api().api.searchArticles({page: event ? event.page+1 : 1, pageSize: count.value})).data
+    articles.value = (await wikiApi.api.searchArticles({page: event ? event.page+1 : 1, pageSize: count.value})).data
   } catch (e) {
     console.log(e)
   }

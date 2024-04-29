@@ -2,7 +2,7 @@
 import { onBeforeMount, ref } from 'vue'
 import {useRoute} from "vue-router";
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue";
-import { api } from '@/api/api'
+import { wikiApi } from '@/api/wikiApi'
 import { MapperService } from '@/service/MapperService'
 import type { TreeNode } from 'primevue/treenode'
 import SidebarTree from '@/components/sidebar/SidebarTree.vue'
@@ -14,7 +14,7 @@ const route = useRoute()
 
 const loadNavigation = async () => {
   try {
-    let nav = (await api().api.getNavigationsTree()).data.data
+    let nav = (await wikiApi.api.getNavigationsTree()).data.data
     navigation.value = nav.map(MapperService.mapGetNavigationsTreeResponseElementToTreeNode)
   } catch (error) {
     console.log(error)
@@ -23,7 +23,7 @@ const loadNavigation = async () => {
 
 const loadCategories = async () => {
   try {
-    let cat = (await api().api.getCategoriesTree()).data.data
+    let cat = (await wikiApi.api.getCategoriesTree()).data.data
     categories.value = cat.map(MapperService.mapGetCategoriesTreeResponseElementToTreeNode)
   }
   catch (error) {

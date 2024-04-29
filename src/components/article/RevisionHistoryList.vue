@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {type ModelRef, type Ref, ref, watch} from "vue";
 import {type GetArticleResponse, type GetRevisionHistoryResponseElement} from "@/api";
-import {api} from "@/api/api";
+import {wikiApi} from "@/api/wikiApi";
 import moment from "moment";
 
 const props = defineProps<{
@@ -21,7 +21,7 @@ const load = async () => {
 
   try {
     if (revisions.value.length == 0)
-      revisions.value = (await api().api.revisionHistory(props.article.id)).data.data
+      revisions.value = (await wikiApi.api.revisionHistory(props.article.id)).data.data
 
     if (selectedRevision.value == undefined && props.article != undefined)
       selectedRevision.value = revisions.value.find((v) => v.id == props.article.revisionId)
