@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { inject, ref } from 'vue'
 import router from "@/router";
 import { UserRole } from '@/types/UserRole'
 import useAuthStore from '@/stores/AuthStore'
+import { keycloakServiceKey } from '@/service/KeycloakService'
 
 const menu = ref();
 
 const menuModel = ref([{}]);
+const keycloakService = inject(keycloakServiceKey)
 const authStore = useAuthStore()
 
 const setItems = () => {
@@ -28,7 +30,7 @@ const setItems = () => {
           label: "Login",
           icon: 'pi pi-sign-in',
           command: () => {
-            authStore.login()
+            keycloakService?.login()
           }
         }
     )
@@ -72,7 +74,7 @@ const setItems = () => {
           label: 'Console Auth Info',
           icon: 'pi pi-key',
           command: () => {
-            console.log("KC: " + authStore.token)
+            console.log("KC: " + authStore.accessToken)
             console.log("auth: " + authStore)
           }
         },
@@ -84,14 +86,14 @@ const setItems = () => {
           label: "Logout",
           icon: 'pi pi-sign-out',
           command: () => {
-            authStore.logout()
+            keycloakService?.logout()
           }
         }
     )
 
   menuModel.value = [
     {
-      label: `${authStore.isAuthenticated ? 'Logged In as ' + authStore.userName : 'Not Logged In'}`,
+      label: `${authStore.isAuthenticated ? 'Logged In as ' + authStore.username : 'Not Logged In'}`,
       items: items,
     }
   ]

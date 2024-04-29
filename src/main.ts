@@ -48,19 +48,22 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-import useKeycloakStore from '@/stores/KeycloakStore'
-import useAuthStore from '@/stores/AuthStore'
 import useThemeStore from '@/stores/ThemeStore'
 import Listbox from 'primevue/listbox'
 import FloatLabel from 'primevue/floatlabel'
 import Paginator from 'primevue/paginator'
 import ButtonGroup from 'primevue/buttongroup'
 import Tag from 'primevue/tag'
+import useAuthStore from '@/stores/AuthStore'
+import { KeycloakService, keycloakServiceKey } from '@/service/KeycloakService'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-await useKeycloakStore(pinia).init()
-useAuthStore(pinia).loadUserData()
+
+const authStore = useAuthStore(pinia)
+const keycloakService =  new KeycloakService(authStore)
+await keycloakService.init()
+keycloakService.loadUserData()
 
 const app = createApp(App)
 
@@ -70,6 +73,8 @@ app.use(ConfirmationService)
 app.use(ToastService)
 app.use(DialogService)
 app.use(router)
+
+app.provide(keycloakServiceKey, keycloakService)
 
 app.directive('tooltip', Tooltip);
 app.directive('styleclass', StyleClass);
