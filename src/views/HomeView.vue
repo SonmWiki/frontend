@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import SidebarContainer from "@/components/sidebar/SidebarComponent.vue"
+import HeaderComponent from "@/components/navigation/HeaderComponent.vue"
 </script>
 
 <template>
+  <HeaderComponent />
   <div class="flex-container">
     <div class="menu left-menu md:block hidden border-right-1 surface-border">
       <SidebarContainer></SidebarContainer>

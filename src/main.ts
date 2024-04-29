@@ -3,7 +3,7 @@ import "./assets/main.css"
 import "primeflex/primeflex.css"
 import "primeicons/primeicons.css"
 
-import { createApp } from "vue"
+import { createApp, inject } from "vue"
 import App from "./App.vue"
 import PrimeVue from "primevue/config"
 import Button from "primevue/button"
@@ -27,7 +27,6 @@ import Toast from "primevue/toast"
 import ToastService from "primevue/toastservice"
 import Tooltip from "primevue/tooltip"
 import Tree from "primevue/tree"
-import router from "@/router"
 import Avatar from "primevue/avatar"
 import OverlayPanel from "primevue/overlaypanel"
 import ConfirmDialog from "primevue/confirmdialog"
@@ -54,16 +53,11 @@ import FloatLabel from "primevue/floatlabel"
 import Paginator from "primevue/paginator"
 import ButtonGroup from "primevue/buttongroup"
 import Tag from "primevue/tag"
-import useAuthStore from "@/stores/AuthStore"
-import { KeycloakService, keycloakServiceKey } from "@/service/KeycloakService"
+import keycloakPlugin from "@/plugins/keycloakPlugin"
+import routerPlugin from "@/plugins/routerPlugin"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-
-const authStore = useAuthStore(pinia)
-const keycloakService = new KeycloakService(authStore)
-await keycloakService.init()
-keycloakService.loadUserData()
 
 const app = createApp(App)
 
@@ -72,9 +66,15 @@ app.use(PrimeVue, { ripple: false })
 app.use(ConfirmationService)
 app.use(ToastService)
 app.use(DialogService)
-app.use(router)
-
-app.provide(keycloakServiceKey, keycloakService)
+app.use(keycloakPlugin, {
+  keycloakInitOptions: {
+    onLoad: "check-sso",
+    checkLoginIframe: false,
+    silentCheckSsoRedirectUri: location.origin + "/silent-check-sso.html"
+  },
+  pinia: pinia
+})
+app.use(routerPlugin, app)
 
 app.directive("tooltip", Tooltip)
 app.directive("styleclass", StyleClass)

@@ -37,25 +37,25 @@ const router = createRouter({
       name: "navigationsEditor",
       path: "/navigations/editor",
       component: NavigationsEditor,
-      beforeEnter: (async () => useAuthStore().hasRole(UserRole.EDITOR))
+      beforeEnter: (() => useAuthStore().hasRole(UserRole.EDITOR))
     },
     {
       name: "create",
       path: "/create",
       component: CreateArticle,
-      beforeEnter: (async () => useAuthStore().hasRole(UserRole.USER))
+      beforeEnter: (() => useAuthStore().hasRole(UserRole.USER))
     },
     {
       name: "review",
       path: "/review",
       component: ReviewView,
-      beforeEnter: (async () => useAuthStore().hasRole(UserRole.EDITOR)),
+      beforeEnter: (() => useAuthStore().hasRole(UserRole.EDITOR)),
       children: [
         {
           name: "reviewView",
           path: ":article/:revision",
           component: ReviewView,
-          beforeEnter: (async () => useAuthStore().hasRole(UserRole.EDITOR))
+          beforeEnter: (() => useAuthStore().hasRole(UserRole.EDITOR))
         }
       ]
     }

@@ -8,8 +8,8 @@ import { keycloakServiceKey } from "@/service/KeycloakService"
 const menu = ref()
 
 const menuModel = ref([{}])
-const keycloakService = inject(keycloakServiceKey)
 const authStore = useAuthStore()
+const keycloakService = inject(keycloakServiceKey)
 
 const setItems = () => {
   const items = []
@@ -74,8 +74,10 @@ const setItems = () => {
         label: "Console Auth Info",
         icon: "pi pi-key",
         command: () => {
-          console.log("KC: " + authStore.accessToken)
-          console.log("auth: " + authStore)
+          console.log("username: " + authStore.username)
+          console.log("accessToken: " + authStore.accessToken)
+          console.log("refreshToken: " + authStore.refreshToken)
+          console.log("roles: " + authStore.roles)
         }
       }
     )
