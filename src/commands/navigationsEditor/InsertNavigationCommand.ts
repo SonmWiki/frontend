@@ -1,6 +1,6 @@
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
-import type { GetNavigationsTreeResponseElement } from '@/api'
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
+import type { GetNavigationsTreeResponseElement } from "@/api"
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
 
 export class InsertNavigationCommand extends NavigationCommand {
   private readonly element: GetNavigationsTreeResponseElement

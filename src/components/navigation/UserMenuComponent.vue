@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue'
-import router from "@/router";
-import { UserRole } from '@/types/UserRole'
-import useAuthStore from '@/stores/AuthStore'
-import { keycloakServiceKey } from '@/service/KeycloakService'
+import { inject, ref } from "vue"
+import router from "@/router"
+import { UserRole } from "@/types/UserRole"
+import useAuthStore from "@/stores/AuthStore"
+import { keycloakServiceKey } from "@/service/KeycloakService"
 
-const menu = ref();
+const menu = ref()
 
-const menuModel = ref([{}]);
+const menuModel = ref([{}])
 const keycloakService = inject(keycloakServiceKey)
 const authStore = useAuthStore()
 
@@ -15,92 +15,92 @@ const setItems = () => {
   const items = []
 
   items.push(
-      {
-        label: "Articles List",
-        icon: 'pi pi-table',
-        command: () => {
-          router.push({name: 'articlesTable'})
-        }
+    {
+      label: "Articles List",
+      icon: "pi pi-table",
+      command: () => {
+        router.push({ name: "articlesTable" })
       }
+    }
   )
 
   if (!authStore.isAuthenticated)
     items.push(
-        {
-          label: "Login",
-          icon: 'pi pi-sign-in',
-          command: () => {
-            keycloakService?.login()
-          }
+      {
+        label: "Login",
+        icon: "pi pi-sign-in",
+        command: () => {
+          keycloakService?.login()
         }
+      }
     )
 
   if (authStore.hasRole(UserRole.USER))
     items.push(
-        {
-          label: "Create",
-          icon: 'pi pi-pencil',
-          command: () => {
-            router.push({name: 'create'})
-          }
+      {
+        label: "Create",
+        icon: "pi pi-pencil",
+        command: () => {
+          router.push({ name: "create" })
         }
+      }
     )
 
   if (authStore.hasRole(UserRole.EDITOR))
     items.push(
-        {
-          label: "Review",
-          icon: 'pi pi-eye',
-          command: () => {
-            router.push({name: 'review'})
-          }
+      {
+        label: "Review",
+        icon: "pi pi-eye",
+        command: () => {
+          router.push({ name: "review" })
         }
+      }
     )
 
   if (authStore.hasRole(UserRole.EDITOR))
     items.push(
       {
         label: "Edit Navigations",
-        icon: 'pi pi-list',
+        icon: "pi pi-list",
         command: () => {
-          router.push({name: 'navigationsEditor'})
+          router.push({ name: "navigationsEditor" })
         }
       }
     )
 
   if (authStore.hasRole(UserRole.ADMIN))
     items.push(
-        {
-          label: 'Console Auth Info',
-          icon: 'pi pi-key',
-          command: () => {
-            console.log("KC: " + authStore.accessToken)
-            console.log("auth: " + authStore)
-          }
-        },
+      {
+        label: "Console Auth Info",
+        icon: "pi pi-key",
+        command: () => {
+          console.log("KC: " + authStore.accessToken)
+          console.log("auth: " + authStore)
+        }
+      }
     )
 
   if (authStore.isAuthenticated)
     items.push(
-        {
-          label: "Logout",
-          icon: 'pi pi-sign-out',
-          command: () => {
-            keycloakService?.logout()
-          }
+      {
+        label: "Logout",
+        icon: "pi pi-sign-out",
+        command: () => {
+          keycloakService?.logout()
         }
+      }
     )
 
   menuModel.value = [
     {
-      label: `${authStore.isAuthenticated ? 'Logged In as ' + authStore.username : 'Not Logged In'}`,
-      items: items,
+      label: `${authStore.isAuthenticated ? "Logged In as " + authStore.username : "Not Logged In"}`,
+      items: items
     }
   ]
 }
 
 const toggle = (event) => {
-  menu.value.toggle(event);
+  menu.value.toggle(event)
 }
 
 setItems()
@@ -108,14 +108,19 @@ setItems()
 
 <template>
   <Button
-      aria-haspopup="true"
-      aria-controls="overlay_menu"
-      text
-      icon="pi pi-user"
-      @click="toggle"
-      class="flex align-items-center justify-content-center"
+    aria-haspopup="true"
+    aria-controls="overlay_menu"
+    text
+    icon="pi pi-user"
+    class="flex align-items-center justify-content-center"
+    @click="toggle"
   />
-  <Menu ref="menu" id="overlay_menu" :model="menuModel" :popup="true"/>
+  <Menu
+    id="overlay_menu"
+    ref="menu"
+    :model="menuModel"
+    :popup="true"
+  />
 </template>
 
 <style scoped>

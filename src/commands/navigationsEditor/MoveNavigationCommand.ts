@@ -1,5 +1,5 @@
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
 
 export class MoveNavigationCommand extends NavigationCommand {
   private readonly id: number
@@ -14,7 +14,7 @@ export class MoveNavigationCommand extends NavigationCommand {
     oldParentId: number | null,
     newParentId: number | null,
     oldIndex: number,
-    newIndex: number,
+    newIndex: number
   ) {
     super(receiver)
     this.id = id

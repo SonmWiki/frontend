@@ -1,28 +1,41 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
-import {useRoute} from "vue-router";
-import SidebarComponent from "@/components/sidebar/SidebarComponent.vue";
-import SearchComponent from '@/components/navigation/SearchComponent.vue'
-import UserMenuComponent from "@/components/navigation/UserMenuComponent.vue";
-import DarkModeSwitch from "@/components/navigation/DarkModeSwitch.vue";
+import { ref, watch } from "vue"
+import { useRoute } from "vue-router"
+import SidebarComponent from "@/components/sidebar/SidebarComponent.vue"
+import SearchComponent from "@/components/navigation/SearchComponent.vue"
+import UserMenuComponent from "@/components/navigation/UserMenuComponent.vue"
+import DarkModeSwitch from "@/components/navigation/DarkModeSwitch.vue"
 
 const route = useRoute()
 const sidebarVisible = ref(false)
 const appName = import.meta.env.VITE_APP_NAME ? import.meta.env.VITE_APP_NAME : "Wiki"
 
 watch(
-    () => route.params,
-    () => {sidebarVisible.value = false},
-);
+  () => route.params,
+  () => {
+    sidebarVisible.value = false
+  }
+)
 </script>
 
 <template>
-  <header class="flex flex-row border-bottom-1 p-2 md:p-4 surface-border align-items-center justify-content-center w-full">
+  <header
+    class="flex flex-row border-bottom-1 p-2 md:p-4 surface-border align-items-center justify-content-center w-full">
     <div class="flex flex-row gap-4 align-items-center justify-content-between w-full" style="max-width: 1900px">
       <div class="logo flex flex-row align-items-center">
-        <Button text icon="pi pi-bars" @click="sidebarVisible = true" class="flex md:hidden align-items-center justify-content-center" />
+        <Button
+          text
+          icon="pi pi-bars"
+          class="flex md:hidden align-items-center justify-content-center"
+          @click="sidebarVisible = true"
+        />
         <RouterLink to='/' class="no-underline text-color flex flex-row justify-content-center align-items-center">
-          <img class="p-overlay-badge flex align-items-center justify-content-center" src="https://scmc.dev/img/catfish.png" width=48 alt="logo" />
+          <img
+            class="p-overlay-badge flex align-items-center justify-content-center"
+            src="https://scmc.dev/img/catfish.png"
+            width=48
+            alt="logo"
+          />
           <b class="2">{{ appName }}</b>
         </RouterLink>
       </div>
@@ -33,7 +46,7 @@ watch(
       </div>
     </div>
   </header>
-  <Sidebar header="Sidebar" v-model:visible="sidebarVisible" class="w-full">
+  <Sidebar v-model:visible="sidebarVisible" header="Sidebar" class="w-full">
     <SidebarComponent />
   </Sidebar>
 </template>

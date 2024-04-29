@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import { UserRole } from '@/types/UserRole'
+import { defineStore } from "pinia"
+import { UserRole } from "@/types/UserRole"
 
 
 export type AuthStoreReturnType = ReturnType<typeof useAuthStore>
@@ -14,11 +14,11 @@ export type AuthStore = {
 const useAuthStore = defineStore({
   id: "authStore",
   state: (): AuthStore => {
-    return{
+    return {
       username: "",
       accessToken: null,
       refreshToken: null,
-      roles: [],
+      roles: []
     }
   },
   persist: true,
@@ -28,7 +28,7 @@ const useAuthStore = defineStore({
     }
   },
   actions: {
-    hasRole(role: UserRole){
+    hasRole(role: UserRole) {
       return this.roles === undefined ? false : this.roles.includes(role)
     }
   }

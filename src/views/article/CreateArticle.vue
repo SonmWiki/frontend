@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {type Ref, ref} from 'vue';
-import {MdPreview, MdEditor} from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
-import {type CreateArticleRequest, type GetCategoriesResponseElement} from "@/api";
-import {useVuelidate} from "@vuelidate/core";
-import {wikiApi} from "@/api/wikiApi";
-import {useToast} from "primevue/usetoast";
-import {maxLength, minLength, required} from "@vuelidate/validators";
+import { type Ref, ref } from "vue"
+import { MdEditor, MdPreview } from "md-editor-v3"
+import "md-editor-v3/lib/style.css"
+import { type CreateArticleRequest, type GetCategoriesResponseElement } from "@/api"
+import { useVuelidate } from "@vuelidate/core"
+import { wikiApi } from "@/api/wikiApi"
+import { useToast } from "primevue/usetoast"
+import { maxLength, minLength, required } from "@vuelidate/validators"
 
-const text: Ref<string> = ref('Hello Editor! 👋');
+const text: Ref<string> = ref("Hello Editor! 👋")
 const dialogVisible = ref(false)
-const localArticleDraft: Ref<string | null>  = ref(null)
-const title = ref('')
+const localArticleDraft: Ref<string | null> = ref(null)
+const title = ref("")
 const categories: Ref<GetCategoriesResponseElement[]> = ref([])
-const selectedCategories: Ref<GetCategoriesResponseElement[]> = ref([]);
+const selectedCategories: Ref<GetCategoriesResponseElement[]> = ref([])
 const loadingCategories = ref(false)
 const error = ref()
 const toast = useToast()
@@ -24,11 +24,11 @@ localArticleDraft.value = localStorage.getItem("article_draft")
 if (localArticleDraft.value != null) text.value = localArticleDraft.value
 
 const rules = {
-  title: {required, minLength: minLength(4), maxLength: maxLength(256)},
+  title: { required, minLength: minLength(4), maxLength: maxLength(256) }
 }
 
 const v$ = useVuelidate(
-    rules, {title: title}, {$lazy: true}
+  rules, { title: title }, { $lazy: true }
 )
 
 const saveDraft = (v: string) => {
@@ -36,7 +36,7 @@ const saveDraft = (v: string) => {
   localArticleDraft.value = v
   localStorage.setItem("article_draft", v)
   console.log("Saved in local storage!")
-};
+}
 
 const createArticle = async () => {
   const isFormCorrect = await v$.value.$validate()
@@ -50,16 +50,16 @@ const createArticle = async () => {
 
   console.log(data)
 
-   try {
-     const result = (await wikiApi.api.createArticle(data)).data
-     dialogVisible.value = false
+  try {
+    const result = (await wikiApi.api.createArticle(data)).data
+    dialogVisible.value = false
 
-     toast.add({ severity: 'success', summary: 'Article Created!', detail: `id: ${result.id}`, life: 3000 });
+    toast.add({ severity: "success", summary: "Article Created!", detail: `id: ${result.id}`, life: 3000 })
 
-   } catch (e) {
+  } catch (e) {
     error.value = e
     console.log(e)
-   }
+  }
 }
 
 const onCategoriesClick = async () => {
@@ -75,9 +75,9 @@ const onCategoriesClick = async () => {
   }
 }
 
-setInterval (()=> {
+setInterval(() => {
   saveDraft(text.value)
-}, 30*1000);
+}, 30 * 1000)
 </script>
 
 <template>
@@ -89,49 +89,84 @@ setInterval (()=> {
         <h1>Create Article</h1>
       </div>
       <div class="flex justify-content-between">
-        <ToggleButton v-model="preview" onLabel="Preview Mode" offLabel="Editor Mode" :pt="{box: {style: 'background: none !important; border: 0;'}}" />
+        <ToggleButton
+          v-model="preview"
+          on-label="Preview Mode"
+          off-label="Editor Mode"
+          :pt="{box: {style: 'background: none !important; border: 0;'}}"
+        />
         <Button label="Create" @click="dialogVisible = true" />
       </div>
       <div class="h-full flex justify-content-center">
-        <MdPreview style="max-width: 750px;" v-if="preview" v-model="text" language="en-US" previewTheme='github' theme="dark" />
-        <MdEditor v-else :preview='false' @onSave="saveDraft" v-model="text" language="en-US" previewTheme='github' theme="dark" />
+        <MdPreview
+          v-if="preview"
+          v-model="text"
+          style="max-width: 750px;"
+          language="en-US"
+          preview-theme='github'
+          theme="dark"
+        />
+        <MdEditor
+          v-else
+          v-model="text"
+          :preview='false'
+          language="en-US"
+          preview-theme='github'
+          theme="dark"
+          @on-save="saveDraft"
+        />
       </div>
     </div>
   </div>
 
-  <Dialog v-model:visible="dialogVisible" modal header="Create Article" class="w-30rem">
+  <Dialog
+    v-model:visible="dialogVisible"
+    modal
+    header="Create Article"
+    class="w-30rem">
     <div class="flex flex-column gap-4">
       <div class="flex flex-column gap-2">
         <label for="title">Title</label>
         <InputText
-            id="title"
-            v-model="title"
-            aria-describedby="title-help"
-            :class="{ 'p-invalid': v$.title.$errors[0] }"
-            v-tooltip.right="v$.title.$errors[0]?.$message || ''"
+          id="title"
+          v-model="title"
+          v-tooltip.right="v$.title.$errors[0]?.$message || ''"
+          aria-describedby="title-help"
+          :class="{ 'p-invalid': v$.title.$errors[0] }"
         />
         <small id="title-help">⚠️ You'll need to create a new article to rename it</small>
       </div>
       <div class="flex flex-column gap-2">
         <label for="username">Categories</label>
         <MultiSelect
-            @click="onCategoriesClick"
-            :loading="loadingCategories"
-            v-model="selectedCategories"
-            :options="categories"
-            filter
-            optionLabel="name"
-            placeholder="Select Categories"
-            :maxSelectedLabels="3"
-            class="w-full"
+          v-model="selectedCategories"
+          :loading="loadingCategories"
+          :options="categories"
+          filter
+          option-label="name"
+          placeholder="Select Categories"
+          :max-selected-labels="3"
+          class="w-full"
+          @click="onCategoriesClick"
         />
       </div>
       <span v-if="error" class="text-red-400">
         ❗ Failed to create: {{ error.request.statusText }}
       </span>
       <div class="flex justify-content-end gap-2">
-        <Button outlined type="button" label="Cancel" severity="secondary" @click="dialogVisible = false"></Button>
-        <Button outlined type="button" label="Create" @click="createArticle"></Button>
+        <Button
+          outlined
+          type="button"
+          label="Cancel"
+          severity="secondary"
+          @click="dialogVisible = false"
+        />
+        <Button
+          outlined
+          type="button"
+          label="Create"
+          @click="createArticle"
+        />
       </div>
     </div>
   </Dialog>

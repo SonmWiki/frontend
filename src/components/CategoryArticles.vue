@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {type Ref, ref, watch} from "vue";
-import {type GetCategoriesResponseElement, type GetCategoryArticlesResponseElement} from "@/api";
-import {useRoute} from "vue-router";
-import {wikiApi} from "@/api/wikiApi";
+import { type Ref, ref, watch } from "vue"
+import { type GetCategoriesResponseElement, type GetCategoryArticlesResponseElement } from "@/api"
+import { useRoute } from "vue-router"
+import { wikiApi } from "@/api/wikiApi"
 
 const route = useRoute()
 
@@ -17,7 +17,7 @@ const categoryName = ref()
 const loading = ref(true)
 
 const load = async () => {
-  categoryId.value = route.params.id;
+  categoryId.value = route.params.id
   loading.value = true
 
   await loadArticles()
@@ -35,7 +35,7 @@ const loadCategories = async () => {
 
   categories.value.forEach((category: GetCategoriesResponseElement) => {
     if (category.parentId == categoryId.value) childrenCategories.value.push(category)
-    if (category.id == categoryId.value ) {
+    if (category.id == categoryId.value) {
       categoryName.value = category.name
       if (category.parentId !== null) {
         const t = categories.value.find((v) => v.id == category.parentId)
@@ -62,8 +62,10 @@ const reset = () => {
 }
 
 watch(
-    () => route.params.id,
-    () => {load()},
+  () => route.params.id,
+  () => {
+    load()
+  }
 )
 
 load()
@@ -71,42 +73,57 @@ load()
 
 <template>
 
-  <div v-if="!loading" class="flex align-items-center justify-content-start flex-column align-items-start w-30rem p-4" style="overflow-wrap: break-word;">
+  <div
+    v-if="!loading"
+    class="flex align-items-center justify-content-start flex-column align-items-start w-30rem p-4"
+    style="overflow-wrap: break-word;">
     <div class="flex flex-column align-items-center gap-2 w-full bg-transparent">
       <div class="text-xl font-bold w-full text-center">{{ categoryName }}</div>
       <div class="flex flex-column gap-4 w-full" style="overflow-wrap: anywhere;">
 
-        <Fieldset v-if="articles.length > 0" legend="Articles" class="bg-transparent" :toggleable="true">
+        <Fieldset
+          v-if="articles.length > 0"
+          legend="Articles"
+          class="bg-transparent"
+          :toggleable="true">
           <div class="flex flex-column gap-1 w-full">
             <RouterLink
-                v-for="article in articles"
-                :key="article.id"
-                class="hover:surface-hover p-2 border-round w-full no-underline text-color"
-                :to="{name: 'articles', params: {id: article.id}}"
+              v-for="article in articles"
+              :key="article.id"
+              class="hover:surface-hover p-2 border-round w-full no-underline text-color"
+              :to="{name: 'articles', params: {id: article.id}}"
             >
               {{ article.title }}
             </RouterLink>
           </div>
         </Fieldset>
 
-        <Fieldset v-if="parentCategory" legend="Parent Category" class="bg-transparent" :toggleable="true">
+        <Fieldset
+          v-if="parentCategory"
+          legend="Parent Category"
+          class="bg-transparent"
+          :toggleable="true">
           <div class="flex flex-column gap-1">
             <RouterLink
-                class="hover:surface-hover p-2 border-round w-full no-underline text-color"
-                :to="{name: 'categories', params: {id: parentCategory.id}}"
+              class="hover:surface-hover p-2 border-round w-full no-underline text-color"
+              :to="{name: 'categories', params: {id: parentCategory.id}}"
             >
               {{ parentCategory.name }}
             </RouterLink>
           </div>
         </Fieldset>
 
-        <Fieldset v-if="childrenCategories.length > 0" class="bg-transparent w-full" legend="Children Categories" :toggleable="true">
+        <Fieldset
+          v-if="childrenCategories.length > 0"
+          class="bg-transparent w-full"
+          legend="Children Categories"
+          :toggleable="true">
           <div class="flex flex-column gap-1 w-full">
             <RouterLink
-                v-for="child in childrenCategories"
-                :key="child.id"
-                class="hover:surface-hover p-2 border-round w-full no-underline text-color"
-                :to="{name: 'categories', params: {id: child.id}}"
+              v-for="child in childrenCategories"
+              :key="child.id"
+              class="hover:surface-hover p-2 border-round w-full no-underline text-color"
+              :to="{name: 'categories', params: {id: child.id}}"
             >
               {{ child.name }}
             </RouterLink>
@@ -118,7 +135,9 @@ load()
   </div>
 
   <div v-if="loading" class="flex justify-content-center flex-column align-items-center text-center">
-    <h1><Skeleton width="25rem" class="mb-2"></Skeleton></h1>
+    <h1>
+      <Skeleton width="25rem" class="mb-2"></Skeleton>
+    </h1>
     <Skeleton width="15rem" class="mb-2"></Skeleton>
     <Skeleton width="20rem" class="mb-2"></Skeleton>
     <Skeleton width="10rem" class="mb-2"></Skeleton>

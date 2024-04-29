@@ -1,7 +1,7 @@
-import type { GetNavigationsTreeResponseElement } from '@/api'
-import { wikiApi } from '@/api/wikiApi'
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
-import { type DeepReadonly, reactive, readonly } from 'vue'
+import type { GetNavigationsTreeResponseElement } from "@/api"
+import { wikiApi } from "@/api/wikiApi"
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
+import { type DeepReadonly, reactive, readonly } from "vue"
 
 export class NavigationEditorService {
   private _navigations: GetNavigationsTreeResponseElement[] = reactive([])
@@ -37,7 +37,7 @@ export class NavigationEditorService {
     const root: { id: number | null, children: GetNavigationsTreeResponseElement[] }
       = { id: null, children: this._navigations }
 
-    if(element.id > this._lastId)
+    if (element.id > this._lastId)
       this._lastId++
 
     const nodesToVisit = [root]
@@ -122,15 +122,15 @@ export class NavigationEditorService {
     }
   }
 
-  public performCommand(command: NavigationCommand){
+  public performCommand(command: NavigationCommand) {
     command.execute()
     this._undoStack.push(command)
     this._redoStack.splice(0, this.redoStack.length)
   }
 
-  public undo(){
+  public undo() {
     const command = this._undoStack.pop()
-    if(command){
+    if (command) {
       command.undo()
       this._redoStack.push(command)
     }
@@ -138,7 +138,7 @@ export class NavigationEditorService {
 
   public redo() {
     const command = this._redoStack.pop()
-    if(command) {
+    if (command) {
       command.execute()
       this._undoStack.push(command)
     }

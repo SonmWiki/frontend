@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SidebarContainer from "@/components/sidebar/SidebarComponent.vue";
+import SidebarContainer from "@/components/sidebar/SidebarComponent.vue"
 </script>
 
 <template>
@@ -22,6 +22,7 @@ import SidebarContainer from "@/components/sidebar/SidebarComponent.vue";
   height: 100%;
   margin: 0 auto;
 }
+
 .left-menu {
   width: 300px;
 }

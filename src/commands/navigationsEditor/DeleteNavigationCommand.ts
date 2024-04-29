@@ -1,7 +1,7 @@
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
-import type { GetNavigationsTreeResponseElement } from '@/api'
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
-import { InsertNavigationCommand } from '@/commands/navigationsEditor/InsertNavigationCommand'
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
+import type { GetNavigationsTreeResponseElement } from "@/api"
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
+import { InsertNavigationCommand } from "@/commands/navigationsEditor/InsertNavigationCommand"
 
 export class DeleteNavigationCommand extends NavigationCommand {
   private readonly id: number

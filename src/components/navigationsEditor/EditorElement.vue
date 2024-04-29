@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { maxLength, required } from '@vuelidate/validators'
-import { useVuelidate } from '@vuelidate/core'
-import { onMounted, watch } from 'vue'
+import { maxLength, required } from "@vuelidate/validators"
+import { useVuelidate } from "@vuelidate/core"
+import { onMounted, watch } from "vue"
 
 const props = defineProps<{
   icon: string | null
@@ -24,10 +24,10 @@ const emit = defineEmits<{
   removeClicked: []
 }>()
 
-const onIconChanged = (event: Event) => emit('iconChanged', (<HTMLInputElement>event.target).value)
-const onNameChanged = (event: Event) => emit('nameChanged', (<HTMLInputElement>event.target).value)
-const onChangeUriClicked = () => emit('changeUriClicked')
-const onRemoveClicked = () => emit('removeClicked')
+const onIconChanged = (event: Event) => emit("iconChanged", (<HTMLInputElement>event.target).value)
+const onNameChanged = (event: Event) => emit("nameChanged", (<HTMLInputElement>event.target).value)
+const onChangeUriClicked = () => emit("changeUriClicked")
+const onRemoveClicked = () => emit("removeClicked")
 
 watch(props, () => {
   vuelidate.value.$touch()

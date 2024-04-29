@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { VueDraggable } from 'vue-draggable-plus'
-import type { GetNavigationsTreeResponseElement } from '@/api'
-import EditorElement from '@/components/navigationsEditor/EditorElement.vue'
-import type { SortableEvent } from 'sortablejs'
+import { VueDraggable } from "vue-draggable-plus"
+import type { GetNavigationsTreeResponseElement } from "@/api"
+import EditorElement from "@/components/navigationsEditor/EditorElement.vue"
+import type { SortableEvent } from "sortablejs"
 
 const model = defineModel<Array<GetNavigationsTreeResponseElement>>()
 const emit = defineEmits<{
@@ -14,23 +14,23 @@ const emit = defineEmits<{
 }>()
 
 const onElementMoved = (event: SortableEvent) => {
-  emit('elementMoved', event.item.__vnode.key, event.oldIndex, event.newIndex, event.from.parentNode.__vnode.key, event.to.parentNode.__vnode.key)
+  emit("elementMoved", event.item.__vnode.key, event.oldIndex, event.newIndex, event.from.parentNode.__vnode.key, event.to.parentNode.__vnode.key)
 }
 
 const onIconChanged = (id: number, icon: string | null) => {
-  emit('iconChanged', id, icon)
+  emit("iconChanged", id, icon)
 }
 
 const onNameChanged = (id: number, name: string) => {
-  emit('nameChanged', id, name)
+  emit("nameChanged", id, name)
 }
 
 const onChangeUriClicked = (id: number, uri: string | null) => {
-  emit('changeUriClicked', id, uri)
+  emit("changeUriClicked", id, uri)
 }
 
 const onRemoveClicked = (id: number) => {
-  emit('removeClicked', id)
+  emit("removeClicked", id)
 }
 
 </script>

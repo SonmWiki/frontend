@@ -1,14 +1,14 @@
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
-import type { Command } from '@/commands/Command'
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
+import type { Command } from "@/commands/Command"
 
-export abstract class NavigationCommand implements Command{
+export abstract class NavigationCommand implements Command {
   protected readonly receiver: NavigationEditorService
 
-  protected constructor(receiver: NavigationEditorService,) {
-    this.receiver = receiver;
+  protected constructor(receiver: NavigationEditorService) {
+    this.receiver = receiver
   }
 
-  abstract execute() : void
+  abstract execute(): void
 
-  abstract undo() : void
+  abstract undo(): void
 }

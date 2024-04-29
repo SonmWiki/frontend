@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { TreeNode } from 'primevue/treenode'
-import router from '@/router'
-import { type ModelRef, ref, type Ref } from 'vue'
-import type { TreeExpandedKeys } from 'primevue/tree'
-import ExternalLinkDialog from '@/components/ExternalLinkDialog.vue'
+import type { TreeNode } from "primevue/treenode"
+import router from "@/router"
+import { type ModelRef, ref, type Ref } from "vue"
+import type { TreeExpandedKeys } from "primevue/tree"
+import ExternalLinkDialog from "@/components/ExternalLinkDialog.vue"
 
 const nodes: ModelRef<TreeNode[]> = defineModel()
 const expandedKeys: Ref<TreeExpandedKeys> = ref({})
@@ -19,17 +19,16 @@ const onNodeSelect = (node: TreeNode) => {
     const expandedKey: boolean = expandedKeys.value[key]
     expandedKeys.value[key] = !expandedKey
   }
-};
+}
 </script>
 
 <template>
   <Tree
+    v-model:expandedKeys="expandedKeys"
     :value="nodes"
     class="w-full p-2 bg-transparent border-0 font-normal"
     style="font-size: 0.9em;"
-    v-model:expandedKeys="expandedKeys"
-    selectionMode="single"
-    @nodeSelect="onNodeSelect"
+    selection-mode="single"
     :pt="{
             toggler: {
               style: 'margin: 0'
@@ -38,6 +37,7 @@ const onNodeSelect = (node: TreeNode) => {
               style: 'padding: 0;'
             }
           }"
+    @node-select="onNodeSelect"
   >
     <template #default="slotProps">
       <div class="flex" :class="{'gap-2': slotProps.node.icon}">
@@ -46,7 +46,12 @@ const onNodeSelect = (node: TreeNode) => {
       </div>
     </template>
     <template #ext="slotProps">
-      <a onclick="return false" :href="slotProps.node.uri" class="flex text-color no-underline" :class="{'gap-2': slotProps.node.icon}">
+      <a
+        onclick="return false"
+        :href="slotProps.node.uri"
+        class="flex text-color no-underline"
+        :class="{'gap-2': slotProps.node.icon}"
+      >
         <span>{{ slotProps.node.icon }}</span>
         <span>{{ slotProps.node.label }}</span>
       </a>

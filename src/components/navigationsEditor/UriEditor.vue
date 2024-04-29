@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { AppConstants } from '@/constants/AppConstants'
-import { type Ref, ref, watch } from 'vue'
-import { wikiApi } from '@/api/wikiApi'
-import type { GetCategoriesResponseElement, SearchArticlesResponse, SearchArticlesResponseElement } from '@/api'
-import type { PageState } from 'primevue/paginator'
-import { isNullOrWhitespace } from '@/utils/stringUtils'
-import { maxLength, required } from '@vuelidate/validators'
-import { useVuelidate } from '@vuelidate/core'
+import { AppConstants } from "@/constants/AppConstants"
+import { type Ref, ref, watch } from "vue"
+import { wikiApi } from "@/api/wikiApi"
+import type { GetCategoriesResponseElement, SearchArticlesResponse, SearchArticlesResponseElement } from "@/api"
+import type { PageState } from "primevue/paginator"
+import { isNullOrWhitespace } from "@/utils/stringUtils"
+import { maxLength, required } from "@vuelidate/validators"
+import { useVuelidate } from "@vuelidate/core"
 
 enum EditorMode {
-  MANUAL = 'manual',
-  CATEGORY = 'category',
-  ARTICLE = 'article'
+  MANUAL = "manual",
+  CATEGORY = "category",
+  ARTICLE = "article"
 }
 
 interface EditorOption {
@@ -19,8 +19,8 @@ interface EditorOption {
   mode: EditorMode
 }
 
-const uri = defineModel<string | null>('uri', { default: null })
-const visible = defineModel<boolean>('visible', { default: false })
+const uri = defineModel<string | null>("uri", { default: null })
+const visible = defineModel<boolean>("visible", { default: false })
 const previewUri: Ref<string | null> = ref(null)
 const inputDisabled = ref(false)
 
@@ -28,18 +28,18 @@ const rules = {
   previewUri: { maxLength: maxLength(2048) }
 }
 
-const vuelidate = useVuelidate(rules, {required, previewUri: previewUri}, {$lazy: true})
+const vuelidate = useVuelidate(rules, { required, previewUri: previewUri }, { $lazy: true })
 
 const editorOptions: Array<EditorOption> = [
-  { label: 'Manual', mode: EditorMode.MANUAL },
-  { label: 'Category', mode: EditorMode.CATEGORY },
-  { label: 'Article', mode: EditorMode.ARTICLE }
+  { label: "Manual", mode: EditorMode.MANUAL },
+  { label: "Category", mode: EditorMode.CATEGORY },
+  { label: "Article", mode: EditorMode.ARTICLE }
 ]
 const selectedEditorOption: Ref<EditorOption> = ref(editorOptions[0])
 const categories: Ref<Array<GetCategoriesResponseElement>> = ref([])
 const articles: Ref<SearchArticlesResponse | null> = ref(null)
 const selectedPage: Ref<GetCategoriesResponseElement | SearchArticlesResponseElement | null> = ref(null)
-const articleQuery = ref('')
+const articleQuery = ref("")
 const loadingCategories = ref(false)
 const loadingArticles = ref(false)
 
@@ -54,7 +54,7 @@ const loadCategories = async () => {
   }
 }
 
-const loadArticles = async (searchTerm: string = '', page: number = 1, pageSize: number = 10) => {
+const loadArticles = async (searchTerm: string = "", page: number = 1, pageSize: number = 10) => {
   try {
     loadingArticles.value = true
     articles.value = (await wikiApi.api.searchArticles({ searchTerm, page, pageSize })).data
@@ -69,13 +69,13 @@ const onPageChange = (state: PageState) => {
 }
 
 const onConfirm = () => {
-  uri.value = previewUri.value;
-  visible.value = false;
+  uri.value = previewUri.value
+  visible.value = false
 }
 
 const onCancel = () => {
   previewUri.value = null
-  visible.value = false;
+  visible.value = false
 }
 
 watch(visible, () => {
@@ -99,18 +99,18 @@ watch(selectedPage, () => {
     let prefix: string
     switch (selectedEditorOption.value.mode) {
       case EditorMode.MANUAL:
-        prefix = '/categories/'
+        prefix = "/categories/"
         break
       case EditorMode.CATEGORY:
-        prefix = '/categories/'
+        prefix = "/categories/"
         break
       case EditorMode.ARTICLE:
-        prefix = '/articles/'
+        prefix = "/articles/"
         break
     }
     previewUri.value = `${prefix}${selectedPage.value.id}`
   } else
-    previewUri.value = '/'
+    previewUri.value = "/"
 })
 
 watch(selectedEditorOption, async (newValue) => {

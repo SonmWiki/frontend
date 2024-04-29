@@ -15,11 +15,11 @@ const filteredIcons = computed(() => {
 </script>
 
 <template>
-  <Dialog 
-    v-model:visible="visible" 
-    modal 
-    maximizable 
-    header="Select an icon" 
+  <Dialog
+    v-model:visible="visible"
+    modal
+    maximizable
+    header="Select an icon"
     class="w-full md:w-30rem"
     :breakpoints="AppConstants.dialogBreakpoints"
   >

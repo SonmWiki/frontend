@@ -2,16 +2,16 @@ import type {
   GetCategoriesTreeResponseElement,
   GetNavigationsTreeResponseElement,
   UpdateNavigationsTreeCommandElement
-} from '@/api'
-import type { TreeNode } from 'primevue/treenode'
+} from "@/api"
+import type { TreeNode } from "primevue/treenode"
 
 export class MapperService {
   static mapGetNavigationsTreeResponseElementToTreeNode = (navigation: GetNavigationsTreeResponseElement): TreeNode => {
     function getNodeType(navigation: GetNavigationsTreeResponseElement): string {
       if (navigation.uri == null) {
-        return navigation.children.length > 0 ? 'text' : 'header'
+        return navigation.children.length > 0 ? "text" : "header"
       }
-      return navigation.uri.match(`^https?://`) ? 'ext' : 'int'
+      return navigation.uri.match(`^https?://`) ? "ext" : "int"
     }
 
     return {
@@ -39,7 +39,7 @@ export class MapperService {
     return {
       key: category.id.toString(),
       label: category.name,
-      type: 'int',
+      type: "int",
       uri: `/category/${category.id}`,
       children: category.children.map(x => this.mapGetCategoriesTreeResponseElementToTreeNode(x))
     }

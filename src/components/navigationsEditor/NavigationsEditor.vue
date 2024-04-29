@@ -4,23 +4,23 @@ import {
   onBeforeMount,
   onMounted,
   ref
-} from 'vue'
-import { wikiApi } from '@/api/wikiApi'
-import type { GetNavigationsTreeResponseElement } from '@/api'
-import { MapperService } from '@/service/MapperService'
-import SidebarTree from '@/components/sidebar/SidebarTree.vue'
-import { PrimeIcons } from 'primevue/api'
-import NestedDraggable from '@/components/navigationsEditor/NestedDraggable.vue'
-import UriEditor from '@/components/navigationsEditor/UriEditor.vue'
-import { useToast } from 'primevue/usetoast'
-import { NavigationEditorService } from '@/service/NavigationEditorService'
-import { InsertNavigationCommand } from '@/commands/navigationsEditor/InsertNavigationCommand'
-import { EditIconCommand } from '@/commands/navigationsEditor/EditIconCommand'
-import { EditNameCommand } from '@/commands/navigationsEditor/EditNameCommand'
-import { MoveNavigationCommand } from '@/commands/navigationsEditor/MoveNavigationCommand'
-import { DeleteNavigationCommand } from '@/commands/navigationsEditor/DeleteNavigationCommand'
-import { EditUriCommand } from '@/commands/navigationsEditor/EditUriCommand'
-import { useVuelidate } from '@vuelidate/core'
+} from "vue"
+import { wikiApi } from "@/api/wikiApi"
+import type { GetNavigationsTreeResponseElement } from "@/api"
+import { MapperService } from "@/service/MapperService"
+import SidebarTree from "@/components/sidebar/SidebarTree.vue"
+import { PrimeIcons } from "primevue/api"
+import NestedDraggable from "@/components/navigationsEditor/NestedDraggable.vue"
+import UriEditor from "@/components/navigationsEditor/UriEditor.vue"
+import { useToast } from "primevue/usetoast"
+import { NavigationEditorService } from "@/service/NavigationEditorService"
+import { InsertNavigationCommand } from "@/commands/navigationsEditor/InsertNavigationCommand"
+import { EditIconCommand } from "@/commands/navigationsEditor/EditIconCommand"
+import { EditNameCommand } from "@/commands/navigationsEditor/EditNameCommand"
+import { MoveNavigationCommand } from "@/commands/navigationsEditor/MoveNavigationCommand"
+import { DeleteNavigationCommand } from "@/commands/navigationsEditor/DeleteNavigationCommand"
+import { EditUriCommand } from "@/commands/navigationsEditor/EditUriCommand"
+import { useVuelidate } from "@vuelidate/core"
 
 const navigationsEditorService = new NavigationEditorService()
 const navigations = navigationsEditorService.navigations
@@ -64,7 +64,7 @@ const onAddNavigationClicked = () => {
     id: navigationsEditorService.lastId + 1,
     icon: null,
     uri: null,
-    name: '',
+    name: "",
     weight: 0,
     children: new Array<GetNavigationsTreeResponseElement>()
   }
@@ -80,27 +80,27 @@ const onSaveClicked = async () => {
     await wikiApi.api.updateNavigationsTree({
       data: navigations.map(MapperService.mapGetNavigationsTreeResponseElementToUpdateNavigationsTreeCommandElement)
     })
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Navagation tree was saved successfully' })
+    toast.add({ severity: "success", summary: "Success", detail: "Navagation tree was saved successfully" })
   } catch (err: any) {
-    toast.add({ severity: 'error', summary: 'An error occured', detail: 'Couldn\'t save the data' })
+    toast.add({ severity: "error", summary: "An error occured", detail: "Couldn't save the data" })
   }
 }
 
 onBeforeMount(async () => {
   const loaded = await navigationsEditorService.setup()
-  if(loaded){
+  if (loaded) {
     loadingNavigations.value = false
-  }else {
-    toast.add({ severity: 'error', summary: 'An error occured', detail: 'Couldn\'t load navigation' })
+  } else {
+    toast.add({ severity: "error", summary: "An error occured", detail: "Couldn't load navigation" })
   }
 })
 
 onMounted(() => {
-  document.addEventListener('keydown', (event: KeyboardEvent) => {
-    if (event.ctrlKey && event.code === 'KeyZ') {
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.ctrlKey && event.code === "KeyZ") {
       event.preventDefault()
       navigationsEditorService.undo()
-    } else if (event.ctrlKey && event.code === 'KeyY') {
+    } else if (event.ctrlKey && event.code === "KeyY") {
       event.preventDefault()
       navigationsEditorService.redo()
     }

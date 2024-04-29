@@ -1,5 +1,5 @@
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
 
 export class EditUriCommand extends NavigationCommand {
   private readonly id: number
@@ -21,7 +21,7 @@ export class EditUriCommand extends NavigationCommand {
   }
 
   public undo() {
-    if(this.oldUri)
+    if (this.oldUri)
       this.receiver.editUri(this.id, this.newUri)
   }
 }

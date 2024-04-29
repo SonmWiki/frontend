@@ -1,5 +1,5 @@
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
 
 export class EditIconCommand extends NavigationCommand {
   private readonly id: number
@@ -21,7 +21,7 @@ export class EditIconCommand extends NavigationCommand {
   }
 
   public undo() {
-    if(this.oldIcon)
+    if (this.oldIcon)
       this.receiver.editIcon(this.id, this.oldIcon)
   }
 }

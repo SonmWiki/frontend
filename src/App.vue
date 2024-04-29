@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HeaderComponent from "@/components/navigation/HeaderComponent.vue";
+import HeaderComponent from "@/components/navigation/HeaderComponent.vue"
 </script>
 
 <template>

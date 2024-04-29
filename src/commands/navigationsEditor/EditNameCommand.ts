@@ -1,5 +1,5 @@
-import { NavigationCommand } from '@/commands/navigationsEditor/NavigationCommand'
-import type { NavigationEditorService } from '@/service/NavigationEditorService'
+import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
+import type { NavigationEditorService } from "@/service/NavigationEditorService"
 
 export class EditNameCommand extends NavigationCommand {
   private readonly id: number
@@ -21,7 +21,7 @@ export class EditNameCommand extends NavigationCommand {
   }
 
   public undo() {
-    if(this.oldName)
+    if (this.oldName)
       this.receiver.editName(this.id, this.oldName)
   }
 }
