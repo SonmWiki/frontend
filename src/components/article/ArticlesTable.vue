@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { type Ref, ref, watch } from "vue"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import type { SearchArticlesResponse } from "@/api"
 import type { DataTablePageEvent } from "primevue/datatable"
 

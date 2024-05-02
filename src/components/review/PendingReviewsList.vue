@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import moment from "moment/moment"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import { type GetPendingRevisionsResponseElement } from "@/api"
 import { type Ref, ref, watch } from "vue"
 import router from "@/router"

@@ -5,7 +5,7 @@ import { type ModelRef, ref, type Ref } from "vue"
 import type { TreeExpandedKeys } from "primevue/tree"
 import ExternalLinkDialog from "@/components/ExternalLinkDialog.vue"
 
-const nodes: ModelRef<TreeNode[]> = defineModel()
+const nodes: ModelRef<TreeNode[] | undefined> = defineModel()
 const expandedKeys: Ref<TreeExpandedKeys> = ref({})
 const url = ref("")
 

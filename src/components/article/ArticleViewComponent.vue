@@ -4,7 +4,7 @@ import { useRoute } from "vue-router"
 import { MdCatalog, MdPreview } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { useToast } from "primevue/usetoast"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import type { GetArticleResponse } from "@/api"
 import useThemeStore from "@/stores/ThemeStore"
 

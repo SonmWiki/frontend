@@ -4,7 +4,7 @@ import { MdEditor, MdPreview } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { type CreateArticleRequest, type GetCategoriesResponseElement } from "@/api"
 import { useVuelidate } from "@vuelidate/core"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import { useToast } from "primevue/usetoast"
 import { maxLength, minLength, required } from "@vuelidate/validators"
 

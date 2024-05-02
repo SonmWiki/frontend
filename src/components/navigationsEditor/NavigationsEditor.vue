@@ -5,7 +5,7 @@ import {
   onMounted,
   ref
 } from "vue"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import type { GetNavigationsTreeResponseElement } from "@/api"
 import { MapperService } from "@/service/MapperService"
 import SidebarTree from "@/components/sidebar/SidebarTree.vue"

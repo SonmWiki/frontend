@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ModelRef, ref } from "vue"
 import { maxLength, minLength, required } from "@vuelidate/validators"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import { useVuelidate } from "@vuelidate/core"
 import { useToast } from "primevue/usetoast"
 import router from "@/router"

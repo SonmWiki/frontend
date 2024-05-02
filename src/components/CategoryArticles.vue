@@ -2,7 +2,7 @@
 import { type Ref, ref, watch } from "vue"
 import { type GetCategoriesResponseElement, type GetCategoryArticlesResponseElement } from "@/api"
 import { useRoute } from "vue-router"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 
 const route = useRoute()
 

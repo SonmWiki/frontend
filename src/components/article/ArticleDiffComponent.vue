@@ -2,7 +2,7 @@
 
 import { type Ref, ref, watch } from "vue"
 import type { GetArticleResponse, GetRevisionHistoryResponseElement } from "@/api"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
 import useThemeStore from "@/stores/ThemeStore"
 

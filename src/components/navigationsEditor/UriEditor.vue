@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { AppConstants } from "@/constants/AppConstants"
 import { type Ref, ref, watch } from "vue"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import type { GetCategoriesResponseElement, SearchArticlesResponse, SearchArticlesResponseElement } from "@/api"
 import type { PageState } from "primevue/paginator"
 import { isNullOrWhitespace } from "@/utils/stringUtils"

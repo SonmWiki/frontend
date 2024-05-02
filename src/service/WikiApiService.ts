@@ -1,14 +1,13 @@
-import { Api } from "@/api/index"
+import { Api } from "@/api"
 import useAuthStore from "@/stores/AuthStore"
 import { HttpStatusCode } from "axios"
 import { keycloakService } from "@/service/KeycloakService"
 
-const apiInstance = new Api({
+export const wikiApi = new Api({
   baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : `http://${window.location.hostname}`
 })
 
-apiInstance.instance.interceptors.request.use(
-  (config) => {
+wikiApi.instance.interceptors.request.use((config) => {
     const authStore = useAuthStore()
     if (authStore.isAuthenticated) {
       config.headers.Authorization = `Bearer ${authStore.accessToken as string}`
@@ -20,7 +19,7 @@ apiInstance.instance.interceptors.request.use(
   }
 )
 
-apiInstance.instance.interceptors.response.use((response) => response,
+wikiApi.instance.interceptors.response.use((response) => response,
   async function(error) {
     const originalRequest = error?.config
     const status = error?.response?.status
@@ -34,5 +33,3 @@ apiInstance.instance.interceptors.response.use((response) => response,
     return Promise.reject(error)
   }
 )
-
-export const wikiApi = apiInstance

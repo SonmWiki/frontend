@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ModelRef, type Ref, ref, watch } from "vue"
 import { type GetArticleResponse, type GetRevisionHistoryResponseElement } from "@/api"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import moment from "moment"
 
 const props = defineProps<{

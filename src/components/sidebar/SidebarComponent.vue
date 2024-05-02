@@ -2,7 +2,7 @@
 import { onBeforeMount, ref } from "vue"
 import { useRoute } from "vue-router"
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import { MapperService } from "@/service/MapperService"
 import type { TreeNode } from "primevue/treenode"
 import SidebarTree from "@/components/sidebar/SidebarTree.vue"

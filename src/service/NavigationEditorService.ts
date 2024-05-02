@@ -1,5 +1,5 @@
 import type { GetNavigationsTreeResponseElement } from "@/api"
-import { wikiApi } from "@/api/wikiApi"
+import { wikiApi } from "@/service/WikiApiService"
 import { NavigationCommand } from "@/commands/navigationsEditor/NavigationCommand"
 import { type DeepReadonly, reactive, readonly } from "vue"
 
