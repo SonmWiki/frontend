@@ -1,28 +1,26 @@
-import { type AuthStoreReturnType } from "@/stores/AuthStore"
 import Keycloak, { type KeycloakInitOptions } from "keycloak-js"
-import { keycloakJsConfig } from "@/config/keycloakJsConfig"
-import { keycloakServiceConfig } from "@/config/keycloakServiceConfig"
-import type { InjectionKey } from "vue"
-
-export const keycloakServiceKey = Symbol() as InjectionKey<KeycloakService>
+import { keycloakJsConfig, type KeycloakJsConfig } from "@/config/keycloakJsConfig"
+import { type AuthStoreReturnType } from "@/stores/AuthStore"
 
 export class KeycloakService {
   private keycloakInitialized = false
-  private keycloakInstance: Keycloak
+  private readonly keycloakInstance: Keycloak
   private keycloakReadyCallbacks: (() => void)[] = []
+  private authStore: AuthStoreReturnType | undefined
 
-  constructor(protected authStore: AuthStoreReturnType) {
+  constructor(keycloakJsConfig: KeycloakJsConfig) {
     this.keycloakInstance = new Keycloak(keycloakJsConfig)
   }
 
-  async init(initOptions: KeycloakInitOptions): Promise<void> {
+  async init(initOptions: KeycloakInitOptions, authStore: AuthStoreReturnType): Promise<void> {
+    this.authStore = authStore
     await this.keycloakInstance.init(initOptions)
-    this.loadUserData()
+    this.authStore?.loadUserData(this.keycloakInstance)
     this.keycloakReadyCallbacks.forEach(callback => callback())
     this.keycloakInitialized = true
   }
 
-  isInitialized(): boolean{
+  isInitialized(): boolean {
     return this.keycloakInitialized
   }
 
@@ -30,25 +28,9 @@ export class KeycloakService {
     await this.keycloakInstance.login()
   }
 
-  loadUserData() {
-    console.log(this.keycloakInstance.tokenParsed?.preferred_username)
-    this.authStore.username = this.keycloakInstance.tokenParsed?.preferred_username
-    this.authStore.accessToken = this.keycloakInstance.token ?? null
-    this.authStore.refreshToken = this.keycloakInstance.refreshToken ?? null
-    const roleKey = this.keycloakInstance.clientId ?? ""
-    if (this.keycloakInstance.resourceAccess && Object.prototype.hasOwnProperty.call(this.keycloakInstance.resourceAccess, roleKey)) {
-      this.authStore.roles = this.keycloakInstance.resourceAccess[roleKey].roles
-    }else {
-      this.authStore.roles = []
-    }
-  }
-
-  logout(): void {
-    this.keycloakInstance.logout()
-    this.authStore.username = null
-    this.authStore.accessToken = null
-    this.authStore.refreshToken = null
-    this.authStore.roles = []
+  async logout(): Promise<void> {
+    await this.keycloakInstance.logout()
+    this.authStore?.loadUserData(this.keycloakInstance)
   }
 
   async refreshToken(): Promise<void> {
@@ -69,5 +51,6 @@ export class KeycloakService {
       this.keycloakReadyCallbacks.push(callback)
     }
   }
-
 }
+
+export const keycloakService = new KeycloakService(keycloakJsConfig)

@@ -1,14 +1,11 @@
 import type { KeycloakInitOptions } from "keycloak-js"
-import { type App, provide } from "vue"
-import { KeycloakService, keycloakServiceKey } from "@/service/KeycloakService"
+import { type App } from "vue"
 import useAuthStore from "@/stores/AuthStore"
-import type { Pinia } from "pinia"
+import { keycloakService } from "@/service/KeycloakService"
 
 const keycloakPlugin = {
-  install(app: App, options: { keycloakInitOptions: KeycloakInitOptions, pinia: Pinia }) {
-    const keycloakService = new KeycloakService(useAuthStore(options.pinia))
-    app.provide(keycloakServiceKey, keycloakService)
-    keycloakService.init(options.keycloakInitOptions)
+  install(app: App, options: { keycloakInitOptions: KeycloakInitOptions }) {
+    keycloakService.init(options.keycloakInitOptions, useAuthStore())
   }
 }
 

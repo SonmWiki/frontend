@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { UserRole } from "@/types/UserRole"
+import type Keycloak from "keycloak-js"
 
 
 export type AuthStoreReturnType = ReturnType<typeof useAuthStore>
@@ -28,6 +29,16 @@ const useAuthStore = defineStore({
     }
   },
   actions: {
+    loadUserData(keycloak: Keycloak) {
+      this.username = keycloak.tokenParsed?.preferred_username
+      this.accessToken = keycloak.token ?? null
+      const roleKey = keycloak.clientId ?? ""
+      if (keycloak.resourceAccess && Object.prototype.hasOwnProperty.call(keycloak.resourceAccess, roleKey)) {
+        this.roles = keycloak.resourceAccess[roleKey].roles
+      } else {
+        this.roles = []
+      }
+    },
     hasRole(role: UserRole) {
       return this.roles === undefined ? false : this.roles.includes(role)
     }

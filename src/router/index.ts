@@ -8,6 +8,7 @@ import ArticlesTable from "@/components/article/ArticlesTable.vue"
 import NavigationsEditor from "@/components/navigationsEditor/NavigationsEditor.vue"
 import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
+import { keycloakService } from "@/service/KeycloakService"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,15 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach(async  (to, from, next) =>{
+  if(!keycloakService.isInitialized()){
+    await new Promise<void>(resolve => {
+      keycloakService.onKeycloakReady(()=> resolve())
+    })
+  }
+  next()
 })
 
 export default router

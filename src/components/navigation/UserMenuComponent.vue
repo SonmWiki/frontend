@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { inject, ref } from "vue"
+import { ref } from "vue"
 import router from "@/router"
 import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
-import { keycloakServiceKey } from "@/service/KeycloakService"
+import { keycloakService } from "@/service/KeycloakService"
 
 const menu = ref()
 
 const menuModel = ref([{}])
 const authStore = useAuthStore()
-const keycloakService = inject(keycloakServiceKey)
 
 const setItems = () => {
   const items = []
@@ -30,7 +29,7 @@ const setItems = () => {
         label: "Login",
         icon: "pi pi-sign-in",
         command: () => {
-          keycloakService?.login()
+          keycloakService.login()
         }
       }
     )
@@ -76,7 +75,6 @@ const setItems = () => {
         command: () => {
           console.log("username: " + authStore.username)
           console.log("accessToken: " + authStore.accessToken)
-          console.log("refreshToken: " + authStore.refreshToken)
           console.log("roles: " + authStore.roles)
         }
       }
@@ -88,7 +86,7 @@ const setItems = () => {
         label: "Logout",
         icon: "pi pi-sign-out",
         command: () => {
-          keycloakService?.logout()
+          keycloakService.logout()
         }
       }
     )

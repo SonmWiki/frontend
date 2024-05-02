@@ -54,7 +54,7 @@ import Paginator from "primevue/paginator"
 import ButtonGroup from "primevue/buttongroup"
 import Tag from "primevue/tag"
 import keycloakPlugin from "@/plugins/keycloakPlugin"
-import routerPlugin from "@/plugins/routerPlugin"
+import router from "@/router"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -71,10 +71,9 @@ app.use(keycloakPlugin, {
     onLoad: "check-sso",
     checkLoginIframe: false,
     silentCheckSsoRedirectUri: location.origin + "/silent-check-sso.html"
-  },
-  pinia: pinia
+  }
 })
-app.use(routerPlugin, app)
+app.use(router)
 
 app.directive("tooltip", Tooltip)
 app.directive("styleclass", StyleClass)
