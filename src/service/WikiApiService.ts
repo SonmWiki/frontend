@@ -2,9 +2,10 @@ import { Api } from "@/api"
 import useAuthStore from "@/stores/AuthStore"
 import { HttpStatusCode } from "axios"
 import { keycloakService } from "@/service/KeycloakService"
+import { appConfig } from "@/config/appConfig"
 
 export const wikiApi = new Api({
-  baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : `http://${window.location.hostname}`
+  baseURL: appConfig.apiUrl
 })
 
 wikiApi.instance.interceptors.request.use((config) => {
