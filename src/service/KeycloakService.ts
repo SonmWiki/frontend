@@ -35,17 +35,12 @@ export class KeycloakService {
 
   async refreshToken(): Promise<void> {
     const refreshed = await this.keycloakInstance.updateToken(5)
-
-    if (refreshed) {
-      this.authStore.accessToken = this.keycloakInstance.token as string
-    }
-
-    setTimeout(async () => {
-      await this.refreshToken()
-    }, keycloakServiceConfig.refreshTokenMilliseconds)
+    if (refreshed)
+      this.authStore?.loadUserData(this.keycloakInstance)
   }
-  onKeycloakReady(callback: () => void){
-    if(this.keycloakInitialized){
+
+  onKeycloakReady(callback: () => void) {
+    if (this.keycloakInitialized) {
       callback()
     } else {
       this.keycloakReadyCallbacks.push(callback)

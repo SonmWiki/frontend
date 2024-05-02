@@ -8,7 +8,6 @@ export type AuthStoreReturnType = ReturnType<typeof useAuthStore>
 export type AuthStore = {
   username: string | null,
   accessToken: string | null,
-  refreshToken: string | null,
   roles: string[]
 }
 
@@ -18,11 +17,9 @@ const useAuthStore = defineStore({
     return {
       username: "",
       accessToken: null,
-      refreshToken: null,
       roles: []
     }
   },
-  persist: true,
   getters: {
     isAuthenticated(): boolean {
       return !!this.accessToken
