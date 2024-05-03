@@ -40,65 +40,65 @@ const onSubmit = async () => {
 <template>
 
   <div class="card flex justify-content-center flex-column align-items-center text-center">
-    <Card>
+    <PrimeCard>
       <template #title>
         Register
       </template>
 
       <template #content>
         <form class="flex flex-column align-items-center gap-3" @submit.prevent="onSubmit">
-          <InputGroup>
-            <InputGroupAddon>
+          <PrimeInputGroup>
+            <PrimeInputGroupAddon>
               <i class="pi pi-user"></i>
-            </InputGroupAddon>
-            <InputText
+            </PrimeInputGroupAddon>
+            <PrimeInputText
               v-model="username"
               v-tooltip.right="v$.username.$errors[0]?.$message || ''"
               :class="{ 'p-invalid': v$.username.$errors[0] }"
               placeholder="Username"
             />
-          </InputGroup>
+          </PrimeInputGroup>
 
-          <InputGroup>
-            <InputGroupAddon>
+          <PrimeInputGroup>
+            <PrimeInputGroupAddon>
               <i class="pi pi-at"></i>
-            </InputGroupAddon>
-            <InputText
+            </PrimeInputGroupAddon>
+            <PrimeInputText
               v-model="mail"
               v-tooltip.right="v$.email.$errors[0]?.$message || ''"
               type="email"
               :class="{ 'p-invalid': v$.email.$errors[0] }"
               placeholder="Email" />
-          </InputGroup>
+          </PrimeInputGroup>
 
-          <InputGroup>
-            <InputGroupAddon>
+          <PrimeInputGroup>
+            <PrimeInputGroupAddon>
               <i class="pi pi-lock"></i>
-            </InputGroupAddon>
-            <Password
+            </PrimeInputGroupAddon>
+            <PrimePassword
               v-model="password"
               v-tooltip.right="v$.password.$errors[0]?.$message || ''"
               toggle-mask
               :class="{ 'p-invalid': v$.password.$errors[0] }"
               placeholder="Password"
             />
-          </InputGroup>
+          </PrimeInputGroup>
 
-          <InputGroup>
-            <InputGroupAddon>
+          <PrimeInputGroup>
+            <PrimeInputGroupAddon>
               <i class="pi pi-lock"></i>
-            </InputGroupAddon>
-            <InputText
+            </PrimeInputGroupAddon>
+            <PrimeInputText
               v-model="confirmPassword"
               v-tooltip.right="v$.confirmPassword.$errors[0]?.$message || ''"
               :class="{ 'p-invalid': v$.confirmPassword.$errors[0] }"
               placeholder="Confirm Password"
               type="password"
             />
-          </InputGroup>
+          </PrimeInputGroup>
 
           <div>
-            <Checkbox
+            <PrimeCheckbox
               v-model="readTerms"
               :binary="true"
               :class="{ 'p-invalid': v$.readTerms.$errors[0] }"
@@ -107,7 +107,7 @@ const onSubmit = async () => {
             * I've read and accept the <span class="link-primary" @click="visibleTerms = true">terms & conditions</span>
           </div>
 
-          <Button type="submit" label="Submit" />
+          <PrimeButton type="submit" label="Submit" />
 
           <div>
             <small>
@@ -117,9 +117,9 @@ const onSubmit = async () => {
           </div>
         </form>
 
-        <Toast />
+        <PrimeToast />
 
-        <Dialog
+        <PrimeDialog
           v-model:visible="visibleTerms"
           modal
           header="Terms & Conditions"
@@ -203,9 +203,9 @@ const onSubmit = async () => {
             non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores
             alias consequatur aut perferendis doloribus asperiores repellat.
           </p>
-        </Dialog>
+        </PrimeDialog>
       </template>
-    </Card>
+    </PrimeCard>
   </div>
 </template>
 

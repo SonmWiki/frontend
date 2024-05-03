@@ -43,7 +43,7 @@ load()
 </script>
 
 <template>
-  <Dropdown
+  <PrimeDropdown
     v-model="selectedRevision"
     :options="revisions"
     option-label="id"
@@ -62,7 +62,7 @@ load()
         </div>
       </div>
     </template>
-  </Dropdown>
+  </PrimeDropdown>
 </template>
 
 <style scoped>

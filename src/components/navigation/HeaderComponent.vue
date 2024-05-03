@@ -23,7 +23,7 @@ watch(
     class="flex flex-row border-bottom-1 p-2 md:p-4 surface-border align-items-center justify-content-center w-full">
     <div class="flex flex-row gap-4 align-items-center justify-content-between w-full" style="max-width: 1900px">
       <div class="logo flex flex-row align-items-center">
-        <Button
+        <PrimeButton
           text
           icon="pi pi-bars"
           class="flex md:hidden align-items-center justify-content-center"
@@ -46,9 +46,9 @@ watch(
       </div>
     </div>
   </header>
-  <Sidebar v-model:visible="sidebarVisible" header="Sidebar" class="w-full">
+  <PrimeSidebar v-model:visible="sidebarVisible" header="Sidebar" class="w-full">
     <SidebarComponent />
-  </Sidebar>
+  </PrimeSidebar>
 </template>
 
 <style scoped>

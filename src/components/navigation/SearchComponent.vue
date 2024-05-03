@@ -31,7 +31,7 @@ watch(active, () => {
 </script>
 
 <template>
-  <Button
+  <PrimeButton
     severity="secondary"
     aria-haspopup="true"
     aria-controls="overlay_menu"
@@ -41,7 +41,7 @@ watch(active, () => {
     @click="active = true"
   />
 
-  <Dialog
+  <PrimeDialog
     v-model:visible="active"
     modal
     maximizable
@@ -50,10 +50,10 @@ watch(active, () => {
     :breakpoints="{ '1199px': '75vw', '575px': '95vw' }"
   >
 
-    <IconField icon-position="left">
-      <InputIcon class="pi pi-search" />
-      <InputText v-model="value" placeholder="Search" class="w-full" />
-    </IconField>
+    <PrimeIconField icon-position="left">
+      <PrimeInputIcon class="pi pi-search" />
+      <PrimeInputText v-model="value" placeholder="Search" class="w-full" />
+    </PrimeIconField>
     <div v-if="foundArticles.length > 0" class="flex gap-2 flex-column">
       <div class="text-primary font-bold pt-3">
         Results
@@ -68,7 +68,7 @@ watch(active, () => {
         {{ article.articleTitle }}
       </RouterLink>
     </div>
-  </Dialog>
+  </PrimeDialog>
 </template>
 
 <style scoped>

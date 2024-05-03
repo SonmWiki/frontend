@@ -5,7 +5,7 @@ const themeStore = useThemeStore()
 </script>
 
 <template>
-  <Button
+  <PrimeButton
     severity="secondary"
     aria-haspopup="true"
     aria-controls="overlay_menu"

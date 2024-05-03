@@ -67,7 +67,7 @@ watch(
         :on-update="loadArticles"
         :article="oldArticleData"
       />
-      <Button
+      <PrimeButton
         icon="pi pi-arrow-right-arrow-left"
         aria-label="swap"
         text

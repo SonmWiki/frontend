@@ -54,7 +54,7 @@ const sendReview = async () => {
 </script>
 
 <template>
-  <Dialog
+  <PrimeDialog
     v-model:visible="dialogVisible"
     modal
     header="Article Review"
@@ -63,7 +63,7 @@ const sendReview = async () => {
     <div class="flex flex-column gap-4">
       <div class="flex flex-column gap-2">
         <label for="status">Status</label>
-        <Dropdown
+        <PrimeDropdown
           v-model="status"
           :options="reviewStatus"
           option-label="status"
@@ -74,7 +74,7 @@ const sendReview = async () => {
       </div>
       <div class="flex flex-column gap-2">
         <label for="message">Message</label>
-        <Textarea
+        <PrimeTextarea
           id="message"
           v-model="message"
           rows="5"
@@ -90,20 +90,20 @@ const sendReview = async () => {
         ❗ Failed to Submit: {{ error.request.statusText }}
       </span>
       <div class="flex justify-content-end gap-2">
-        <Button
+        <PrimeButton
           outlined
           type="button"
           label="Cancel"
           severity="secondary"
-          @click="dialogVisible = false"></Button>
-        <Button
+          @click="dialogVisible = false"></PrimeButton>
+        <PrimeButton
           outlined
           type="button"
           label="Submit"
-          @click="sendReview()"></Button>
+          @click="sendReview()"></PrimeButton>
       </div>
     </div>
-  </Dialog>
+  </PrimeDialog>
 </template>
 
 <style scoped>

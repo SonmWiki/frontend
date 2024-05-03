@@ -38,7 +38,7 @@ watch(
 </script>
 
 <template>
-  <ConfirmDialog>
+  <PrimeConfirmDialog>
     <template #container="{ acceptCallback, rejectCallback }">
       <div class="flex flex-column p-4">
         <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
@@ -50,12 +50,12 @@ watch(
           </div>
         </div>
         <div class="flex align-items-center gap-2 mt-4 justify-content-center ">
-          <Button label="Continue" @click="acceptCallback"></Button>
-          <Button label="Cancel" outlined @click="rejectCallback"></Button>
+          <PrimeButton label="Continue" @click="acceptCallback"></PrimeButton>
+          <PrimeButton label="Cancel" outlined @click="rejectCallback"></PrimeButton>
         </div>
       </div>
     </template>
-  </ConfirmDialog>
+  </PrimeConfirmDialog>
 </template>
 
 <style scoped>

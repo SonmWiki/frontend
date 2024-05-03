@@ -134,7 +134,7 @@ watch(articleQuery, async () => {
 </script>
 
 <template>
-  <Dialog
+  <PrimeDialog
     v-model:visible="visible"
     modal
     maximizable
@@ -144,33 +144,33 @@ watch(articleQuery, async () => {
     :breakpoints="AppConstants.dialogBreakpoints"
     @hide="onCancel"
   >
-    <SelectButton
+    <PrimeSelectButton
       v-model="selectedEditorOption"
       class="mt-2 w-full"
       :options="editorOptions"
       option-label="label"
     />
-    <FloatLabel class="mt-5">
-      <InputText
+    <PrimeFloatLabel class="mt-5">
+      <PrimeInputText
         id="uri"
         v-model="previewUri"
         class="w-full"
         :invalid="vuelidate.previewUri.$error"
         :disabled="inputDisabled" />
       <label for="uri">URI</label>
-      <Tag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
+      <PrimeTag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
         {{ error.$message }}
-      </Tag>
-    </FloatLabel>
+      </PrimeTag>
+    </PrimeFloatLabel>
     <div v-if="selectedEditorOption?.mode == EditorMode.MANUAL" class="w-full mt-2" />
     <div v-if="selectedEditorOption?.mode == EditorMode.CATEGORY" class="w-full mt-2">
-      <Skeleton
+      <PrimeSkeleton
         v-if="loadingCategories"
         width="full"
         height="8rem"
         class="mb-2"
       />
-      <Listbox
+      <PrimeListbox
         v-else
         v-model="selectedPage"
         :options="categories"
@@ -179,23 +179,23 @@ watch(articleQuery, async () => {
       />
     </div>
     <div v-if="selectedEditorOption?.mode == EditorMode.ARTICLE" class="w-full mt-2">
-      <IconField icon-position="left">
-        <InputText v-model="articleQuery" placeholder="Search" class="w-full" />
-      </IconField>
-      <Skeleton
+      <PrimeIconField icon-position="left">
+        <PrimeInputText v-model="articleQuery" placeholder="Search" class="w-full" />
+      </PrimeIconField>
+      <PrimeSkeleton
         v-if="loadingArticles"
         width="full"
         height="8rem"
         class="mb-2"
       />
-      <Listbox
+      <PrimeListbox
         v-else
         v-model="selectedPage"
         :options="articles?.data"
         option-label="articleTitle"
         class="w-full mt-2"
       />
-      <Paginator
+      <PrimePaginator
         class="mt-2"
         :template="{
           '639px': 'PrevPageLink CurrentPageReport NextPageLink',
@@ -208,20 +208,20 @@ watch(articleQuery, async () => {
       />
     </div>
     <div class="flex justify-content-end gap-2 w-full mt-2">
-      <Button
+      <PrimeButton
         type="button"
         label="Cancel"
         severity="secondary"
         @click="onCancel"
       />
-      <Button
+      <PrimeButton
         type="button"
         label="Confirm"
         :disabled="vuelidate.$error"
         @click="onConfirm"
       />
     </div>
-  </Dialog>
+  </PrimeDialog>
 </template>
 
 <style scoped>

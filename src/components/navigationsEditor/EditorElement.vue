@@ -40,11 +40,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <InputGroup class="p-inputgroup h-2rem">
-    <InputGroupAddon class="handle cursor-move">
+  <PrimeInputGroup class="p-inputgroup h-2rem">
+    <PrimeInputGroupAddon class="handle cursor-move">
       <i class="pi pi-arrows-alt"></i>
-    </InputGroupAddon>
-    <InputText
+    </PrimeInputGroupAddon>
+    <PrimeInputText
       v-tooltip="'Icon'"
       :value="icon"
       :invalid="vuelidate.icon.$error"
@@ -52,14 +52,14 @@ onMounted(() => {
       maxlength="128"
       @change="onIconChanged($event)"
     />
-    <InputText
+    <PrimeInputText
       v-tooltip="'Name'"
       :value="name"
       maxlength="128"
       :invalid="vuelidate.name.$error"
       @change="onNameChanged($event)"
     />
-    <Button
+    <PrimeButton
       v-tooltip.left="'Edit URI'"
       class="border-200"
       icon="pi pi-link"
@@ -68,7 +68,7 @@ onMounted(() => {
       outlined
       @click="onChangeUriClicked"
     />
-    <Button
+    <PrimeButton
       v-tooltip="'Remove'"
       class="border-200"
       icon="pi pi-trash"
@@ -77,10 +77,10 @@ onMounted(() => {
       outlined
       @click="onRemoveClicked"
     />
-  </InputGroup>
-  <Tag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
+  </PrimeInputGroup>
+  <PrimeTag v-for="error in vuelidate.$errors" :key="error.$uid" severity="danger">
     {{ error.$property }} : {{ error.$message }}
-  </Tag>
+  </PrimeTag>
 </template>
 
 <style scoped>

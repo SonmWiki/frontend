@@ -81,7 +81,7 @@ load()
       <div class="text-xl font-bold w-full text-center">{{ categoryName }}</div>
       <div class="flex flex-column gap-4 w-full" style="overflow-wrap: anywhere;">
 
-        <Fieldset
+        <PrimeFieldset
           v-if="articles.length > 0"
           legend="Articles"
           class="bg-transparent"
@@ -96,9 +96,9 @@ load()
               {{ article.title }}
             </RouterLink>
           </div>
-        </Fieldset>
+        </PrimeFieldset>
 
-        <Fieldset
+        <PrimeFieldset
           v-if="parentCategory"
           legend="Parent Category"
           class="bg-transparent"
@@ -111,9 +111,9 @@ load()
               {{ parentCategory.name }}
             </RouterLink>
           </div>
-        </Fieldset>
+        </PrimeFieldset>
 
-        <Fieldset
+        <PrimeFieldset
           v-if="childrenCategories.length > 0"
           class="bg-transparent w-full"
           legend="Children Categories"
@@ -128,7 +128,7 @@ load()
               {{ child.name }}
             </RouterLink>
           </div>
-        </Fieldset>
+        </PrimeFieldset>
 
       </div>
     </div>
@@ -136,11 +136,11 @@ load()
 
   <div v-if="loading" class="flex justify-content-center flex-column align-items-center text-center">
     <h1>
-      <Skeleton width="25rem" class="mb-2"></Skeleton>
+      <PrimeSkeleton width="25rem" class="mb-2"></PrimeSkeleton>
     </h1>
-    <Skeleton width="15rem" class="mb-2"></Skeleton>
-    <Skeleton width="20rem" class="mb-2"></Skeleton>
-    <Skeleton width="10rem" class="mb-2"></Skeleton>
+    <PrimeSkeleton width="15rem" class="mb-2"></PrimeSkeleton>
+    <PrimeSkeleton width="20rem" class="mb-2"></PrimeSkeleton>
+    <PrimeSkeleton width="10rem" class="mb-2"></PrimeSkeleton>
   </div>
 </template>
 

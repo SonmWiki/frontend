@@ -33,7 +33,7 @@ watch(
   <div class="flex flex-column align-items-center p-2 md:p-4 w-full" style="min-height: calc(100vh - 80px)">
     <h1>Article List</h1>
     <div class="p-1 md:p-4 border-1 border-round surface-section surface-border w-full">
-      <DataTable
+      <PrimeDataTable
         v-if="articles"
         v-model:rows='count'
         :value="articles!.data"
@@ -46,9 +46,9 @@ watch(
         :rows-per-page-options="[5, 10, 20, 50]"
         @page="(event: DataTablePageEvent) => load(event)"
       >
-        <Column field="id" header="ID"></Column>
-        <Column field="articleTitle" header="Title"></Column>
-      </DataTable>
+        <PrimeColumn field="id" header="ID"></PrimeColumn>
+        <PrimeColumn field="articleTitle" header="Title"></PrimeColumn>
+      </PrimeDataTable>
     </div>
   </div>
 </template>

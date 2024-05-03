@@ -28,7 +28,7 @@ const onSubmit = async () => {
 <template>
 
   <div class="card flex justify-content-center flex-column align-items-center text-center">
-    <Card>
+    <PrimeCard>
       <template #title>
         Login
       </template>
@@ -36,23 +36,23 @@ const onSubmit = async () => {
       <template #content>
         <form class="flex flex-column align-items-center gap-3" @submit.prevent="onSubmit">
 
-          <InputGroup>
-            <InputGroupAddon>
+          <PrimeInputGroup>
+            <PrimeInputGroupAddon>
               <i class="pi pi-user" />
-            </InputGroupAddon>
-            <InputText
+            </PrimeInputGroupAddon>
+            <PrimeInputText
               v-model="login"
               v-tooltip.right="v$.login.$errors[0]?.$message || ''"
               :class="{ 'p-invalid': v$.login.$errors[0] }"
               placeholder="Login"
             />
-          </InputGroup>
+          </PrimeInputGroup>
 
-          <InputGroup>
-            <InputGroupAddon>
+          <PrimeInputGroup>
+            <PrimeInputGroupAddon>
               <i class="pi pi-lock" />
-            </InputGroupAddon>
-            <Password
+            </PrimeInputGroupAddon>
+            <PrimePassword
               v-model="password"
               v-tooltip.right="v$.password.$errors[0]?.$message || ''"
               :feedback="false"
@@ -60,9 +60,9 @@ const onSubmit = async () => {
               :class="{ 'p-invalid': v$.password.$errors[0] }"
               placeholder="Password"
             />
-          </InputGroup>
+          </PrimeInputGroup>
 
-          <Button type="submit" label="Submit" />
+          <PrimeButton type="submit" label="Submit" />
 
           <div class="flex flex-column">
             <small>
@@ -76,10 +76,10 @@ const onSubmit = async () => {
           </div>
         </form>
 
-        <Toast />
+        <PrimeToast />
       </template>
 
-    </Card>
+    </PrimeCard>
   </div>
 </template>
 

@@ -15,7 +15,7 @@ const filteredIcons = computed(() => {
 </script>
 
 <template>
-  <Dialog
+  <PrimeDialog
     v-model:visible="visible"
     modal
     maximizable
@@ -30,14 +30,14 @@ const filteredIcons = computed(() => {
       </div>
     </template>
     <div class="card">
-      <InputText v-model="filter" class="w-full sticky top-0 z-1 p-3 mb-4" placeholder="Search an icon" />
+      <PrimeInputText v-model="filter" class="w-full sticky top-0 z-1 p-3 mb-4" placeholder="Search an icon" />
       <div class="grid justify-content-center text-center">
-        <Button
+        <PrimeButton
           :severity="selectedIcon === null ? 'primary' : 'secondary'"
           class="col-2 m-2 w-3rem h-3rem border-5 md:col-2"
           @click="selectedIcon != null ? selectedIcon = null : {};"
         />
-        <Button
+        <PrimeButton
           v-for="icon of filteredIcons"
           :key="icon"
           :severity="selectedIcon == icon ? 'primary' : 'secondary'"
@@ -47,7 +47,7 @@ const filteredIcons = computed(() => {
         />
       </div>
     </div>
-  </Dialog>
+  </PrimeDialog>
 </template>
 
 <style scoped>

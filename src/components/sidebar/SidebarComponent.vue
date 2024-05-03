@@ -37,7 +37,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="w-full h-full">
-    <ScrollPanel
+    <PrimeScrollPanel
       class="w-full h-full"
       :pt="{
         wrapper: {
@@ -50,7 +50,7 @@ onBeforeMount(async () => {
         <PendingReviewsList />
       </div>
       <div v-else>
-        <ToggleButton
+        <PrimeToggleButton
           v-model="isNavigations"
           on-label="Navigation"
           off-label="Categories"
@@ -59,7 +59,7 @@ onBeforeMount(async () => {
         <SidebarTree v-if="isNavigations" v-model="navigation" />
         <SidebarTree v-else v-model="categories" />
       </div>
-    </ScrollPanel>
+    </PrimeScrollPanel>
   </div>
 </template>
 

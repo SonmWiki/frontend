@@ -70,7 +70,7 @@ const onToggleClicked = (event: Event) => {
 </script>
 
 <template>
-  <Button
+  <PrimeButton
     aria-haspopup="true"
     aria-controls="overlay_menu"
     text
@@ -78,7 +78,7 @@ const onToggleClicked = (event: Event) => {
     class="flex align-items-center justify-content-center"
     @click="onToggleClicked"
   />
-  <Menu
+  <PrimeMenu
     id="overlay_menu"
     ref="menu"
     :model="items"

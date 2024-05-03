@@ -81,7 +81,7 @@ setInterval(() => {
 </script>
 
 <template>
-  <Toast />
+  <PrimeToast />
 
   <div class="flex w-full justify-content-center">
     <div class="flex flex-column gap-2 p-2 w-full h-full" style="max-width: 1900px; min-height: calc(100vh - 80px)">
@@ -89,13 +89,13 @@ setInterval(() => {
         <h1>Create Article</h1>
       </div>
       <div class="flex justify-content-between">
-        <ToggleButton
+        <PrimeToggleButton
           v-model="preview"
           on-label="Preview Mode"
           off-label="Editor Mode"
           :pt="{box: {style: 'background: none !important; border: 0;'}}"
         />
-        <Button label="Create" @click="dialogVisible = true" />
+        <PrimeButton label="Create" @click="dialogVisible = true" />
       </div>
       <div class="h-full flex justify-content-center">
         <MdPreview
@@ -119,7 +119,7 @@ setInterval(() => {
     </div>
   </div>
 
-  <Dialog
+  <PrimeDialog
     v-model:visible="dialogVisible"
     modal
     header="Create Article"
@@ -127,7 +127,7 @@ setInterval(() => {
     <div class="flex flex-column gap-4">
       <div class="flex flex-column gap-2">
         <label for="title">Title</label>
-        <InputText
+        <PrimeInputText
           id="title"
           v-model="title"
           v-tooltip.right="v$.title.$errors[0]?.$message || ''"
@@ -138,7 +138,7 @@ setInterval(() => {
       </div>
       <div class="flex flex-column gap-2">
         <label for="username">Categories</label>
-        <MultiSelect
+        <PrimeMultiSelect
           v-model="selectedCategories"
           :loading="loadingCategories"
           :options="categories"
@@ -154,14 +154,14 @@ setInterval(() => {
         ❗ Failed to create: {{ error.request.statusText }}
       </span>
       <div class="flex justify-content-end gap-2">
-        <Button
+        <PrimeButton
           outlined
           type="button"
           label="Cancel"
           severity="secondary"
           @click="dialogVisible = false"
         />
-        <Button
+        <PrimeButton
           outlined
           type="button"
           label="Create"
@@ -169,7 +169,7 @@ setInterval(() => {
         />
       </div>
     </div>
-  </Dialog>
+  </PrimeDialog>
 </template>
 
 <style scoped>

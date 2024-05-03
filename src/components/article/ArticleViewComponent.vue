@@ -84,7 +84,7 @@ load()
 </script>
 
 <template>
-  <Toast position="top-center"></Toast>
+  <PrimeToast position="top-center"></PrimeToast>
 
   <div class="w-full">
     <div v-if="articleData && articleData.content != null" class="content pt-4">
@@ -93,7 +93,7 @@ load()
           <h1 class="font-bold mb-0 mt-0">{{ articleData.title }}</h1>
         </div>
         <div class="flex align-items-center justify-content-between">
-          <Button
+          <PrimeButton
             severity="secondary"
             style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
             size="small"
@@ -102,9 +102,9 @@ load()
             rounded
             @click="togglePopup"
           />
-          <OverlayPanel ref="popup" :pt="{content: {style: 'padding: 0.5rem'}}">
+          <PrimeOverlayPanel ref="popup" :pt="{content: {style: 'padding: 0.5rem'}}">
             <div class="flex flex-column">
-              <Button
+              <PrimeButton
                 class="text-left"
                 icon="pi pi-share-alt"
                 label="Copy Link"
@@ -113,7 +113,7 @@ load()
                 @click="copyLink"
               />
             </div>
-          </OverlayPanel>
+            </PrimeOverlayPanel>
         </div>
       </div>
       <div>
@@ -133,9 +133,9 @@ load()
     </div>
     <div v-if="!error && !articleData && loading" class="content pt-4">
       <div class="flex flex-column gap-2 ml-4 mr-4">
-        <Skeleton width="45%" height="2rem"></Skeleton>
-        <Skeleton width="100%" height="8rem"></Skeleton>
-        <Skeleton width="100%" height="8rem"></Skeleton>
+        <PrimeSkeleton width="45%" height="2rem"></PrimeSkeleton>
+          <PrimeSkeleton width="100%" height="8rem"></PrimeSkeleton>
+            <PrimeSkeleton width="100%" height="8rem"></PrimeSkeleton>
       </div>
     </div>
   </div>

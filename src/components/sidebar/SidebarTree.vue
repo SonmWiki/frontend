@@ -23,7 +23,7 @@ const onNodeSelect = (node: TreeNode) => {
 </script>
 
 <template>
-  <Tree
+  <PrimeTree
     v-model:expandedKeys="expandedKeys"
     :value="nodes"
     class="w-full p-2 bg-transparent border-0 font-normal"
@@ -68,7 +68,7 @@ const onNodeSelect = (node: TreeNode) => {
         <span>{{ slotProps.node.label }}</span>
       </div>
     </template>
-  </Tree>
+  </PrimeTree>
   <ExternalLinkDialog v-model:url="url" />
 </template>
 

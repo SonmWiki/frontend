@@ -119,25 +119,25 @@ onMounted(() => {
       </div>
       <div class="flex justify-content-between w-full">
         <div>
-          <ButtonGroup>
-            <Button
+          <PrimeButtonGroup>
+            <PrimeButton
               v-tooltip="'Undo'"
               severity="secondary"
               :icon="PrimeIcons.REPLAY"
               :disabled="loadingNavigations || undoStack.length == 0"
               @click="navigationsEditorService.undo()"
             />
-            <Button
+            <PrimeButton
               v-tooltip="'Redo'"
               severity="secondary"
               :icon="PrimeIcons.REFRESH"
               :disabled="loadingNavigations || redoStack.length == 0"
               @click="navigationsEditorService.redo()"
             />
-          </ButtonGroup>
+          </PrimeButtonGroup>
         </div>
         <div>
-          <Button
+          <PrimeButton
             label="Preview"
             severity="secondary"
             class="md:hidden"
@@ -146,7 +146,7 @@ onMounted(() => {
           />
         </div>
         <div>
-          <Button
+          <PrimeButton
             severity="primary"
             label="Save"
             :disabled="loadingNavigations || vuelidate.$errors.length != 0 || undoStack.length == 0"
@@ -158,7 +158,7 @@ onMounted(() => {
       <div class="flex justify-content-between flex-row w-full">
         <div class="flex flex-column flex-1">
           <div v-if="loadingNavigations">
-            <Skeleton
+            <PrimeSkeleton
               v-for="i in 7"
               :key="i"
               width="full"
@@ -175,7 +175,7 @@ onMounted(() => {
             @element-moved="onElementMoved"
             @remove-clicked="onRemoveClicked"
           />
-          <Button
+          <PrimeButton
             severity="secondary"
             class="w-full"
             type="button"
@@ -189,7 +189,7 @@ onMounted(() => {
           <SidebarTree v-model="previewNavigation" />
         </div>
       </div>
-      <Dialog
+      <PrimeDialog
         v-model:visible="previewDialogVisible"
         modal
         maximizable
@@ -198,7 +198,7 @@ onMounted(() => {
         class="w-full md:w-30rem"
       >
         <SidebarTree v-model="previewNavigation" />
-      </Dialog>
+      </PrimeDialog>
       <UriEditor
         v-model:uri="uriEditorUri"
         v-model:visible="uriEditorVisible"
@@ -206,7 +206,7 @@ onMounted(() => {
       />
     </div>
   </div>
-  <Toast />
+  <PrimeToast />
 </template>
 
 <style scoped>
