@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SidebarContainer from "@/components/sidebar/SidebarComponent.vue"
+import SidebarComponent from "@/components/sidebar/SidebarComponent.vue"
 import HeaderComponent from "@/components/navigation/HeaderComponent.vue"
 </script>
 
@@ -7,7 +7,7 @@ import HeaderComponent from "@/components/navigation/HeaderComponent.vue"
   <HeaderComponent />
   <div class="flex-container">
     <div class="menu left-menu md:block hidden border-right-1 surface-border">
-      <SidebarContainer></SidebarContainer>
+      <SidebarComponent></SidebarComponent>
     </div>
     <div class="container flex flex-row justify-content-center">
       <RouterView />
