@@ -147,6 +147,7 @@ watch(articleQuery, async () => {
     <PrimeSelectButton
       v-model="selectedEditorOption"
       class="mt-2 w-full"
+      :allow-empty="false"
       :options="editorOptions"
       option-label="label"
     />
