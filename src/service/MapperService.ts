@@ -40,7 +40,7 @@ export class MapperService {
       key: category.id.toString(),
       label: category.name,
       type: "int",
-      uri: `/category/${category.id}`,
+      uri: `/categories/${category.id}`,
       children: category.children.map(x => this.mapGetCategoriesTreeResponseElementToTreeNode(x))
     }
   }
