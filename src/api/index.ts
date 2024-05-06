@@ -210,11 +210,10 @@ export interface ReviewRevisionResponse {
   id: string;
 }
 
-/** @format int32 */
 export enum ReviewStatus {
-  Value0 = 0,
-  Value1 = 1,
-  Value2 = 2,
+  Removed = "Removed",
+  Rejected = "Rejected",
+  Accepted = "Accepted",
 }
 
 export interface SearchArticlesResponse {
