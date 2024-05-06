@@ -10,6 +10,12 @@ import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
 
+declare module 'vue-router' {
+  interface RouteMeta {
+    allowedRoles?: UserRole[]
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,32 +38,32 @@ const router = createRouter({
           name: "categories",
           path: "categories/:id",
           component: CategoryArticlesView
-        }
-      ]
-    },
-    {
-      name: "navigationsEditor",
-      path: "/navigations/editor",
-      component: NavigationsEditor,
-      beforeEnter: (() => useAuthStore().hasRole(UserRole.EDITOR))
-    },
-    {
-      name: "create",
-      path: "/create",
-      component: CreateArticle,
-      beforeEnter: (() => useAuthStore().hasRole(UserRole.USER))
-    },
-    {
-      name: "review",
-      path: "/review",
-      component: ReviewView,
-      beforeEnter: (() => useAuthStore().hasRole(UserRole.EDITOR)),
-      children: [
+        },
         {
-          name: "reviewView",
-          path: ":article/:revision",
+          name: "navigationsEditor",
+          path: "navigations/editor",
+          component: NavigationsEditor,
+          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
+        },
+        {
+          name: "create",
+          path: "create",
+          component: CreateArticle,
+          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] },
+        },
+        {
+          name: "review",
+          path: "review",
           component: ReviewView,
-          beforeEnter: (() => useAuthStore().hasRole(UserRole.EDITOR))
+          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
+          children: [
+            {
+              name: "reviewView",
+              path: ":article/:revision",
+              component: ReviewView,
+              meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
+            }
+          ]
         }
       ]
     }
@@ -71,6 +77,20 @@ router.beforeEach(async  (to, from, next) =>{
     })
   }
   next()
+})
+
+router.beforeEach(async  (to, from) =>{
+  const authStore = useAuthStore()
+  let hasAnyRole = to.meta.allowedRoles === undefined
+
+  to.meta.allowedRoles?.forEach((role) =>{
+    if(authStore.hasRole(role)){
+      hasAnyRole = true
+    }
+  })
+
+  if(!hasAnyRole)
+    return { name: "home" }
 })
 
 export default router
