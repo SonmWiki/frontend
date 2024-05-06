@@ -118,6 +118,11 @@ export interface GetNavigationsTreeResponseElement {
   children: GetNavigationsTreeResponseElement[];
 }
 
+export interface GetPendingRevisionsCountResponse {
+  /** @format int32 */
+  count: number;
+}
+
 export interface GetPendingRevisionsResponse {
   data: GetPendingRevisionsResponseElement[];
 }
@@ -531,6 +536,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     pendingRevisions: (params: RequestParams = {}) =>
       this.request<GetPendingRevisionsResponse, ProblemDetails>({
         path: `/api/articles/revisions/pending`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Article
+     * @name GetPendingRevisionsCount
+     * @request GET:/api/articles/revisions/pending/count
+     * @secure
+     */
+    getPendingRevisionsCount: (params: RequestParams = {}) =>
+      this.request<GetPendingRevisionsCountResponse, ProblemDetails>({
+        path: `/api/articles/revisions/pending/count`,
         method: "GET",
         secure: true,
         format: "json",
