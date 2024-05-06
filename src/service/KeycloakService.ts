@@ -1,6 +1,7 @@
 import Keycloak, { type KeycloakInitOptions } from "keycloak-js"
 import { keycloakJsConfig, type KeycloakJsConfig } from "@/config/keycloakJsConfig"
 import { type AuthStoreReturnType } from "@/stores/AuthStore"
+import router from "@/router"
 
 export class KeycloakService {
   private keycloakInitialized = false
@@ -34,9 +35,13 @@ export class KeycloakService {
   }
 
   async refreshToken(): Promise<void> {
-    const refreshed = await this.keycloakInstance.updateToken(5)
-    if (refreshed)
+    try {
+      await this.keycloakInstance.updateToken(5)
+    }catch (e){
       this.authStore?.loadUserData(this.keycloakInstance)
+      await router.push({name: "home"})
+    }
+    this.authStore?.loadUserData(this.keycloakInstance)
   }
 
   onKeycloakReady(callback: () => void) {
