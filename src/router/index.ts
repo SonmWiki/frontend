@@ -70,13 +70,12 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async  (to, from, next) =>{
+router.beforeEach(async  (to, from) =>{
   if(!keycloakService.isInitialized()){
     await new Promise<void>(resolve => {
       keycloakService.onKeycloakReady(()=> resolve())
     })
   }
-  next()
 })
 
 router.beforeEach(async  (to, from) =>{
