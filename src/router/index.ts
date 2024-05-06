@@ -16,6 +16,7 @@ const router = createRouter({
     {
       path: "/",
       component: HomeView,
+      name: "home",
       children: [
         {
           name: "articlesTable",
