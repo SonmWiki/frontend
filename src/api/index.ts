@@ -529,11 +529,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Article
-     * @name PendingRevisions
+     * @name GetPendingRevisions
      * @request GET:/api/articles/revisions/pending
      * @secure
      */
-    pendingRevisions: (params: RequestParams = {}) =>
+    getPendingRevisions: (params: RequestParams = {}) =>
       this.request<GetPendingRevisionsResponse, ProblemDetails>({
         path: `/api/articles/revisions/pending`,
         method: "GET",

@@ -19,7 +19,7 @@ const select = async (revision: GetPendingRevisionsResponseElement) => {
 }
 const load = async () => {
   try {
-    revisions.value = (await wikiApi.api.pendingRevisions()).data.data
+    revisions.value = (await wikiApi.api.getPendingRevisions()).data.data
     if (revisions.value.length == 0) return empty.value = true
     if (route.params.revision == undefined) await select(revisions.value[0])
   } catch (error) {
