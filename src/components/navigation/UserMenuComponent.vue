@@ -23,7 +23,7 @@ const items: Ref<MenuItem[]> = ref([
       {
         label: "Login",
         icon: "pi pi-sign-in",
-        visible: !authStore.isAuthenticated,
+        visible: () => !authStore.isAuthenticated,
         command: () => {
           keycloakService.login()
         }
@@ -31,7 +31,7 @@ const items: Ref<MenuItem[]> = ref([
       {
         label: "Create",
         icon: "pi pi-pencil",
-        visible: authStore.hasRole(UserRole.USER),
+        visible: () => authStore.hasRole(UserRole.USER),
         command: () => {
           router.push({ name: "create" })
         }
@@ -39,7 +39,7 @@ const items: Ref<MenuItem[]> = ref([
       {
         label: "Review",
         icon: "pi pi-eye",
-        visible: authStore.hasRole(UserRole.EDITOR),
+        visible: () => authStore.hasRole(UserRole.EDITOR),
         command: () => {
           router.push({ name: "review" })
         }
@@ -47,7 +47,7 @@ const items: Ref<MenuItem[]> = ref([
       {
         label: "Edit Navigations",
         icon: "pi pi-list",
-        visible: authStore.hasRole(UserRole.EDITOR),
+        visible: () => authStore.hasRole(UserRole.EDITOR),
         command: () => {
           router.push({ name: "navigationsEditor" })
         }
@@ -55,7 +55,7 @@ const items: Ref<MenuItem[]> = ref([
       {
         label: "Logout",
         icon: "pi pi-sign-out",
-        visible: authStore.isAuthenticated,
+        visible: () => authStore.isAuthenticated,
         command: () => {
           keycloakService.logout()
         }
@@ -73,9 +73,9 @@ const onToggleClicked = (event: Event) => {
   <PrimeButton
     aria-haspopup="true"
     aria-controls="overlay_menu"
-    text
     icon="pi pi-user"
-    class="flex align-items-center justify-content-center"
+    class="m-1"
+    text
     @click="onToggleClicked"
   />
   <PrimeMenu
