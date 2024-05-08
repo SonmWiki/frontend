@@ -37,11 +37,11 @@ export class KeycloakService {
   async refreshToken(): Promise<void> {
     try {
       await this.keycloakInstance.updateToken(5)
+      this.authStore?.loadUserData(this.keycloakInstance)
     }catch (e){
       this.authStore?.loadUserData(this.keycloakInstance)
       await router.push({name: "home"})
     }
-    this.authStore?.loadUserData(this.keycloakInstance)
   }
 
   onKeycloakReady(callback: () => void) {
