@@ -1,107 +1,117 @@
 <script setup lang="ts">
-import { ModelRef, ref } from "vue"
+import { ModelRef, type Ref, ref, watch } from "vue"
 import { maxLength, minLength, required } from "@vuelidate/validators"
 import { wikiApi } from "@/service/WikiApiService"
 import { useVuelidate } from "@vuelidate/core"
 import { useToast } from "primevue/usetoast"
 import router from "@/router"
+import { ReviewStatus } from "@/api"
+import { AppConstants } from "@/constants/AppConstants"
 
-const revisionId: ModelRef<string> = defineModel("revisionId")
-const dialogVisible: ModelRef<boolean> = defineModel("dialogVisible")
-
-const toast = useToast()
-
-const error = ref()
-const message = ref("")
-const status = ref()
-
-const rules = {
-  message: { required, minLength: minLength(4), maxLength: maxLength(1024) },
-  status: { required }
+interface LabledReviewStatus {
+  label: String,
+  status: ReviewStatus
 }
 
-const v$ = useVuelidate(
-  rules, { message: message, status: status }, { $lazy: true }
+const revisionId = defineModel<string>("revisionId", { required: true })
+const dialogVisible = defineModel<boolean>("dialogVisible", {default: false})
+const message = ref("")
+const toast = useToast()
+
+const reviewOptions: Array<LabledReviewStatus> = [
+  { label: "Remove", status: ReviewStatus.Removed },
+  { label: "Reject", status: ReviewStatus.Rejected },
+  { label: "Accept", status: ReviewStatus.Accepted }
+]
+const selectedOption = ref<LabledReviewStatus>(reviewOptions[0])
+
+const rules = {
+  message: { maxLength: maxLength(1024) },
+  selectedOption: { required }
+}
+const vuelidate = useVuelidate(
+  rules, { message: message, selectedOption: selectedOption }, { $lazy: true }
 )
 
-const reviewStatus = [
-  { status: "Removed", code: 0 },
-  { status: "Rejected", code: 1 },
-  { status: "Accepted", code: 2 }
-]
-
 const sendReview = async () => {
-  const isFormCorrect = await v$.value.$validate()
-  if (!isFormCorrect) return
-
   try {
     const result = (await wikiApi.api.reviewArticleRevision(revisionId.value, {
-      status: status.value.code,
+      status: selectedOption.value.status,
       review: message.value
     })).data
     dialogVisible.value = false
     toast.add({ severity: "success", summary: "Review Submitted!", detail: `id: ${result.id}`, life: 3000 })
 
-    message.value = ""
-    status.value = undefined
+    //message.value = ""
+    //selectedOption.value = reviewOptions[0]
 
     await router.push({ name: "review" })
   } catch (e) {
-    error.value = e
-    console.log(e)
+    toast.add({ severity: "error", summary: "An error occurred", detail: "Couldn't send the review", life: 3000 })
   }
 }
+
+watch(selectedOption, () =>{
+  vuelidate.value.selectedOption.$touch()
+})
+
+watch(message, () =>{
+  vuelidate.value.message.$touch()
+})
 </script>
 
 <template>
   <PrimeDialog
     v-model:visible="dialogVisible"
     modal
-    header="Article Review"
-    class="w-30rem"
+    maximizable
+    header="Review article revision"
+    :position="'top'"
+    class="w-full md:w-30rem"
+    :breakpoints="AppConstants.dialogBreakpoints"
   >
-    <div class="flex flex-column gap-4">
-      <div class="flex flex-column gap-2">
-        <label for="status">Status</label>
-        <PrimeDropdown
-          v-model="status"
-          :options="reviewStatus"
-          option-label="status"
-          placeholder="Select a Status"
-          class="w-full md:w-14rem"
-          :class="{ 'p-invalid': v$.status.$errors[0] }"
-        />
-      </div>
-      <div class="flex flex-column gap-2">
-        <label for="message">Message</label>
-        <PrimeTextarea
-          id="message"
-          v-model="message"
-          rows="5"
-          cols="30"
-          class="w-full h-8rem"
-          :class="{ 'p-invalid': v$.message.$errors[0] }"
-        />
-        <div class="text-sm text-color-secondary">
-          Rev. {{ revisionId }}
-        </div>
-      </div>
-      <span v-if="error" class="text-red-400">
-        ❗ Failed to Submit: {{ error.request.statusText }}
-      </span>
-      <div class="flex justify-content-end gap-2">
-        <PrimeButton
-          outlined
-          type="button"
-          label="Cancel"
-          severity="secondary"
-          @click="dialogVisible = false"></PrimeButton>
-        <PrimeButton
-          outlined
-          type="button"
-          label="Submit"
-          @click="sendReview()"></PrimeButton>
-      </div>
+    <PrimeFloatLabel class="mt-5">
+      <PrimeDropdown
+        id="dropdown"
+        v-model="selectedOption"
+        option-label="label"
+        :options="reviewOptions"
+        placeholder="Select a Status"
+        class="w-full md:w-14rem"
+        :class="{ 'p-invalid': vuelidate.selectedOption.$errors[0] }"
+      />
+      <label for="dropdown">Reviews status</label>
+      <PrimeTag v-for="error in vuelidate.selectedOption.$errors" :key="error.$uid" severity="danger">
+        {{ error.$message }}
+      </PrimeTag>
+    </PrimeFloatLabel>
+    <PrimeFloatLabel class="mt-5">
+      <PrimeTextarea
+        id="message"
+        v-model="message"
+        rows="5"
+        cols="30"
+        class="w-full h-8rem"
+        :class="{ 'p-invalid': vuelidate.message.$errors[0] }"
+      />
+      <label for="message">Message</label>
+      <PrimeTag v-for="error in vuelidate.message.$errors" :key="error.$uid" severity="danger">
+        {{ error.$message }}
+      </PrimeTag>
+    </PrimeFloatLabel>
+    <div class="flex justify-content-end gap-2 w-full mt-2">
+      <PrimeButton
+        type="button"
+        label="Cancel"
+        severity="secondary"
+        @click="dialogVisible = false"
+      />
+      <PrimeButton
+        type="button"
+        label="Submit"
+        :disabled="vuelidate.$error"
+        @click="sendReview()"
+      />
     </div>
   </PrimeDialog>
 </template>

@@ -6,48 +6,61 @@ import ArticleViewComponent from "@/components/article/ArticleViewComponent.vue"
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue"
 import { useRoute } from "vue-router"
 import SendReviewModal from "@/components/review/SendReviewModal.vue"
+import WikiHeader from "@/components/navigation/WikiHeader.vue"
+import SidebarLayout from "@/layouts/SidebarLayout.vue"
+import WikiFooter from "@/components/navigation/WikiFooter.vue"
 
-const diffView = ref(false)
+enum PreviewMode {
+  PREVIEW = "preview",
+  DIFF = "diff"
+}
+
+interface PreviewOption {
+  label: String,
+  mode: PreviewMode
+}
+
+const previewOptions: Array<PreviewOption> = [
+  { label: "Normal view", mode: PreviewMode.PREVIEW },
+  { label: "Diff view", mode: PreviewMode.DIFF }
+]
+const selectedPreviewOption: Ref<PreviewOption> = ref(previewOptions[0])
 const dialogVisible = ref(false)
 const route = useRoute()
 
-const revisionId: Ref<string | undefined> = ref(route.params.revision as string)
-const articleId: Ref<string | undefined> = ref(route.params.article as string)
+const articleId: Ref<string> = ref(route.params.article as string)
+const revisionId: Ref<string> = ref(route.params.revision as string)
 
 watch(
   () => route.params.revision,
   () => {
-    revisionId.value = route.params.revision as string
     articleId.value = route.params.article as string
+    revisionId.value = route.params.revision as string
   }
 )
 </script>
 
 <template>
-  <div class="flex justify-content-center w-full">
-    <PrimeSplitter
-      style="height: calc(100vh - 80px); background: transparent; border: 0; max-width: 1900px"
-      class="w-full"
-      :pt="{
-          gutter: 'hidden md:block'
-        }"
-    >
-      <PrimeSplitterPanel class="hidden md:flex flex-column align-items-start overflow-y-scroll" :size="20" :min-size="15">
-        <PendingReviewsList class="" />
-      </PrimeSplitterPanel>
-      <PrimeSplitterPanel class="flex justify-content-center p-3 h-full overflow-y-auto" :size="80" :min-size="50">
-        <div class="h-full w-full flex flex-column gap-2">
+  <SidebarLayout>
+    <template #header>
+      <WikiHeader />
+    </template>
+    <template #sidebar>
+      <PendingReviewsList />
+    </template>
+    <template #default>
+      <div class="flex-container w-full">
+        <div class="container flex flex-column justify-content-center">
           <div class="flex justify-content-between">
-            <PrimeToggleButton
-              v-model="diffView"
-              on-label="Diff View"
-              off-label="Normal View"
-              :pt="{box: {style: 'background: none !important; border: 0;'}}"
+            <PrimeSelectButton
+              v-model="selectedPreviewOption"
+              :options="previewOptions"
+              option-label="label"
             />
             <PrimeButton label="Leave Review" @click="dialogVisible = true"></PrimeButton>
           </div>
           <div class="w-full flex flex-row">
-            <ArticleDiffComponent v-if="diffView" :new-revision="revisionId" :article="articleId" />
+            <ArticleDiffComponent v-if="selectedPreviewOption.mode === PreviewMode.DIFF" :new-revision="revisionId" :article="articleId" />
             <ArticleViewComponent
               v-else
               :revision="revisionId"
@@ -56,13 +69,14 @@ watch(
             />
           </div>
         </div>
-      </PrimeSplitterPanel>
-    </PrimeSplitter>
-  </div>
-
+      </div>
+    </template>
+    <template #footer>
+      <WikiFooter/>
+    </template>
+  </SidebarLayout>
   <SendReviewModal v-model:dialog-visible="dialogVisible" v-model:revision-id="revisionId" />
 </template>
 
 <style scoped>
-
 </style>

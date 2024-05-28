@@ -55,6 +55,11 @@ import ButtonGroup from "primevue/buttongroup"
 import Tag from "primevue/tag"
 import keycloakPlugin from "@/plugins/keycloakPlugin"
 import router from "@/router"
+import Badge from "primevue/badge"
+import BadgeDirective from "primevue/badgedirective"
+import Menubar from "primevue/menubar"
+import Toolbar from "primevue/toolbar"
+import InputSwitch from "primevue/inputswitch"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -77,6 +82,7 @@ app.use(router)
 
 app.directive("tooltip", Tooltip)
 app.directive("styleclass", StyleClass)
+app.directive('badge', BadgeDirective);
 
 app.component("PrimeAvatar", Avatar)
 app.component("PrimeButton", Button)
@@ -117,6 +123,10 @@ app.component("PrimeFloatLabel", FloatLabel)
 app.component("PrimePaginator", Paginator)
 app.component("PrimeButtonGroup", ButtonGroup)
 app.component("PrimeTag", Tag)
+app.component("PrimeBadge", Badge)
+app.component("PrimeMenubar", Menubar)
+app.component("PrimeToolbar", Toolbar)
+app.component("PrimeInputSwitch", InputSwitch)
 
 useThemeStore().applyTheme()
 

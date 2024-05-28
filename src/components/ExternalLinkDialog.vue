@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm"
-import { type ModelRef, ref, watch } from "vue"
+import { ref, watch } from "vue"
 
-const url: ModelRef<undefined | string> = defineModel("url")
+const model = defineModel<string>()
 const shownUrl = ref("")
 
 const confirm = useConfirm()
 
 const showDialog = () => {
-  if (url.value == undefined) return
+  if (model.value == undefined) return
 
-  shownUrl.value = url.value.substring(0, 36)
-  if (url.value.length > 36) shownUrl.value += ".."
+  shownUrl.value = model.value.substring(0, 36)
+  if (model.value.length > 36) shownUrl.value += ".."
 
   confirm.require({
     accept: () => {
-      window.open(url.value, "_blank")
+      window.open(model.value, "_blank")
       reset()
     },
     reject: () => {
@@ -26,13 +26,13 @@ const showDialog = () => {
 
 const reset = () => {
   confirm.close()
-  url.value = undefined
+  model.value = undefined
 }
 
 watch(
-  () => url.value,
+  () => model.value,
   () => {
-    if (url.value != undefined) showDialog()
+    if (model.value != undefined) showDialog()
   }
 )
 </script>

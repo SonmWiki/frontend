@@ -10,7 +10,7 @@ import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
 
-declare module 'vue-router' {
+declare module "vue-router" {
   interface RouteMeta {
     allowedRoles?: UserRole[]
   }
@@ -25,14 +25,14 @@ const router = createRouter({
       name: "home",
       children: [
         {
-          name: "articlesTable",
-          path: "articles",
-          component: ArticlesTable
-        },
-        {
           name: "articles",
           path: "articles/:id",
           component: ArticleViewComponent
+        },
+        {
+          name: "articlesTable",
+          path: "articles",
+          component: ArticlesTable
         },
         {
           name: "categories",
@@ -40,55 +40,55 @@ const router = createRouter({
           component: CategoryArticlesView
         },
         {
-          name: "navigationsEditor",
-          path: "navigations/editor",
-          component: NavigationsEditor,
-          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
-        },
-        {
           name: "create",
           path: "create",
           component: CreateArticle,
-          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] },
-        },
+          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
+        }
+      ]
+    },
+    {
+      name: "navigationsEditor",
+      path: "/navigations/editor",
+      component: NavigationsEditor,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
+    },
+    {
+      name: "review",
+      path: "/review",
+      component: ReviewView,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
+      children: [
         {
-          name: "review",
-          path: "review",
+          name: "reviewView",
+          path: ":article/:revision",
           component: ReviewView,
-          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
-          children: [
-            {
-              name: "reviewView",
-              path: ":article/:revision",
-              component: ReviewView,
-              meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
-            }
-          ]
+          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
         }
       ]
     }
   ]
 })
 
-router.beforeEach(async  (to, from) =>{
-  if(!keycloakService.isInitialized()){
+router.beforeEach(async (to, from) => {
+  if (!keycloakService.isInitialized()) {
     await new Promise<void>(resolve => {
-      keycloakService.onKeycloakReady(()=> resolve())
+      keycloakService.onKeycloakReady(() => resolve())
     })
   }
 })
 
-router.beforeEach(async  (to, from) =>{
+router.beforeEach(async (to, from) => {
   const authStore = useAuthStore()
   let hasAnyRole = to.meta.allowedRoles === undefined
 
-  to.meta.allowedRoles?.forEach((role) =>{
-    if(authStore.hasRole(role)){
+  to.meta.allowedRoles?.forEach((role) => {
+    if (authStore.hasRole(role)) {
       hasAnyRole = true
     }
   })
 
-  if(!hasAnyRole)
+  if (!hasAnyRole)
     return { name: "home" }
 })
 

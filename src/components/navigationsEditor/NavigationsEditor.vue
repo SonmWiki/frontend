@@ -8,7 +8,7 @@ import {
 import { wikiApi } from "@/service/WikiApiService"
 import type { GetNavigationsTreeResponseElement } from "@/api"
 import { MapperService } from "@/service/MapperService"
-import SidebarTree from "@/components/sidebar/SidebarTree.vue"
+import SidebarTree from "@/components/navigation/WikiSidebarTree.vue"
 import { PrimeIcons } from "primevue/api"
 import NestedDraggable from "@/components/navigationsEditor/NestedDraggable.vue"
 import UriEditor from "@/components/navigationsEditor/UriEditor.vue"
@@ -21,6 +21,8 @@ import { MoveNavigationCommand } from "@/commands/navigationsEditor/MoveNavigati
 import { DeleteNavigationCommand } from "@/commands/navigationsEditor/DeleteNavigationCommand"
 import { EditUriCommand } from "@/commands/navigationsEditor/EditUriCommand"
 import { useVuelidate } from "@vuelidate/core"
+import HeaderComponent from "@/components/navigation/WikiHeader.vue"
+import SidebarLayout from "@/layouts/SidebarLayout.vue"
 
 const navigationsEditorService = new NavigationEditorService()
 const navigations = navigationsEditorService.navigations
@@ -109,103 +111,94 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex w-full justify-content-center">
-    <div
-      class="flex flex-column align-items-center p-2 md:p-4 w-full"
-      style="max-width: 1900px; min-height: calc(100vh - 80px)"
-    >
-      <div class="w-full flex flex-column align-items-center">
-        <h1>Navigation editor</h1>
+  <SidebarLayout>
+    <template #header>
+      <HeaderComponent />
+    </template>
+    <template #sidebar>
+      <div class="h-full">
+        <b>Preview</b>
+        <SidebarTree v-model="previewNavigation" />
       </div>
-      <div class="flex justify-content-between w-full">
-        <div>
-          <PrimeButtonGroup>
+    </template>
+    <template #default>
+      <div class="flex w-full justify-content-center">
+        <div class="flex flex-column align-items-center w-full">
+          <div class="flex justify-content-between w-full">
+            <PrimeButtonGroup>
+              <PrimeButton
+                v-tooltip="'Undo'"
+                severity="secondary"
+                :icon="PrimeIcons.REPLAY"
+                :disabled="loadingNavigations || undoStack.length == 0"
+                @click="navigationsEditorService.undo()"
+              />
+              <PrimeButton
+                v-tooltip="'Redo'"
+                severity="secondary"
+                :icon="PrimeIcons.REFRESH"
+                :disabled="loadingNavigations || redoStack.length == 0"
+                @click="navigationsEditorService.redo()"
+              />
+            </PrimeButtonGroup>
             <PrimeButton
-              v-tooltip="'Undo'"
-              severity="secondary"
-              :icon="PrimeIcons.REPLAY"
-              :disabled="loadingNavigations || undoStack.length == 0"
-              @click="navigationsEditorService.undo()"
-            />
-            <PrimeButton
-              v-tooltip="'Redo'"
-              severity="secondary"
-              :icon="PrimeIcons.REFRESH"
-              :disabled="loadingNavigations || redoStack.length == 0"
-              @click="navigationsEditorService.redo()"
-            />
-          </PrimeButtonGroup>
-        </div>
-        <div>
-          <PrimeButton
-            label="Preview"
-            severity="secondary"
-            class="md:hidden"
-            :icon="PrimeIcons.LIST"
-            @click="previewDialogVisible = true"
-          />
-        </div>
-        <div>
-          <PrimeButton
-            severity="primary"
-            label="Save"
-            :disabled="loadingNavigations || vuelidate.$errors.length != 0 || undoStack.length == 0"
-            :icon="PrimeIcons.SAVE"
-            @click="onSaveClicked"
-          />
-        </div>
-      </div>
-      <div class="flex justify-content-between flex-row w-full">
-        <div class="flex flex-column flex-1">
-          <div v-if="loadingNavigations">
-            <PrimeSkeleton
-              v-for="i in 7"
-              :key="i"
-              width="full"
-              height="2rem"
-              class="mt-2"
+              severity="primary"
+              label="Save"
+              :disabled="loadingNavigations || vuelidate.$errors.length != 0 || undoStack.length == 0"
+              :icon="PrimeIcons.SAVE"
+              @click="onSaveClicked"
             />
           </div>
-          <NestedDraggable
-            :model-value="navigations"
-            class="flex-1 pt-2"
-            @icon-changed="onIconChanged"
-            @name-changed="onNameChanged"
-            @change-uri-clicked="onChangeUriClicked"
-            @element-moved="onElementMoved"
-            @remove-clicked="onRemoveClicked"
+          <div class="flex justify-content-between flex-row w-full">
+            <div class="flex flex-column flex-1">
+              <div v-if="loadingNavigations">
+                <PrimeSkeleton
+                  v-for="i in 7"
+                  :key="i"
+                  width="full"
+                  height="2rem"
+                  class="mt-2"
+                />
+              </div>
+              <NestedDraggable
+                :model-value="navigations"
+                class="flex-1 pt-2"
+                @icon-changed="onIconChanged"
+                @name-changed="onNameChanged"
+                @change-uri-clicked="onChangeUriClicked"
+                @element-moved="onElementMoved"
+                @remove-clicked="onRemoveClicked"
+              />
+              <PrimeButton
+                severity="secondary"
+                class="w-full"
+                type="button"
+                label="Add navigation"
+                icon="pi pi-plus"
+                :disabled="loadingNavigations"
+                @click="onAddNavigationClicked"
+              />
+            </div>
+          </div>
+          <PrimeDialog
+            v-model:visible="previewDialogVisible"
+            modal
+            maximizable
+            header="Preview Navigations"
+            :position="'top'"
+            class="w-full md:w-30rem"
+          >
+            <SidebarTree v-model="previewNavigation" />
+          </PrimeDialog>
+          <UriEditor
+            v-model:uri="uriEditorUri"
+            v-model:visible="uriEditorVisible"
+            @update:uri="onUriChanged"
           />
-          <PrimeButton
-            severity="secondary"
-            class="w-full"
-            type="button"
-            label="Add navigation"
-            icon="pi pi-plus"
-            :disabled="loadingNavigations"
-            @click="onAddNavigationClicked"
-          />
-        </div>
-        <div class="flex-1 hidden md:flex">
-          <SidebarTree v-model="previewNavigation" />
         </div>
       </div>
-      <PrimeDialog
-        v-model:visible="previewDialogVisible"
-        modal
-        maximizable
-        header="Preview Navigations"
-        :position="'top'"
-        class="w-full md:w-30rem"
-      >
-        <SidebarTree v-model="previewNavigation" />
-      </PrimeDialog>
-      <UriEditor
-        v-model:uri="uriEditorUri"
-        v-model:visible="uriEditorVisible"
-        @update:uri="onUriChanged"
-      />
-    </div>
-  </div>
+    </template>
+  </SidebarLayout>
   <PrimeToast />
 </template>
 

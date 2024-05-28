@@ -18,15 +18,12 @@ const search = async (query: string) => {
 watch(value, async () => {
     const curVal = value.value
     await (new Promise(r => setTimeout(r, 1000)))
-    if (curVal == value.value) await search(value.value)
+    if (curVal == value.value) {
+      active.value = true
+      await search(value.value)
+    }
   }
 )
-
-watch(active, () => {
-  if (active.value) {
-    search("")
-  }
-})
 
 </script>
 
@@ -35,11 +32,16 @@ watch(active, () => {
     severity="secondary"
     aria-haspopup="true"
     aria-controls="overlay_menu"
-    text
     icon="pi pi-search"
-    class="flex align-items-center justify-content-center"
+    class="m-1 md:hidden"
+    text
     @click="active = true"
   />
+
+  <PrimeIconField class="m-1 md:block hidden" icon-position="left">
+    <PrimeInputIcon class="pi pi-search" />
+    <PrimeInputText class="w-10rem" v-model="value" placeholder="Search" />
+  </PrimeIconField>
 
   <PrimeDialog
     v-model:visible="active"
@@ -52,7 +54,7 @@ watch(active, () => {
 
     <PrimeIconField icon-position="left">
       <PrimeInputIcon class="pi pi-search" />
-      <PrimeInputText v-model="value" placeholder="Search" class="w-full" />
+      <PrimeInputText autofocus v-model="value" placeholder="Search" class="w-full" />
     </PrimeIconField>
     <div v-if="foundArticles.length > 0" class="flex gap-2 flex-column">
       <div class="text-primary font-bold pt-3">

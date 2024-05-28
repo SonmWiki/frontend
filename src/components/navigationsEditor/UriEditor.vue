@@ -5,7 +5,7 @@ import { wikiApi } from "@/service/WikiApiService"
 import type { GetCategoriesResponseElement, SearchArticlesResponse, SearchArticlesResponseElement } from "@/api"
 import type { PageState } from "primevue/paginator"
 import { isNullOrWhitespace } from "@/utils/stringUtils"
-import { maxLength, required } from "@vuelidate/validators"
+import { maxLength, minLength, required } from "@vuelidate/validators"
 import { useVuelidate } from "@vuelidate/core"
 
 enum EditorMode {
@@ -25,10 +25,10 @@ const previewUri: Ref<string | null> = ref(null)
 const inputDisabled = ref(false)
 
 const rules = {
-  previewUri: { maxLength: maxLength(2048) }
+  previewUri: { minLength: minLength(10) ,maxLength: maxLength(2048) }
 }
 
-const vuelidate = useVuelidate(rules, { required, previewUri: previewUri }, { $lazy: true })
+const vuelidate = useVuelidate(rules, { previewUri: previewUri }, { $lazy: true })
 
 const editorOptions: Array<EditorOption> = [
   { label: "Manual", mode: EditorMode.MANUAL },

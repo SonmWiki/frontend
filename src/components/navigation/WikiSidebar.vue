@@ -3,7 +3,8 @@ import { onBeforeMount, type Ref, ref } from "vue"
 import { wikiApi } from "@/service/WikiApiService"
 import { MapperService } from "@/service/MapperService"
 import type { TreeNode } from "primevue/treenode"
-import SidebarTree from "@/components/sidebar/SidebarTree.vue"
+import SidebarTree from "@/components/navigation/WikiSidebarTree.vue"
+import useSidebarStore from "@/stores/SidebarStore"
 
 enum SidebarMode {
   NAVIGATION = "navigation",
@@ -47,24 +48,15 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="w-full h-full">
-    <PrimeScrollPanel
-      class="w-full h-full"
-      :pt="{
-        barY: 'surface-300 opacity-100 border-round'
-      }"
-    >
-      <PrimeSelectButton
-        v-model="selectedSidebarOption"
-        class="w-full flex flex-wrap justify-content-center align-items-center"
-        :allow-empty="false"
-        :options="sidebarOptions"
-        option-label="label"
-      />
-      <SidebarTree v-if="selectedSidebarOption.mode == SidebarMode.NAVIGATION" v-model="navigation" />
-      <SidebarTree v-else v-model="categories" />
-    </PrimeScrollPanel>
-  </div>
+  <PrimeSelectButton
+    v-model="selectedSidebarOption"
+    class="w-full flex flex-wrap justify-content-center align-items-center"
+    :allow-empty="false"
+    :options="sidebarOptions"
+    option-label="label"
+  />
+  <SidebarTree v-if="selectedSidebarOption.mode == SidebarMode.NAVIGATION" v-model="navigation" />
+  <SidebarTree v-else v-model="categories" />
 </template>
 
 <style scoped>

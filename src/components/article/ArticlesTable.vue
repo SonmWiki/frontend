@@ -30,7 +30,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-column align-items-center p-2 md:p-4 w-full" style="min-height: calc(100vh - 80px)">
+  <div class="flex flex-column align-items-center w-full">
     <h1>Article List</h1>
     <div class="p-1 md:p-4 border-1 border-round surface-section surface-border w-full">
       <PrimeDataTable

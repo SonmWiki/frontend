@@ -9,9 +9,9 @@ const themeStore = useThemeStore()
     severity="secondary"
     aria-haspopup="true"
     aria-controls="overlay_menu"
+    class="m-1"
     text
     :icon="themeStore.theme == 'light' ? 'pi pi-sun text-xl' : ' pi pi-moon'"
-    class="flex align-items-center justify-content-center"
     @click="themeStore.switchTheme()"
   />
 </template>

@@ -1,45 +1,26 @@
 <script setup lang="ts">
-import SidebarComponent from "@/components/sidebar/SidebarComponent.vue"
-import HeaderComponent from "@/components/navigation/HeaderComponent.vue"
+import SidebarLayout from "@/layouts/SidebarLayout.vue"
+import WikiHeader from "@/components/navigation/WikiHeader.vue"
+import WikiSidebar from "@/components/navigation/WikiSidebar.vue"
+import WikiFooter from "@/components/navigation/WikiFooter.vue"
 </script>
 
 <template>
-  <HeaderComponent />
-  <div class="flex-container">
-    <div class="menu left-menu md:block hidden border-right-1 surface-border">
-      <SidebarComponent></SidebarComponent>
-    </div>
-    <div class="container flex flex-row justify-content-center">
-      <RouterView />
-    </div>
-  </div>
+  <SidebarLayout>
+    <template #header>
+      <WikiHeader />
+    </template>
+    <template #sidebar>
+      <WikiSidebar />
+    </template>
+    <template #default>
+      <router-view />
+    </template>
+    <template #footer>
+      <WikiFooter />
+    </template>
+  </SidebarLayout>
 </template>
 
 <style scoped>
-.flex-container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 1900px;
-  height: 100%;
-  margin: 0 auto;
-}
-
-.left-menu {
-  width: 300px;
-}
-
-.menu {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 80px;
-  height: calc(-80px + 100vh);
-}
-
-.container {
-  flex-grow: 1;
-  flex-basis: 0%;
-  width: 100%;
-}
-
 </style>

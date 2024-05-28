@@ -5,6 +5,7 @@ import { type GetPendingRevisionsResponseElement } from "@/api"
 import { type Ref, ref, watch } from "vue"
 import router from "@/router"
 import { useRoute } from "vue-router"
+import useSidebarStore from "@/stores/SidebarStore"
 
 const revisions: Ref<GetPendingRevisionsResponseElement[]> = ref([])
 const route = useRoute()
@@ -39,32 +40,25 @@ load()
 </script>
 
 <template>
-  <div class="w-full h-full">
-    <div v-if="!empty" class="flex flex-column gap-2 p-2">
-      <div
-        v-for="revision in revisions"
-        :key="revision.revisionId"
-        :class="revisionId == revision.revisionId ? 'border-primary surface-hover' : 'surface-border'"
-        class="border-1 border-round w-full hover:surface-hover p-2"
-        @click="select(revision)"
-      >
-        <div class="text-lg font-bold pb-1">{{ revision.articleIdTitle }}</div>
-        <RouterLink
-          :to="{name: 'articles', params: {id: revision.articleId}}"
-          class="link-primary text-xs"
-          target="_blank"
-        >
-          Current Article
-        </RouterLink>
-        <div class="text-xs text-color-secondary">Rev. {{ revision.revisionId }}</div>
-        <div class="text-sm"><i class="pi pi-user"></i> {{ revision.author.name }}</div>
-        <div class="text-sm"><i class="pi pi-clock"></i>
-          {{ moment(revision.timestamp, moment.ISO_8601).format("DD.MM.YYYY HH:mm") }}
-        </div>
-      </div>
-    </div>
-    <div v-else class="p-2">
-      No articles here!
+  <div
+    v-for="revision in revisions"
+    :key="revision.revisionId"
+    :class="revisionId == revision.revisionId ? 'border-primary surface-hover' : 'surface-border'"
+    class="border-1 border-round w-full cursor-pointer hover:surface-hover p-2"
+    @click="select(revision)"
+  >
+    <div class="text-lg font-bold pb-1">{{ revision.articleIdTitle }}</div>
+    <RouterLink
+      :to="{name: 'articles', params: {id: revision.articleId}}"
+      class="link-primary text-xs"
+      target="_blank"
+    >
+      Current Article
+    </RouterLink>
+    <div class="text-xs text-color-secondary">Rev. {{ revision.revisionId }}</div>
+    <div class="text-sm"><i class="pi pi-user"></i> {{ revision.author.name }}</div>
+    <div class="text-sm"><i class="pi pi-clock"></i>
+      {{ moment(revision.timestamp, moment.ISO_8601).format("DD.MM.YYYY HH:mm") }}
     </div>
   </div>
 </template>

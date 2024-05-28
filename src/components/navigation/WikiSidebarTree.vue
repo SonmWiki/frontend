@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { TreeNode } from "primevue/treenode"
 import router from "@/router"
-import { type ModelRef, ref, type Ref } from "vue"
+import { ref, type Ref } from "vue"
 import type { TreeExpandedKeys } from "primevue/tree"
 import ExternalLinkDialog from "@/components/ExternalLinkDialog.vue"
 
-const nodes: ModelRef<TreeNode[] | undefined> = defineModel()
+const nodes = defineModel<TreeNode[] | undefined>()
 const expandedKeys: Ref<TreeExpandedKeys> = ref({})
 const url = ref("")
 
