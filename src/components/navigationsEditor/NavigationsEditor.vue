@@ -113,7 +113,7 @@ onMounted(() => {
 <template>
   <SidebarLayout>
     <template #header>
-      <HeaderComponent />
+      <HeaderComponent :has-sidebar-switch="true" />
     </template>
     <template #sidebar>
       <div class="h-full">

@@ -8,7 +8,7 @@ import WikiFooter from "@/components/navigation/WikiFooter.vue"
 <template>
   <SidebarLayout>
     <template #header>
-      <WikiHeader />
+      <WikiHeader :has-sidebar-switch="true" />
     </template>
     <template #sidebar>
       <WikiSidebar />

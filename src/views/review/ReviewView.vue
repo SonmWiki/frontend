@@ -43,7 +43,7 @@ watch(
 <template>
   <SidebarLayout>
     <template #header>
-      <WikiHeader />
+      <WikiHeader :has-sidebar-switch="true" />
     </template>
     <template #sidebar>
       <PendingReviewsList />

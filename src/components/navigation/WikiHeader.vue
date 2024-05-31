@@ -8,6 +8,10 @@ import HeaderDarkModeSwitch from "@/components/ThemeSwitch.vue"
 import HeaderUserMenuComponent from "@/components/navigation/WikiHeaderUserMenu.vue"
 import useSidebarStore from "@/stores/SidebarStore"
 
+const props = defineProps({
+  hasSidebarSwitch: Boolean
+})
+
 const authStore = useAuthStore()
 const sidebarStore = useSidebarStore()
 const appName = import.meta.env.VITE_APP_NAME ? import.meta.env.VITE_APP_NAME : "Wiki"
@@ -26,9 +30,10 @@ onBeforeMount(async () => {
 
 <template>
   <div class="w-full" style="background: var(--surface-section);">
-    <PrimeToolbar class="h-full p-0 border-none m-auto" style="max-width: 90rem;">
+    <PrimeToolbar class="h-full p-0 border-none m-auto" style="max-width: 1728px;">
       <template #start>
         <PrimeButton
+          v-if="hasSidebarSwitch"
           class="m-1 hidden md:inline-flex"
           icon="pi pi-bars"
           aria-label="Filter"
@@ -37,13 +42,14 @@ onBeforeMount(async () => {
           @click="sidebarStore.toggleSidebar()"
         />
         <PrimeButton
+          v-if="hasSidebarSwitch"
           class="m-1 md:hidden"
           icon="pi pi-bars"
           severity="secondary"
           text
           @click="sidebarStore.toggleMdSidebar()"
         />
-        <RouterLink to='/' class="no-underline text-color flex flex-row justify-content-center align-items-center">
+        <RouterLink to='/' class="no-underline m-1 text-color flex flex-row justify-content-center align-items-center">
           <img
             class="p-overlay-badge flex align-items-center justify-content-center w-1rem"
             src="https://scmc.dev/img/catfish.png"
