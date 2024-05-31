@@ -25,7 +25,7 @@ wikiApi.instance.interceptors.response.use((response) => response,
     const originalRequest = error?.config
     const status = error?.response?.status
 
-    if (status === HttpStatusCode.Unauthorized && !originalRequest?.retry) {
+    if ((status === HttpStatusCode.Unauthorized || status === HttpStatusCode.NotFound) && !originalRequest?.retry) {
       originalRequest.retry = true
       await keycloakService.refreshToken()
       originalRequest.headers.Authorization = `Bearer ${useAuthStore().accessToken as string}`
