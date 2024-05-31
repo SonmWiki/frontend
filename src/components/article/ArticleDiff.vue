@@ -5,12 +5,11 @@ import type { GetArticleResponse, GetRevisionHistoryResponseElement } from "@/ap
 import { wikiApi } from "@/service/WikiApiService"
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
 import useThemeStore from "@/stores/ThemeStore"
-import { isNullOrWhitespace } from "@/utils/stringUtils"
 
 const props = defineProps<{
-  article: string | undefined
-  newRevision: string | undefined
-  oldRevision?: string | undefined
+  articleId?: string
+  newRevisionId?: string
+  oldRevisionId?: string
 }>()
 
 const themeStore = useThemeStore()
@@ -24,17 +23,17 @@ const selectedNewRevision: Ref<GetRevisionHistoryResponseElement | undefined> = 
 const loaded = ref(false)
 
 const loadArticles = async () => {
-  if (isNullOrWhitespace(props.article)) return
+  if (!props.articleId) return
 
   try {
     if (newArticleData.value == undefined || newArticleData.value?.revisionId != selectedNewRevision.value?.id)
-      newArticleData.value = (await wikiApi.api.getArticle(props.article,
-        { revisionId: selectedNewRevision.value?.id ? selectedNewRevision.value.id : props.newRevision }
+      newArticleData.value = (await wikiApi.api.getArticle(props.articleId,
+        { revisionId: selectedNewRevision.value?.id ? selectedNewRevision.value.id : props.newRevisionId }
       )).data
 
     if (oldArticleData.value == undefined || oldArticleData.value?.revisionId != selectedOldRevision.value?.id)
-      oldArticleData.value = (await wikiApi.api.getArticle(props.article,
-        { revisionId: selectedOldRevision.value?.id ? selectedOldRevision.value.id : props.oldRevision }
+      oldArticleData.value = (await wikiApi.api.getArticle(props.articleId,
+        { revisionId: selectedOldRevision.value?.id ? selectedOldRevision.value.id : props.oldRevisionId }
       )).data
 
     loaded.value = true
@@ -52,8 +51,12 @@ const swap = () => {
 loadArticles()
 
 watch(
-  () => props.newRevision,
+  () => props.newRevisionId,
   () => {
+    selectedNewRevision.value = undefined
+    selectedOldRevision.value = undefined
+    oldArticleData.value = undefined
+    newArticleData.value = undefined
     loadArticles()
   }
 )
