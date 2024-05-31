@@ -60,6 +60,7 @@ import BadgeDirective from "primevue/badgedirective"
 import Menubar from "primevue/menubar"
 import Toolbar from "primevue/toolbar"
 import InputSwitch from "primevue/inputswitch"
+import Divider from "primevue/divider"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -127,6 +128,7 @@ app.component("PrimeBadge", Badge)
 app.component("PrimeMenubar", Menubar)
 app.component("PrimeToolbar", Toolbar)
 app.component("PrimeInputSwitch", InputSwitch)
+app.component("PrimeDivider", Divider)
 
 useThemeStore().applyTheme()
 

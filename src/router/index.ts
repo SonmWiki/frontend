@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router"
-import HomeView from "@/views/HomeView.vue"
+import DefaultView from "@/views/DefaultView.vue"
 import ArticleViewComponent from "@/components/article/ArticleViewComponent.vue"
 import CategoryArticlesView from "@/components/CategoryArticles.vue"
-import CreateArticle from "@/views/article/CreateArticle.vue"
 import ReviewView from "@/views/review/ReviewView.vue"
 import ArticlesTable from "@/components/article/ArticlesTable.vue"
 import NavigationsEditor from "@/components/navigationsEditor/NavigationsEditor.vue"
 import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
+import ArticleEditorView from "@/views/article/ArticleEditorView.vue"
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -21,7 +21,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: HomeView,
+      component: DefaultView,
       name: "home",
       children: [
         {
@@ -39,13 +39,20 @@ const router = createRouter({
           path: "categories/:id",
           component: CategoryArticlesView
         },
-        {
-          name: "create",
-          path: "create",
-          component: CreateArticle,
-          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
-        }
       ]
+    },
+    {
+      name: "createArticle",
+      path: "/articles/editor",
+      component: ArticleEditorView,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
+    },
+    {
+      name: "editArticle",
+      path: "/articles/editor/:articleId",
+      component: ArticleEditorView,
+      props: true,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
     },
     {
       name: "navigationsEditor",
