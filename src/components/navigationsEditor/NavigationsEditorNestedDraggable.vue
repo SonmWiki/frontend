@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueDraggable } from "vue-draggable-plus"
 import type { GetNavigationsTreeResponseElement } from "@/api"
-import EditorElement from "@/components/navigationsEditor/EditorElement.vue"
+import NavigationsEditorElement from "@/components/navigationsEditor/NavigationsEditorElement.vue"
 import type { SortableEvent } from "sortablejs"
 
 const model = defineModel<Array<GetNavigationsTreeResponseElement>>()
@@ -46,7 +46,7 @@ const onRemoveClicked = (id: number) => {
     @end="onElementMoved"
   >
     <li v-for="el in modelValue" :key="el.id">
-      <EditorElement
+      <NavigationsEditorElement
         :icon="el.icon"
         :name="el.name"
         :uri="el.uri"

@@ -5,6 +5,7 @@ import type { GetArticleResponse, GetRevisionHistoryResponseElement } from "@/ap
 import { wikiApi } from "@/service/WikiApiService"
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
 import useThemeStore from "@/stores/ThemeStore"
+import { isNullOrWhitespace } from "@/utils/stringUtils"
 
 const props = defineProps<{
   article: string | undefined
@@ -23,7 +24,7 @@ const selectedNewRevision: Ref<GetRevisionHistoryResponseElement | undefined> = 
 const loaded = ref(false)
 
 const loadArticles = async () => {
-  if (!props.article || props.article == "" || props.article == undefined) return
+  if (isNullOrWhitespace(props.article)) return
 
   try {
     if (newArticleData.value == undefined || newArticleData.value?.revisionId != selectedNewRevision.value?.id)

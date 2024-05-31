@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import { type Ref, ref, watch } from "vue"
-import ArticleDiffComponent from "@/components/article/ArticleDiffComponent.vue"
-import ArticleViewComponent from "@/components/article/ArticleViewComponent.vue"
+import ArticleDiff from "@/components/article/ArticleDiff.vue"
+import ArticleContent from "@/components/article/ArticleContent.vue"
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue"
 import { useRoute } from "vue-router"
 import SendReviewModal from "@/components/review/SendReviewModal.vue"
@@ -60,8 +60,8 @@ watch(
             <PrimeButton label="Leave Review" @click="dialogVisible = true"></PrimeButton>
           </div>
           <div class="w-full flex flex-row">
-            <ArticleDiffComponent v-if="selectedPreviewOption.mode === PreviewMode.DIFF" :new-revision="revisionId" :article="articleId" />
-            <ArticleViewComponent
+            <ArticleDiff v-if="selectedPreviewOption.mode === PreviewMode.DIFF" :new-revision="revisionId" :article="articleId" />
+            <ArticleContent
               v-else
               :revision="revisionId"
               :article="articleId"

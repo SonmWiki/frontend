@@ -3,9 +3,9 @@ import { onBeforeMount, type Ref, ref } from "vue"
 import useAuthStore from "@/stores/AuthStore"
 import { UserRole } from "@/types/UserRole"
 import { wikiApi } from "@/service/WikiApiService"
-import HeaderSearchComponent from "@/components/navigation/WikiHeaderSearchComponent.vue"
-import HeaderDarkModeSwitch from "@/components/ThemeSwitch.vue"
-import HeaderUserMenuComponent from "@/components/navigation/WikiHeaderUserMenu.vue"
+import WikiHeaderSearch from "@/components/navigation/WikiHeaderSearch.vue"
+import ThemeSwitch from "@/components/ThemeSwitch.vue"
+import WikiHeaderUserMenu from "@/components/navigation/WikiHeaderUserMenu.vue"
 import useSidebarStore from "@/stores/SidebarStore"
 
 const props = defineProps({
@@ -68,9 +68,9 @@ onBeforeMount(async () => {
             <i v-badge.warning="pendingRevisionCount" class="pi pi-eye line-height-2 z-3" />
           </PrimeButton>
         </RouterLink>
-        <HeaderSearchComponent />
-        <HeaderDarkModeSwitch />
-        <HeaderUserMenuComponent />
+        <WikiHeaderSearch />
+        <ThemeSwitch />
+        <WikiHeaderUserMenu />
       </template>
     </PrimeToolbar>
   </div>

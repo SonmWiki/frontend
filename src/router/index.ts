@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router"
 import DefaultView from "@/views/DefaultView.vue"
-import ArticleViewComponent from "@/components/article/ArticleViewComponent.vue"
-import CategoryArticlesView from "@/components/CategoryArticles.vue"
+import ArticleContent from "@/components/article/ArticleContent.vue"
+import CategoryArticles from "@/components/CategoryArticles.vue"
 import ReviewView from "@/views/review/ReviewView.vue"
 import ArticlesTable from "@/components/article/ArticlesTable.vue"
-import NavigationsEditor from "@/components/navigationsEditor/NavigationsEditor.vue"
+import NavigationsEditorView from "@/views/navigationsEditor/NavigationsEditorView.vue"
 import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
@@ -27,7 +27,7 @@ const router = createRouter({
         {
           name: "articles",
           path: "articles/:id",
-          component: ArticleViewComponent
+          component: ArticleContent
         },
         {
           name: "articlesTable",
@@ -37,7 +37,7 @@ const router = createRouter({
         {
           name: "categories",
           path: "categories/:id",
-          component: CategoryArticlesView
+          component: CategoryArticles
         },
       ]
     },
@@ -57,7 +57,7 @@ const router = createRouter({
     {
       name: "navigationsEditor",
       path: "/navigations/editor",
-      component: NavigationsEditor,
+      component: NavigationsEditorView,
       meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
     },
     {

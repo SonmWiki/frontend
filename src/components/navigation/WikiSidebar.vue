@@ -3,8 +3,7 @@ import { onBeforeMount, type Ref, ref } from "vue"
 import { wikiApi } from "@/service/WikiApiService"
 import { MapperService } from "@/service/MapperService"
 import type { TreeNode } from "primevue/treenode"
-import SidebarTree from "@/components/navigation/WikiSidebarTree.vue"
-import useSidebarStore from "@/stores/SidebarStore"
+import WikiSidebarTree from "@/components/navigation/WikiSidebarTree.vue"
 
 enum SidebarMode {
   NAVIGATION = "navigation",
@@ -55,8 +54,8 @@ onBeforeMount(async () => {
     :options="sidebarOptions"
     option-label="label"
   />
-  <SidebarTree v-if="selectedSidebarOption.mode == SidebarMode.NAVIGATION" v-model="navigation" />
-  <SidebarTree v-else v-model="categories" />
+  <WikiSidebarTree v-if="selectedSidebarOption.mode == SidebarMode.NAVIGATION" v-model="navigation" />
+  <WikiSidebarTree v-else v-model="categories" />
 </template>
 
 <style scoped>

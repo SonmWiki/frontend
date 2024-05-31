@@ -8,10 +8,10 @@ import {
 import { wikiApi } from "@/service/WikiApiService"
 import type { GetNavigationsTreeResponseElement } from "@/api"
 import { MapperService } from "@/service/MapperService"
-import SidebarTree from "@/components/navigation/WikiSidebarTree.vue"
+import WikiSidebarTree from "@/components/navigation/WikiSidebarTree.vue"
 import { PrimeIcons } from "primevue/api"
-import NestedDraggable from "@/components/navigationsEditor/NestedDraggable.vue"
-import UriEditor from "@/components/navigationsEditor/UriEditor.vue"
+import NavigationsEditorNestedDraggable from "@/components/navigationsEditor/NavigationsEditorNestedDraggable.vue"
+import NavigationsEditorUriEditor from "@/components/navigationsEditor/NavigationsEditorUriEditor.vue"
 import { useToast } from "primevue/usetoast"
 import { NavigationEditorService } from "@/service/NavigationEditorService"
 import { InsertNavigationCommand } from "@/commands/navigationsEditor/InsertNavigationCommand"
@@ -21,7 +21,7 @@ import { MoveNavigationCommand } from "@/commands/navigationsEditor/MoveNavigati
 import { DeleteNavigationCommand } from "@/commands/navigationsEditor/DeleteNavigationCommand"
 import { EditUriCommand } from "@/commands/navigationsEditor/EditUriCommand"
 import { useVuelidate } from "@vuelidate/core"
-import HeaderComponent from "@/components/navigation/WikiHeader.vue"
+import WikiHeader from "@/components/navigation/WikiHeader.vue"
 import SidebarLayout from "@/layouts/SidebarLayout.vue"
 
 const navigationsEditorService = new NavigationEditorService()
@@ -113,12 +113,12 @@ onMounted(() => {
 <template>
   <SidebarLayout>
     <template #header>
-      <HeaderComponent :has-sidebar-switch="true" />
+      <WikiHeader :has-sidebar-switch="true" />
     </template>
     <template #sidebar>
       <div class="h-full">
         <b>Preview</b>
-        <SidebarTree v-model="previewNavigation" />
+        <WikiSidebarTree v-model="previewNavigation" />
       </div>
     </template>
     <template #default>
@@ -160,7 +160,7 @@ onMounted(() => {
                   class="mt-2"
                 />
               </div>
-              <NestedDraggable
+              <NavigationsEditorNestedDraggable
                 :model-value="navigations"
                 class="flex-1 pt-2"
                 @icon-changed="onIconChanged"
@@ -188,9 +188,9 @@ onMounted(() => {
             :position="'top'"
             class="w-full md:w-30rem"
           >
-            <SidebarTree v-model="previewNavigation" />
+            <WikiSidebarTree v-model="previewNavigation" />
           </PrimeDialog>
-          <UriEditor
+          <NavigationsEditorUriEditor
             v-model:uri="uriEditorUri"
             v-model:visible="uriEditorVisible"
             @update:uri="onUriChanged"
