@@ -55,7 +55,7 @@ const onRemoveClicked = (id: number) => {
         @change-uri-clicked="onChangeUriClicked(el.id, el.uri)"
         @remove-clicked="onRemoveClicked(el.id)"
       />
-      <NestedDraggable
+      <NavigationsEditorNestedDraggable
         :model-value="el.children"
         class="pt-2 ml-4"
         @element-moved="(...params) => emit('elementMoved', ...params)"
