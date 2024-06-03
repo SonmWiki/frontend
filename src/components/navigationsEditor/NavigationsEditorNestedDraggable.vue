@@ -3,6 +3,7 @@ import { VueDraggable } from "vue-draggable-plus"
 import type { GetNavigationsTreeResponseElement } from "@/api"
 import NavigationsEditorElement from "@/components/navigationsEditor/NavigationsEditorElement.vue"
 import type { SortableEvent } from "sortablejs"
+import { isNullOrWhitespace } from "@/utils/stringUtils"
 
 const model = defineModel<Array<GetNavigationsTreeResponseElement>>()
 const emit = defineEmits<{
@@ -14,7 +15,12 @@ const emit = defineEmits<{
 }>()
 
 const onElementMoved = (event: SortableEvent) => {
-  emit("elementMoved", event.item.__vnode.key, event.oldIndex, event.newIndex, event.from.parentNode.__vnode.key, event.to.parentNode.__vnode.key)
+  emit("elementMoved",
+    Number.parseInt(event.item.id),
+    event.oldIndex!,
+    event.newIndex!,
+    isNullOrWhitespace(event.from.parentElement?.id) ? null : Number.parseInt(event.from.parentElement?.id!),
+    isNullOrWhitespace(event.to.parentElement?.id) ? null : Number.parseInt(event.to.parentElement?.id!))
 }
 
 const onIconChanged = (id: number, icon: string | null) => {
@@ -45,7 +51,7 @@ const onRemoveClicked = (id: number) => {
     handle=".handle"
     @end="onElementMoved"
   >
-    <li v-for="el in modelValue" :key="el.id">
+    <li v-for="el in modelValue" :id="el.id.toString()" :key="el.id" >
       <NavigationsEditorElement
         :icon="el.icon"
         :name="el.name"
