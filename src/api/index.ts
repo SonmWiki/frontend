@@ -452,18 +452,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/articles/{id}
      * @secure
      */
-    getArticle: (
-      id: string,
-      query?: {
-        /** @format uuid */
-        revisionId?: string;
-      },
-      params: RequestParams = {}
-    ) =>
+    getArticle: (id: string, params: RequestParams = {}) =>
       this.request<GetArticleResponse, ProblemDetails>({
         path: `/api/articles/${id}`,
         method: "GET",
-        query: query,
         secure: true,
         format: "json",
         ...params
@@ -500,6 +492,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<DeleteArticleResponse, ProblemDetails>({
         path: `/api/articles/${id}`,
         method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Article
+     * @name GetArticleByRevision
+     * @request GET:/api/articles/revision:{id}
+     * @secure
+     */
+    getArticleByRevision: (id: string, params: RequestParams = {}) =>
+      this.request<GetArticleResponse, ProblemDetails>({
+        path: `/api/articles/revision:${id}`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params
