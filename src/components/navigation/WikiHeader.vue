@@ -52,7 +52,7 @@ onBeforeMount(async () => {
         />
         <RouterLink to='/' class="no-underline m-1 text-color flex flex-row justify-content-center align-items-center">
           <img
-            class="p-overlay-badge flex align-items-center justify-content-center w-1rem"
+            class="p-overlay-badge flex align-items-center justify-content-center w-2rem"
             :src='appLogo'
             alt="logo"
           />
