@@ -1,9 +1,10 @@
 <script setup lang="ts">
+const footer = import.meta.env.VITE_FOOTER_CONTENT ? import.meta.env.VITE_FOOTER_CONTENT : ""
 </script>
 
 <template>
   <div class="flex flex-column align-items-center">
-    ©2024 SCMC.dev
+    {{ footer }}
   </div>
 </template>
 
