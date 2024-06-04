@@ -1,3 +1,5 @@
+@import url("editor.css");
+
 html, body {
   font-family: Inter, sans-serif;
 }
@@ -19,32 +21,4 @@ body {
 
 .link-primary:hover {
   text-decoration: underline;
-}
-
-.md-editor-dark {
-  --md-bk-color: var(--surface-ground) !important;
-}
-
-.md-editor {
-  --md-bk-color: var(--surface-ground) !important;
-}
-
-.md-editor-catalog-active > span {
-  color: var(--primary-500) !important;
-}
-
-.md-editor-catalog-link span:hover {
-  color: var(--primary-300) !important;
-}
-
-.md-editor-resize-operate {
-  background: var(--gray-800) !important;
-}
-
-.md-editor-preview p {
-  word-break: break-word;
-}
-
-.md-editor-preview td, .md-editor-preview th {
-  word-break: normal;
 }

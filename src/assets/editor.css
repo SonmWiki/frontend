@@ -1,0 +1,164 @@
+.md-editor-catalog-active > span {
+    color: var(--primary-500) !important;
+}
+
+.md-editor-catalog-link span:hover {
+    color: var(--primary-300) !important;
+}
+
+.md-editor-resize-operate {
+    background: var(--gray-800) !important;
+}
+
+.md-editor-preview p {
+    word-break: break-word;
+}
+
+.md-editor-preview td, .md-editor-preview th {
+    word-break: normal;
+}
+
+.md-editor-dark {
+    --md-bk-color: var(--surface-ground) !important;
+}
+
+.md-editor {
+    --md-bk-color: var(--surface-ground) !important;
+}
+
+.md-editor-preview {
+    --md-theme-code-before-bg-color: var(--surface-hover) !important;
+}
+
+/* INFO ALERT */
+
+.md-editor-dark .md-editor-admonition-info {
+    --md-admonition-bg-color: var(--yellow-800) !important;
+}
+
+.md-editor-admonition-info {
+    --md-admonition-bg-color: var(--yellow-200) !important;
+}
+
+/* TIP ALERT */
+
+.md-editor-admonition-tip {
+    --md-admonition-color: var(--yellow-600) !important;
+}
+
+/* ABSTRACT ALERT */
+
+.md-editor-admonition-abstract {
+    --md-admonition-color: var(--cyan-600) !important;
+}
+
+/* ATTENTION ALERT */
+
+.md-editor-dark .md-editor-admonition-attention {
+    --md-admonition-bg-color: var(--cyan-900) !important;
+}
+
+.md-editor-admonition-attention {
+    --md-admonition-bg-color: var(--cyan-100) !important;
+}
+
+/* SUCCESS ALERT */
+
+.md-editor-dark .md-editor-admonition-success {
+    --md-admonition-bg-color: var(--green-900) !important;
+}
+
+.md-editor-admonition-success {
+    --md-admonition-bg-color: var(--green-200) !important;
+}
+
+/* QUESTION ALERT [ORANGE] */
+
+.md-editor-admonition-question {
+    --md-admonition-color: var(--green-600) !important;
+}
+
+/* WARNING ALERT [ORANGE] */
+
+.md-editor-dark .md-editor-admonition-warning {
+    --md-admonition-bg-color: var(--orange-800) !important;
+}
+
+.md-editor-admonition-warning {
+    --md-admonition-bg-color: var(--orange-200) !important;
+}
+
+/* CAUTION ALERT */
+
+.md-editor-admonition-caution {
+    --md-admonition-color: var(--orange-600) !important;
+}
+
+/* EXAMPLE ALERT */
+
+.md-editor-admonition-example {
+    --md-admonition-color: var(--indigo-500) !important;
+}
+
+/* BUG ALERT */
+
+.md-editor-dark .md-editor-admonition-bug {
+    --md-admonition-bg-color: var(--indigo-800) !important;
+}
+
+.md-editor-admonition-bug {
+    --md-admonition-bg-color: var(--indigo-200) !important;
+}
+
+/* DANGER ALERT */
+
+.md-editor-dark .md-editor-admonition-danger {
+    --md-admonition-bg-color: var(--red-800) !important;
+}
+
+.md-editor-admonition-danger {
+    --md-admonition-bg-color: var(--red-300) !important;
+}
+
+/* ERROR ALERT */
+
+.md-editor-admonition-error {
+    --md-admonition-color: var(--red-600) !important;
+}
+
+/* QUOTE ALERT */
+
+.md-editor-admonition-quote {
+    --md-admonition-color: var(--bluegray-600) !important;
+}
+
+/* QUOTE ALERT */
+
+.md-editor-dark .md-editor-admonition-failure {
+    --md-admonition-bg-color: var(--bluegray-600) !important;
+}
+
+.md-editor-admonition-failure {
+    --md-admonition-bg-color: var(--bluegray-200) !important;
+}
+
+.md-editor-admonition-attention,
+.md-editor-admonition-info,
+.md-editor-admonition-success,
+.md-editor-admonition-warning,
+.md-editor-admonition-bug,
+.md-editor-admonition-danger,
+.md-editor-admonition-failure {
+    border: none !important;
+    --md-admonition-color: var(--md-theme-color) !important;
+}
+
+.md-editor-admonition-abstract,
+.md-editor-admonition-tip,
+.md-editor-admonition-question,
+.md-editor-admonition-caution,
+.md-editor-admonition-example,
+.md-editor-admonition-error,
+.md-editor-admonition-quote {
+    --md-admonition-bg-color: rgba(255, 255, 255, 0.03) !important;
+}
