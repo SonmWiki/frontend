@@ -12,6 +12,7 @@ import { isNullOrWhitespace } from "@/utils/stringUtils"
 import { PrimeIcons } from "primevue/api"
 import { useVuelidate } from "@vuelidate/core"
 import { maxLength, required } from "@vuelidate/validators"
+import useThemeStore from "@/stores/ThemeStore";
 
 const props = defineProps<{
   articleId?: string
@@ -26,6 +27,7 @@ const loadingArticle = ref(false)
 const loadingCategories = ref(false)
 const editorStore = useArticleEditorStore()
 const toast = useToast()
+const themeStore = useThemeStore()
 
 const rules = {
   title: { required, maxLength: maxLength(128) },
@@ -188,7 +190,7 @@ onUnmounted(() => {
             preview-theme='github'
             :preview="false"
             :disabled="loadingArticle"
-            theme="dark"
+            :theme="themeStore.theme"
             :toolbars-exclude="isNewArticle ? ['github'] : ['github', 'save']"
             class="w-full h-full"
             :on-save="saveDraft"
