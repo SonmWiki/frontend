@@ -169,7 +169,7 @@ watch(articleQuery, async () => {
         v-if="loadingCategories"
         width="full"
         height="8rem"
-        class="mb-2"
+        class="mb-2 fadein animation-duration-2000"
       />
       <PrimeListbox
         v-else
@@ -187,7 +187,7 @@ watch(articleQuery, async () => {
         v-if="loadingArticles"
         width="full"
         height="8rem"
-        class="mb-2"
+        class="mb-2 fadein animation-duration-2000"
       />
       <PrimeListbox
         v-else

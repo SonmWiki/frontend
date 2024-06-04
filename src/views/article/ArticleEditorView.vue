@@ -144,7 +144,7 @@ onUnmounted(() => {
         <div class="flex justify-content-between w-full mb-5">
           <div>
             <PrimeFloatLabel class="w-full md:20rem">
-              <PrimeSkeleton v-if="loadingArticle" class="h-full w-full md:w-20rem" />
+              <PrimeSkeleton v-if="loadingArticle" class="h-full w-full md:w-20rem fadein animation-duration-2000" />
               <PrimeInputText
                 id="title"
                 v-model="title"

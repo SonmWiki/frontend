@@ -136,11 +136,11 @@ load()
 
   <div v-if="loading" class="flex justify-content-center flex-column align-items-center text-center">
     <h1>
-      <PrimeSkeleton width="25rem" class="mb-2"></PrimeSkeleton>
+      <PrimeSkeleton width="25rem" class="mb-2 fadein animation-duration-2000"></PrimeSkeleton>
     </h1>
-    <PrimeSkeleton width="15rem" class="mb-2"></PrimeSkeleton>
-    <PrimeSkeleton width="20rem" class="mb-2"></PrimeSkeleton>
-    <PrimeSkeleton width="10rem" class="mb-2"></PrimeSkeleton>
+    <PrimeSkeleton width="15rem" class="mb-2 fadein animation-duration-2000"></PrimeSkeleton>
+    <PrimeSkeleton width="20rem" class="mb-2 fadein animation-duration-2000"></PrimeSkeleton>
+    <PrimeSkeleton width="10rem" class="mb-2 fadein animation-duration-2000"></PrimeSkeleton>
   </div>
 </template>
 

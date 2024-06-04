@@ -157,7 +157,7 @@ onMounted(() => {
                   :key="i"
                   width="full"
                   height="2rem"
-                  class="mt-2"
+                  class="mt-2 fadein animation-duration-2000"
                 />
               </div>
               <NavigationsEditorNestedDraggable
