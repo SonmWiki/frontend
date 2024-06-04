@@ -33,7 +33,7 @@ const items: Ref<MenuItem[]> = ref([
         icon: "pi pi-pencil",
         visible: () => authStore.hasRole(UserRole.USER),
         command: () => {
-          router.push({ name: "createArticle" })
+          router.push({ name: "articleEditor" })
         }
       },
       {

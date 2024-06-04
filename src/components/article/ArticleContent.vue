@@ -6,6 +6,10 @@ import { useToast } from "primevue/usetoast"
 import { wikiApi } from "@/service/WikiApiService"
 import type { GetArticleResponse } from "@/api"
 import useThemeStore from "@/stores/ThemeStore"
+import { PrimeIcons } from "primevue/api"
+import router from "@/router"
+import useAuthStore from "@/stores/AuthStore"
+import { UserRole } from "@/types/UserRole"
 
 const props = defineProps<{
   articleId?: string
@@ -15,6 +19,7 @@ const props = defineProps<{
 
 const toast = useToast()
 const themeStore = useThemeStore()
+const authStore = useAuthStore()
 
 const popup = ref()
 const articleData: Ref<GetArticleResponse | undefined> = ref()
@@ -52,6 +57,10 @@ const copyLink = () => {
   togglePopup(this)
 }
 
+const editArticle = () => {
+  router.push({name: "articleEditor", params: { articleId: props.articleId }})
+}
+
 watch(
   () => props.articleId,
   () => {
@@ -80,6 +89,15 @@ loadArticle()
           </div>
           <div class="flex align-items-center justify-content-between">
             <PrimeButton
+              v-if="authStore.hasRole(UserRole.USER) || authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN)"
+              class="text-left"
+              :icon="PrimeIcons.PENCIL"
+              label="Edit this article"
+              size="small"
+              text
+              @click="editArticle"
+            />
+            <PrimeButton
               severity="secondary"
               style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
               size="small"
@@ -93,7 +111,7 @@ loadArticle()
                 <PrimeButton
                   class="text-left"
                   icon="pi pi-share-alt"
-                  label="Copy Link"
+                  label="Copy link"
                   size="small"
                   text
                   @click="copyLink"
