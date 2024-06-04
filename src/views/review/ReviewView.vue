@@ -38,6 +38,10 @@ watch(
     revisionId.value = route.params.revision as string
   }
 )
+const onReviewSent = () => {
+  router.replace( { name: "review" })
+}
+
 </script>
 
 <template>
@@ -75,7 +79,7 @@ watch(
       <WikiFooter/>
     </template>
   </SidebarLayout>
-  <SendReviewModal v-model:dialog-visible="dialogVisible" v-model:revision-id="revisionId" />
+  <SendReviewModal v-model:dialog-visible="dialogVisible" :revision-id="revisionId" @review-sent="onReviewSent" />
 </template>
 
 <style scoped>

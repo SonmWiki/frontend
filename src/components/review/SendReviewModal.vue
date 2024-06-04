@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ModelRef, type Ref, ref, watch } from "vue"
-import { maxLength, minLength, required } from "@vuelidate/validators"
 import { ref } from "vue"
 import { maxLength, required } from "@vuelidate/validators"
 import { wikiApi } from "@/service/WikiApiService"
 import { useVuelidate } from "@vuelidate/core"
 import { useToast } from "primevue/usetoast"
-import router from "@/router"
 import { ReviewStatus } from "@/api"
 import { AppConstants } from "@/constants/AppConstants"
 
@@ -15,7 +12,14 @@ interface LabledReviewStatus {
   status: ReviewStatus
 }
 
-const revisionId = defineModel<string>("revisionId", { required: true })
+const props = defineProps<{
+  revisionId: string
+}>()
+
+const emit = defineEmits<{
+  reviewSent: []
+}>()
+
 const dialogVisible = defineModel<boolean>("dialogVisible", {default: false})
 const message = ref("")
 const toast = useToast()
@@ -35,29 +39,22 @@ vuelidate.value.$touch()
 
 const sendReview = async () => {
   try {
-    const result = (await wikiApi.api.reviewArticleRevision(revisionId.value, {
+    const result = (await wikiApi.api.reviewArticleRevision(props.revisionId, {
       status: selectedOption.value.status,
       review: message.value
     })).data
     dialogVisible.value = false
     toast.add({ severity: "success", summary: "Review Submitted!", detail: `id: ${result.id}`, life: 3000 })
-
-    //message.value = ""
-    //selectedOption.value = reviewOptions[0]
-
-    await router.push({ name: "review" })
+    onReviewSent()
   } catch (e) {
     toast.add({ severity: "error", summary: "An error occurred", detail: "Couldn't send the review", life: 3000 })
   }
 }
 
-watch(selectedOption, () =>{
-  vuelidate.value.selectedOption.$touch()
-})
+const onReviewSent = () => {
+  emit("reviewSent")
+}
 
-watch(message, () =>{
-  vuelidate.value.message.$touch()
-})
 </script>
 
 <template>
