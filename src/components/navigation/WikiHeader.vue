@@ -15,6 +15,7 @@ const props = defineProps({
 const authStore = useAuthStore()
 const sidebarStore = useSidebarStore()
 const appName = import.meta.env.VITE_APP_NAME ? import.meta.env.VITE_APP_NAME : "Wiki"
+const appLogo = import.meta.env.VITE_APP_LOGO ? import.meta.env.VITE_APP_LOGO : "https://scmc.dev/img/catfish.png"
 
 const pendingRevisionCount: Ref<number> = ref(0)
 
@@ -52,7 +53,7 @@ onBeforeMount(async () => {
         <RouterLink to='/' class="no-underline m-1 text-color flex flex-row justify-content-center align-items-center">
           <img
             class="p-overlay-badge flex align-items-center justify-content-center w-1rem"
-            src="https://scmc.dev/img/catfish.png"
+            :src='appLogo'
             alt="logo"
           />
           <b class="2">{{ appName }}</b>
