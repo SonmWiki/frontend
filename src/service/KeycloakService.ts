@@ -1,4 +1,4 @@
-import Keycloak, { type KeycloakInitOptions } from "keycloak-js"
+import Keycloak, { type KeycloakInitOptions, type KeycloakLoginOptions } from "keycloak-js"
 import { keycloakJsConfig, type KeycloakJsConfig } from "@/config/keycloakJsConfig"
 import { type AuthStoreReturnType } from "@/stores/AuthStore"
 import router from "@/router"
@@ -25,8 +25,8 @@ export class KeycloakService {
     return this.keycloakInitialized
   }
 
-  async login(): Promise<void> {
-    await this.keycloakInstance.login()
+  async login(options: KeycloakLoginOptions | undefined = undefined): Promise<void> {
+    await this.keycloakInstance.login(options)
   }
 
   async logout(): Promise<void> {
