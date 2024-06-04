@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ModelRef, type Ref, ref, watch } from "vue"
 import { maxLength, minLength, required } from "@vuelidate/validators"
+import { ref } from "vue"
+import { maxLength, required } from "@vuelidate/validators"
 import { wikiApi } from "@/service/WikiApiService"
 import { useVuelidate } from "@vuelidate/core"
 import { useToast } from "primevue/usetoast"
@@ -26,12 +28,10 @@ const reviewOptions: Array<LabledReviewStatus> = [
 const selectedOption = ref<LabledReviewStatus>(reviewOptions[0])
 
 const rules = {
-  message: { maxLength: maxLength(1024) },
-  selectedOption: { required }
+  message: { required, maxLength: maxLength(1024) },
 }
-const vuelidate = useVuelidate(
-  rules, { message: message, selectedOption: selectedOption }, { $lazy: true }
-)
+const vuelidate = useVuelidate(rules, { message: message })
+vuelidate.value.$touch()
 
 const sendReview = async () => {
   try {
@@ -78,12 +78,8 @@ watch(message, () =>{
         :options="reviewOptions"
         placeholder="Select a Status"
         class="w-full md:w-14rem"
-        :class="{ 'p-invalid': vuelidate.selectedOption.$errors[0] }"
       />
       <label for="dropdown">Reviews status</label>
-      <PrimeTag v-for="error in vuelidate.selectedOption.$errors" :key="error.$uid" severity="danger">
-        {{ error.$message }}
-      </PrimeTag>
     </PrimeFloatLabel>
     <PrimeFloatLabel class="mt-5">
       <PrimeTextarea
