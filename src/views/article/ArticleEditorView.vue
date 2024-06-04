@@ -192,6 +192,7 @@ onUnmounted(() => {
             :toolbars-exclude="isNewArticle ? ['github'] : ['github', 'save']"
             class="w-full h-full"
             :on-save="saveDraft"
+            no-upload-img
           />
           <PrimeTag v-for="error in vuelidate.content.$errors" :key="error.$uid" severity="danger">
             {{ error.$message }}
