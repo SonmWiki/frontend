@@ -43,16 +43,9 @@ const router = createRouter({
       ]
     },
     {
-      name: "createArticle",
-      path: "/articles/editor",
+      name: "articleEditor",
+      path: "/articles/editor/:articleId?",
       component: ArticleEditorView,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
-    },
-    {
-      name: "editArticle",
-      path: "/articles/editor/:articleId",
-      component: ArticleEditorView,
-      props: true,
       meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
     },
     {
