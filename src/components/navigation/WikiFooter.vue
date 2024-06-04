@@ -1,10 +1,12 @@
 <script setup lang="ts">
-const footer = import.meta.env.VITE_FOOTER_CONTENT ? import.meta.env.VITE_FOOTER_CONTENT : ""
+
+const appFullName = import.meta.env.VITE_APP_FULL_NAME ? import.meta.env.VITE_APP_FULL_NAME : "SCMC.dev"
+
 </script>
 
 <template>
   <div class="flex flex-column align-items-center">
-    {{ footer }}
+    ©{{ (new Date()).getFullYear() }} {{ appFullName }}
   </div>
 </template>
 
