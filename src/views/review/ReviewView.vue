@@ -1,10 +1,9 @@
 <script setup lang="ts">
 
-import { type Ref, ref, watch } from "vue"
+import { type Ref, ref } from "vue"
 import ArticleDiff from "@/components/article/ArticleDiff.vue"
 import ArticleContent from "@/components/article/ArticleContent.vue"
 import PendingReviewsList from "@/components/review/PendingReviewsList.vue"
-import { useRoute } from "vue-router"
 import SendReviewModal from "@/components/review/SendReviewModal.vue"
 import WikiHeader from "@/components/navigation/WikiHeader.vue"
 import SidebarLayout from "@/layouts/SidebarLayout.vue"
@@ -66,14 +65,9 @@ const onReviewSent = () => {
             />
             <PrimeButton label="Leave Review" @click="dialogVisible = true"></PrimeButton>
           </div>
-          <div class="w-full flex flex-row">
-            <ArticleDiff v-if="selectedPreviewOption.mode === PreviewMode.DIFF" :new-revision="revisionId" :article="articleId" />
-            <ArticleContent
-              v-else
-              :revision="revisionId"
-              :article="articleId"
-              :hide-catalog="true"
-            />
+          <div v-if="!isNullOrWhitespace(revisionId)" class="w-full">
+            <ArticleDiff v-if="selectedPreviewOption.mode === PreviewMode.DIFF" :new-revision-id="revisionId" />
+            <ArticleContent v-else :revision-id="revisionId" :hide-catalog="true" />
           </div>
         </div>
       </div>

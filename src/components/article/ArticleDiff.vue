@@ -7,7 +7,6 @@ import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
 import useThemeStore from "@/stores/ThemeStore"
 
 const props = defineProps<{
-  articleId?: string
   newRevisionId?: string
   oldRevisionId?: string
 }>()
@@ -20,23 +19,23 @@ const oldArticleData: Ref<GetArticleResponse | undefined> = ref()
 const selectedOldRevision: Ref<GetRevisionHistoryResponseElement | undefined> = ref()
 const selectedNewRevision: Ref<GetRevisionHistoryResponseElement | undefined> = ref()
 
-const loaded = ref(false)
+const loading = ref(false)
 
 const loadArticles = async () => {
-  if (!props.articleId) return
+  if (!props.newRevisionId) return
 
   try {
+    loading.value = true
+
     if (newArticleData.value == undefined || newArticleData.value?.revisionId != selectedNewRevision.value?.id)
-      newArticleData.value = (await wikiApi.api.getArticle(props.articleId,
-        { revisionId: selectedNewRevision.value?.id ? selectedNewRevision.value.id : props.newRevisionId }
-      )).data
+      newArticleData.value = (await wikiApi.api.getArticleByRevision(selectedNewRevision.value?.id ? selectedNewRevision.value.id : props.newRevisionId)).data
 
-    if (oldArticleData.value == undefined || oldArticleData.value?.revisionId != selectedOldRevision.value?.id)
-      oldArticleData.value = (await wikiApi.api.getArticle(props.articleId,
-        { revisionId: selectedOldRevision.value?.id ? selectedOldRevision.value.id : props.oldRevisionId }
-      )).data
+    if ((oldArticleData.value == undefined || oldArticleData.value?.revisionId != selectedOldRevision.value?.id) && props.oldRevisionId)
+      oldArticleData.value = (await wikiApi.api.getArticleByRevision(selectedOldRevision.value?.id ? selectedOldRevision.value.id : props.oldRevisionId)).data
+    else if(newArticleData.value?.id)
+      oldArticleData.value = (await wikiApi.api.getArticle(newArticleData.value?.id)).data;
 
-    loaded.value = true
+    loading.value = false
   } catch (error) {
     console.error(error)
   }
@@ -60,27 +59,39 @@ watch(
     loadArticles()
   }
 )
+
+watch(
+  () => selectedNewRevision.value,
+  () => {
+    loadArticles()
+  }
+)
+watch(
+  () => selectedOldRevision.value,
+  () => {
+    loadArticles()
+  }
+)
 </script>
 
 <template>
   <div class="flex flex-column w-full h-full">
-    <div v-if="loaded" class="flex flex-row flex-wrap gap-2 justify-content-center w-full">
+    <div class="flex flex-row flex-wrap gap-2 justify-content-center w-full">
       <RevisionHistoryList
-        v-if="oldArticleData"
-        v-model:selectedRevision="selectedOldRevision"
-        :on-update="loadArticles"
+        v-model:selected-revision="selectedOldRevision"
         :article="oldArticleData"
+        :disabled="loading || !oldArticleData"
       />
       <PrimeButton
         icon="pi pi-arrow-right-arrow-left"
         aria-label="swap"
         text
+        :disabled="loading"
         @click="swap"
       />
       <RevisionHistoryList
-        v-if="newArticleData"
-        v-model:selectedRevision="selectedNewRevision"
-        :on-update="loadArticles"
+        v-model:selected-revision="selectedNewRevision"
+        :disabled="loading || !newArticleData"
         :article="newArticleData"
       />
     </div>
