@@ -3,6 +3,11 @@ import SidebarLayout from "@/layouts/SidebarLayout.vue"
 import WikiHeader from "@/components/navigation/WikiHeader.vue"
 import WikiSidebar from "@/components/navigation/WikiSidebar.vue"
 import WikiFooter from "@/components/navigation/WikiFooter.vue"
+import router from "@/router"
+import HomeView from "@/views/HomeView.vue"
+import { computed } from "vue"
+
+const showHomePage = computed(() => router.currentRoute.value.name == "home")
 </script>
 
 <template>
@@ -14,7 +19,8 @@ import WikiFooter from "@/components/navigation/WikiFooter.vue"
       <WikiSidebar />
     </template>
     <template #default>
-      <router-view />
+      <HomeView v-if="showHomePage"/>
+      <router-view v-else />
     </template>
     <template #footer>
       <WikiFooter />
