@@ -3,53 +3,58 @@ import moment from "moment/moment"
 import { wikiApi } from "@/service/WikiApiService"
 import { type GetPendingRevisionsResponseElement } from "@/api"
 import { type Ref, ref, watch } from "vue"
-import router from "@/router"
-import { useRoute } from "vue-router"
-import useSidebarStore from "@/stores/SidebarStore"
+import { isNullOrWhitespace } from "@/utils/stringUtils"
+
+const props = defineProps<{
+  selectedRevision?: string
+}>()
+const emit = defineEmits<{
+  select: [id?: string]
+}>()
 
 const revisions: Ref<GetPendingRevisionsResponseElement[]> = ref([])
-const route = useRoute()
-const empty = ref(false)
+const loading = ref(false)
 
-const revisionId = ref(route.params.revision)
-
-const select = async (revision: GetPendingRevisionsResponseElement) => {
-  revisionId.value = revision.revisionId
-
-  await router.push({ name: "reviewView", params: { article: revision.articleId, revision: revision.revisionId } })
+const select = (revision: string | undefined) => {
+  emit("select", revision)
 }
 const load = async () => {
+  loading.value = true
   try {
     revisions.value = (await wikiApi.api.getPendingRevisions()).data.data
-    if (revisions.value.length == 0) return empty.value = true
-    if (route.params.revision == undefined) await select(revisions.value[0])
+    loading.value = false
+    if (revisions.value.length == 0) return
+    select(revisions.value[0].revisionId)
   } catch (error) {
     console.error(error)
   }
 }
 
-watch(
-  () => route.params.revision,
-  () => {
-    if (route.params.revision == undefined)
-      load()
-  }
-)
+watch(props, () => {
+  if(isNullOrWhitespace(props.selectedRevision))
+    load()
+})
 
 load()
 </script>
 
 <template>
+  <div v-if="loading">
+    <PrimeSkeleton class="fadein animation-duration-2000 h-7rem mb-2" />
+    <PrimeSkeleton class="fadein animation-duration-2000 h-7rem mb-2" />
+    <PrimeSkeleton class="fadein animation-duration-2000 h-7rem mb-2" />
+  </div>
   <div
     v-for="revision in revisions"
+    v-else
     :key="revision.revisionId"
-    :class="revisionId == revision.revisionId ? 'border-primary surface-hover' : 'surface-border'"
-    class="border-1 border-round w-full cursor-pointer hover:surface-hover p-2"
-    @click="select(revision)"
+    :class="selectedRevision == revision.revisionId ? 'border-primary surface-hover' : 'surface-border'"
+    class="border-1 border-round w-full cursor-pointer hover:surface-hover p-2 mb-2 fadeinleft animation-duration-200"
+    @click="select(revision.revisionId)"
   >
     <div class="text-lg font-bold pb-1">{{ revision.articleIdTitle }}</div>
     <RouterLink
-      :to="{name: 'articles', params: {id: revision.articleId}}"
+      :to="{name: 'articles', params: {articleId: revision.articleId}}"
       class="link-primary text-xs"
       target="_blank"
     >

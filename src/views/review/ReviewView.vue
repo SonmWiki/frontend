@@ -9,6 +9,8 @@ import SendReviewModal from "@/components/review/SendReviewModal.vue"
 import WikiHeader from "@/components/navigation/WikiHeader.vue"
 import SidebarLayout from "@/layouts/SidebarLayout.vue"
 import WikiFooter from "@/components/navigation/WikiFooter.vue"
+import router from "@/router"
+import { isNullOrWhitespace } from "@/utils/stringUtils"
 
 enum PreviewMode {
   PREVIEW = "preview",
@@ -47,12 +49,16 @@ const onReviewSent = () => {
       <WikiHeader :has-sidebar-switch="true" />
     </template>
     <template #sidebar>
-      <PendingReviewsList />
+      <h2 class="m-0">Pending revisions</h2>
+      <PrimeDivider class="mb-5" />
+      <PendingReviewsList ref="pendingReviewsList" :selected-revision="revisionId" @select="onRevisionSelected" />
     </template>
     <template #default>
+      <h2 class="m-0">Revision review</h2>
+      <PrimeDivider class="mb-5" />
       <div class="flex-container w-full">
-        <div class="container flex flex-column justify-content-center">
-          <div class="flex justify-content-between">
+        <div v-if="revisionId" class="container flex flex-column justify-content-center">
+          <div class="flex justify-content-between mb-3">
             <PrimeSelectButton
               v-model="selectedPreviewOption"
               :options="previewOptions"
