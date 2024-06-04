@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type Ref, ref, watch } from "vue"
-import { useRoute } from "vue-router"
 import { MdCatalog, MdPreview } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { useToast } from "primevue/usetoast"
@@ -9,19 +8,16 @@ import type { GetArticleResponse } from "@/api"
 import useThemeStore from "@/stores/ThemeStore"
 
 const props = defineProps<{
-  article?: string
-  revision?: string
+  articleId?: string
+  revisionId?: string
   hideCatalog?: boolean
 }>()
 
-const route = useRoute()
 const toast = useToast()
 const themeStore = useThemeStore()
 
 const popup = ref()
 const articleData: Ref<GetArticleResponse | undefined> = ref()
-const articleId = ref("")
-const revisionId: Ref<string | undefined> = ref()
 const loading = ref(true)
 const error = ref()
 
@@ -32,18 +28,14 @@ const loadArticle = async () => {
   articleData.value = undefined
   loading.value = true
 
-  if (props.revision)
-    revisionId.value = props.revision
-  else revisionId.value = revisionId.value ? (revisionId.value as string) : undefined
-
-  if (props.article)
-    articleId.value = props.article
-
-  if (articleId.value == undefined) return
-
   try {
     error.value = undefined
-    articleData.value = (await wikiApi.api.getArticle(articleId.value, { revisionId: revisionId.value })).data
+    if (!props.revisionId) {
+      if (props.articleId == undefined) return
+      articleData.value = (await wikiApi.api.getArticle(props.articleId)).data
+    }
+    else
+      articleData.value = (await wikiApi.api.getArticleByRevision(props.revisionId)).data
   } catch (err) {
     console.log(err)
     error.value = err
@@ -56,98 +48,94 @@ const togglePopup = (event: any) => {
 
 const copyLink = () => {
   toast.add({ severity: "info", summary: "Link Copied!", life: 3000 })
-  navigator.clipboard.writeText(window.location.origin + route.path)
+  navigator.clipboard.writeText(window.location.toString())
   togglePopup(this)
 }
 
-const load = async () => {
-  articleId.value = route.params.id as string
-  revisionId.value = route.query.revision as string
-  await loadArticle()
-}
-
 watch(
-  () => route.params.id,
+  () => props.articleId,
   () => {
-    load()
+    loadArticle()
   }
 )
 
 watch(
-  () => props.revision,
+  () => props.revisionId,
   () => {
-    load()
+    loadArticle()
   }
 )
 
-load()
+loadArticle()
 </script>
 
 <template>
-  <PrimeToast position="top-center"></PrimeToast>
-
-  <div class="w-full">
-    <div v-if="articleData && articleData.content != null" class="content pt-4">
-      <div class="title flex align-items-center justify-content-between ml-4 mr-4">
-        <div>
-          <h1 class="font-bold mb-0 mt-0">{{ articleData.title }}</h1>
-        </div>
-        <div class="flex align-items-center justify-content-between">
-          <PrimeButton
-            severity="secondary"
-            style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
-            size="small"
-            icon="pi pi-ellipsis-v"
-            text
-            rounded
-            @click="togglePopup"
-          />
-          <PrimeOverlayPanel ref="popup" :pt="{content: {style: 'padding: 0.5rem'}}">
-            <div class="flex flex-column">
-              <PrimeButton
-                class="text-left"
-                icon="pi pi-share-alt"
-                label="Copy Link"
-                size="small"
-                text
-                @click="copyLink"
-              />
-            </div>
+  <PrimeToast position="top-center" />
+  <div class="flex">
+    <div class="w-full">
+      <div v-if="articleData && articleData.content != null" class="content pt-4">
+        <div class="title flex align-items-center justify-content-between ml-4 mr-4">
+          <div>
+            <h1 class="font-bold mb-0 mt-0">{{ articleData.title }}</h1>
+          </div>
+          <div class="flex align-items-center justify-content-between">
+            <PrimeButton
+              severity="secondary"
+              style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
+              size="small"
+              icon="pi pi-ellipsis-v"
+              text
+              rounded
+              @click="togglePopup"
+            />
+            <PrimeOverlayPanel ref="popup" :pt="{content: {style: 'padding: 0.5rem'}}">
+              <div class="flex flex-column">
+                <PrimeButton
+                  class="text-left"
+                  icon="pi pi-share-alt"
+                  label="Copy Link"
+                  size="small"
+                  text
+                  @click="copyLink"
+                />
+              </div>
             </PrimeOverlayPanel>
+          </div>
+        </div>
+        <div>
+          <MdPreview
+            language="en-US"
+            preview-theme='github'
+            :theme="themeStore.theme"
+            :editor-id="id"
+            :model-value="articleData.content"
+          />
         </div>
       </div>
-      <div>
-        <MdPreview
+      <div v-if="error && !articleData" class="content pt-4">
+        <div class="title flex align-items-center justify-content-between ml-4 mr-4">
+          <h1 class="font-bold mb-0 mt-0">{{ error.response.status }} {{ error.response.statusText }}</h1>
+        </div>
+      </div>
+      <div v-if="!error && !articleData && loading" class="content pt-4">
+        <div class="flex flex-column gap-2 ml-4 mr-4">
+          <PrimeSkeleton width="45%" height="2rem" class="fadein animation-duration-2000"></PrimeSkeleton>
+          <PrimeSkeleton width="100%" height="8rem" class="fadein animation-duration-2000"></PrimeSkeleton>
+          <PrimeSkeleton width="100%" height="8rem" class="fadein animation-duration-2000"></PrimeSkeleton>
+        </div>
+      </div>
+    </div>
+    <div class="menu catalog">
+      <div v-if="articleData" class="pt-4 sticky" style="top: 2rem;">
+        <MdCatalog
           language="en-US"
           preview-theme='github'
           :theme="themeStore.theme"
           :editor-id="id"
-          :model-value="articleData.content"
+          :scroll-element="scrollElement"
+          :scroll-element-offset-top="48"
         />
       </div>
-    </div>
-    <div v-if="error && !articleData" class="content pt-4">
-      <div class="title flex align-items-center justify-content-between ml-4 mr-4">
-        <h1 class="font-bold mb-0 mt-0">{{ error.response.status }} {{ error.response.statusText }}</h1>
-      </div>
-    </div>
-    <div v-if="!error && !articleData && loading" class="content pt-4">
-      <div class="flex flex-column gap-2 ml-4 mr-4">
-        <PrimeSkeleton width="45%" height="2rem"></PrimeSkeleton>
-          <PrimeSkeleton width="100%" height="8rem"></PrimeSkeleton>
-            <PrimeSkeleton width="100%" height="8rem"></PrimeSkeleton>
-      </div>
-    </div>
-  </div>
-  <div v-if="!hideCatalog" class="menu catalog">
-    <div v-if="articleData" class="pt-4 sticky" style="top: 80px;">
-      <MdCatalog
-        language="en-US"
-        preview-theme='github'
-        :theme="themeStore.theme"
-        :editor-id="id"
-        :scroll-element="scrollElement"
-      />
     </div>
   </div>
 </template>

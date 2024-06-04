@@ -26,8 +26,9 @@ const router = createRouter({
       children: [
         {
           name: "articles",
-          path: "articles/:id",
-          component: ArticleContent
+          path: "articles/:articleId",
+          component: ArticleContent,
+          props: true
         },
         {
           name: "articlesTable",
