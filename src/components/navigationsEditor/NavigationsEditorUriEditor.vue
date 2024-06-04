@@ -25,7 +25,7 @@ const previewUri: Ref<string | null> = ref(null)
 const inputDisabled = ref(false)
 
 const rules = {
-  previewUri: { minLength: minLength(10) ,maxLength: maxLength(2048) }
+  previewUri: { required, maxLength: maxLength(2048) }
 }
 
 const vuelidate = useVuelidate(rules, { previewUri: previewUri }, { $lazy: true })
