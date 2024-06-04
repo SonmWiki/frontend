@@ -44,3 +44,7 @@ body {
 .md-editor-preview p {
   word-break: break-word;
 }
+
+.md-editor-preview td, .md-editor-preview th {
+  word-break: normal;
+}
