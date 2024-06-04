@@ -63,17 +63,10 @@ const router = createRouter({
     },
     {
       name: "review",
-      path: "/review",
+      path: "/review/:revisionId?",
       component: ReviewView,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
-      children: [
-        {
-          name: "reviewView",
-          path: ":article/:revision",
-          component: ReviewView,
-          meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
-        }
-      ]
+      props: true,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
     }
   ]
 })

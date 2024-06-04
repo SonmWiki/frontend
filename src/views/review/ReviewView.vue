@@ -20,24 +20,21 @@ interface PreviewOption {
   mode: PreviewMode
 }
 
+const props = defineProps<{
+  revisionId?: string
+}>()
+
+const pendingReviewsList = ref<InstanceType<typeof PendingReviewsList> | null>(null)
+
 const previewOptions: Array<PreviewOption> = [
   { label: "Normal view", mode: PreviewMode.PREVIEW },
   { label: "Diff view", mode: PreviewMode.DIFF }
 ]
 const selectedPreviewOption: Ref<PreviewOption> = ref(previewOptions[0])
 const dialogVisible = ref(false)
-const route = useRoute()
-
-const articleId: Ref<string> = ref(route.params.article as string)
-const revisionId: Ref<string> = ref(route.params.revision as string)
-
-watch(
-  () => route.params.revision,
-  () => {
-    articleId.value = route.params.article as string
-    revisionId.value = route.params.revision as string
-  }
-)
+const onRevisionSelected = (value: any) => {
+  router.replace({ name: "review", params: { revisionId: value } })
+}
 const onReviewSent = () => {
   router.replace( { name: "review" })
 }
