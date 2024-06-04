@@ -76,6 +76,11 @@ router.beforeEach(async (to, from) => {
 router.beforeEach(async (to, from) => {
   const authStore = useAuthStore()
   let hasAnyRole = to.meta.allowedRoles === undefined
+  const requireAuthentication = to.meta.allowedRoles !== undefined
+
+  if(requireAuthentication && !authStore.isAuthenticated) {
+    await keycloakService.login({ redirectUri: `${window.location.origin}/${to.fullPath}` })
+  }
 
   to.meta.allowedRoles?.forEach((role) => {
     if (authStore.hasRole(role)) {

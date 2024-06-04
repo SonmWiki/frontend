@@ -91,7 +91,7 @@ load()
               v-for="article in articles"
               :key="article.id"
               class="hover:surface-hover p-2 border-round w-full no-underline text-color"
-              :to="{name: 'articles', params: {id: article.id}}"
+              :to="{name: 'articles', params: {articleId: article.id}}"
             >
               {{ article.title }}
             </RouterLink>

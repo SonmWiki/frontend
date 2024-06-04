@@ -15,6 +15,7 @@ const props = defineProps<{
   articleId?: string
   revisionId?: string
   hideCatalog?: boolean
+  hideTitle?: boolean
 }>()
 
 const toast = useToast()
@@ -38,8 +39,7 @@ const loadArticle = async () => {
     if (!props.revisionId) {
       if (props.articleId == undefined) return
       articleData.value = (await wikiApi.api.getArticle(props.articleId)).data
-    }
-    else
+    } else
       articleData.value = (await wikiApi.api.getArticleByRevision(props.revisionId)).data
   } catch (err) {
     console.log(err)
@@ -58,7 +58,7 @@ const copyLink = () => {
 }
 
 const editArticle = () => {
-  router.push({name: "articleEditor", params: { articleId: props.articleId }})
+  router.push({ name: "articleEditor", params: { articleId: props.articleId } })
 }
 
 watch(
@@ -143,7 +143,7 @@ loadArticle()
         </div>
       </div>
     </div>
-    <div class="menu catalog">
+    <div v-if="!hideCatalog" class="menu catalog">
       <div v-if="articleData" class="pt-4 sticky" style="top: 2rem;">
         <MdCatalog
           language="en-US"
