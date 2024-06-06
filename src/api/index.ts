@@ -45,10 +45,6 @@ export interface EditArticleResponse {
   id: string;
 }
 
-export interface EditCategoryResponse {
-  id: string;
-}
-
 export interface GetArticleResponse {
   id: string;
   title: string;
@@ -237,11 +233,6 @@ export interface SerArticleRedirectRequest {
 
 export interface SetRedirectResponse {
   id: string;
-}
-
-export interface UpdateCategoryRequest {
-  name: string;
-  parentId: string | null;
 }
 
 export interface UpdateNavigationsTreeCommandElement {
@@ -686,25 +677,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/categories/${id}/articles`,
         method: "GET",
         secure: true,
-        format: "json",
-        ...params
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Category
-     * @name UpdateCategory
-     * @request PUT:/api/categories/{id}
-     * @secure
-     */
-    updateCategory: (id: string, data: UpdateCategoryRequest, params: RequestParams = {}) =>
-      this.request<EditCategoryResponse, ProblemDetails>({
-        path: `/api/categories/${id}`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params
       }),
