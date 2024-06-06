@@ -7,8 +7,7 @@ import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
 import useThemeStore from "@/stores/ThemeStore"
 
 const props = defineProps<{
-  newRevisionId?: string
-  oldRevisionId?: string
+  newRevisionId: string
 }>()
 
 const themeStore = useThemeStore()
@@ -19,23 +18,32 @@ const oldArticleData: Ref<GetArticleResponse | undefined> = ref()
 const selectedOldRevision: Ref<GetRevisionHistoryResponseElement | undefined> = ref()
 const selectedNewRevision: Ref<GetRevisionHistoryResponseElement | undefined> = ref()
 
-const loading = ref(false)
+const loadingOld = ref(false)
+const loadingNew = ref(false)
 
-const loadArticles = async () => {
-  if (!props.newRevisionId) return
-
+const loadOldArticle = async () => {
   try {
-    loading.value = true
+    loadingOld.value = true
+
+    if (selectedOldRevision.value?.id && oldArticleData.value?.revisionId != selectedOldRevision.value?.id)
+      oldArticleData.value = (await wikiApi.api.getArticleByRevision(selectedOldRevision.value.id)).data
+    else if(newArticleData?.value?.id)
+      oldArticleData.value = (await wikiApi.api.getArticle(newArticleData.value.id)).data
+
+    loadingOld.value = false
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const loadNewArticle = async () => {
+  try {
+    loadingNew.value = true
 
     if (newArticleData.value == undefined || newArticleData.value?.revisionId != selectedNewRevision.value?.id)
       newArticleData.value = (await wikiApi.api.getArticleByRevision(selectedNewRevision.value?.id ? selectedNewRevision.value.id : props.newRevisionId)).data
 
-    if ((oldArticleData.value == undefined || oldArticleData.value?.revisionId != selectedOldRevision.value?.id) && props.oldRevisionId)
-      oldArticleData.value = (await wikiApi.api.getArticleByRevision(selectedOldRevision.value?.id ? selectedOldRevision.value.id : props.oldRevisionId)).data
-    else if(newArticleData.value?.id)
-      oldArticleData.value = (await wikiApi.api.getArticle(newArticleData.value?.id)).data;
-
-    loading.value = false
+    loadingNew.value = false
   } catch (error) {
     console.error(error)
   }
@@ -47,7 +55,7 @@ const swap = () => {
   selectedNewRevision.value = temp
 }
 
-loadArticles()
+loadNewArticle().then(() => loadOldArticle())
 
 watch(
   () => props.newRevisionId,
@@ -56,20 +64,21 @@ watch(
     selectedOldRevision.value = undefined
     oldArticleData.value = undefined
     newArticleData.value = undefined
-    loadArticles()
+    loadNewArticle()
+      .then(() => loadOldArticle())
   }
 )
 
 watch(
   () => selectedNewRevision.value,
   () => {
-    loadArticles()
+    loadNewArticle()
   }
 )
 watch(
   () => selectedOldRevision.value,
   () => {
-    loadArticles()
+    loadOldArticle()
   }
 )
 </script>
@@ -80,18 +89,18 @@ watch(
       <RevisionHistoryList
         v-model:selected-revision="selectedOldRevision"
         :article="oldArticleData"
-        :disabled="loading || !oldArticleData"
+        :disabled="loadingOld || !oldArticleData"
       />
       <PrimeButton
         icon="pi pi-arrow-right-arrow-left"
         aria-label="swap"
         text
-        :disabled="loading"
+        :disabled="loadingOld || loadingNew"
         @click="swap"
       />
       <RevisionHistoryList
         v-model:selected-revision="selectedNewRevision"
-        :disabled="loading || !newArticleData"
+        :disabled="loadingNew || !newArticleData"
         :article="newArticleData"
       />
     </div>
