@@ -4,18 +4,22 @@ import { MdCatalog, MdPreview } from "md-editor-v3"
 import "md-editor-v3/lib/style.css"
 import { useToast } from "primevue/usetoast"
 import { wikiApi } from "@/service/WikiApiService"
-import type { GetArticleResponse } from "@/api"
+import type { GetArticleResponse, GetRevisionHistoryResponseElement } from "@/api"
 import useThemeStore from "@/stores/ThemeStore"
 import { PrimeIcons } from "primevue/api"
 import router from "@/router"
 import useAuthStore from "@/stores/AuthStore"
 import { UserRole } from "@/types/UserRole"
+import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
+import moment from "moment/moment"
 
 const props = defineProps<{
   articleId?: string
   revisionId?: string
   hideCatalog?: boolean
   hideTitle?: boolean
+  hideEdit?: boolean
+  hideHistory?: boolean
 }>()
 
 const toast = useToast()
@@ -61,6 +65,12 @@ const editArticle = () => {
   router.push({ name: "articleEditor", params: { articleId: props.articleId } })
 }
 
+const onRevisionSelected = (revision: GetRevisionHistoryResponseElement | undefined) => {
+  if (revision?.id != articleData.value?.revisionId || (props.revisionId && revision?.id != props.revisionId)) {
+    router.replace({ name: "articles", params: { articleId: articleData.value?.id, revisionId: revision?.id } })
+  }
+}
+
 watch(
   () => props.articleId,
   () => {
@@ -86,10 +96,16 @@ loadArticle()
         <div class="title flex align-items-center justify-content-between ml-4 mr-4">
           <div>
             <h1 class="font-bold mb-0 mt-0">{{ articleData.title }}</h1>
+            <div v-if="revisionId" class="text-sm text-color-secondary">
+              rev: {{ revisionId }}
+            </div>
+            <div class="text-sm text-color-secondary">
+              {{ moment(articleData.submittedTimestamp, moment.ISO_8601).format("DD.MM.YYYY HH:mm") }}
+            </div>
           </div>
           <div class="flex align-items-center justify-content-between">
             <PrimeButton
-              v-if="authStore.hasRole(UserRole.USER) || authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN)"
+              v-if="!hideEdit && (authStore.hasRole(UserRole.USER) || authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN))"
               class="text-left"
               :icon="PrimeIcons.PENCIL"
               label="Edit this article"
@@ -116,6 +132,17 @@ loadArticle()
                   text
                   @click="copyLink"
                 />
+              </div>
+              <div v-if="!hideHistory" class="flex flex-column">
+                <PrimeFloatLabel class="mt-5">
+                  <RevisionHistoryList
+                    id="revisionList"
+                    :article="articleData"
+                    :disabled="loading || !articleData"
+                    @update:selected-revision="onRevisionSelected"
+                  />
+                  <label for="revisionList">Revision</label>
+                </PrimeFloatLabel>
               </div>
             </PrimeOverlayPanel>
           </div>

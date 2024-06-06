@@ -67,7 +67,13 @@ const onReviewSent = () => {
           </div>
           <div v-if="!isNullOrWhitespace(revisionId)" class="w-full">
             <ArticleDiff v-if="selectedPreviewOption.mode === PreviewMode.DIFF" :new-revision-id="revisionId" />
-            <ArticleContent v-else :revision-id="revisionId" :hide-catalog="true" />
+            <ArticleContent
+              v-else
+              :revision-id="revisionId"
+              hide-catalog
+              hide-edit
+              hide-history
+            />
           </div>
         </div>
       </div>
