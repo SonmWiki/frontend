@@ -53,6 +53,14 @@ const items: Ref<MenuItem[]> = ref([
         }
       },
       {
+        label: "Edit Categories",
+        icon: "pi pi-list",
+        visible: () => authStore.hasRole(UserRole.EDITOR),
+        command: () => {
+          router.push({ name: "categoriesEditor" })
+        }
+      },
+      {
         label: "Logout",
         icon: "pi pi-sign-out",
         visible: () => authStore.isAuthenticated,

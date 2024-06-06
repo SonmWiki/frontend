@@ -9,6 +9,7 @@ import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
 import ArticleEditorView from "@/views/article/ArticleEditorView.vue"
+import CategoriesEditorView from "@/views/CategoriesEditorView.vue"
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -53,6 +54,12 @@ const router = createRouter({
       name: "navigationsEditor",
       path: "/navigations/editor",
       component: NavigationsEditorView,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
+    },
+    {
+      name: "categoriesEditor",
+      path: "/categories/editor",
+      component: CategoriesEditorView,
       meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
     },
     {
