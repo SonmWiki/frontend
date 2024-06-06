@@ -12,6 +12,7 @@
 export interface CreateArticleRequest {
   title: string;
   content: string;
+  authorsNote: string;
   categoryIds: string[];
 }
 
@@ -38,6 +39,7 @@ export interface DeleteCategoryResponse {
 
 export interface EditArticleRequest {
   content: string;
+  authorsNote: string;
   categoryIds: string[];
 }
 
@@ -134,6 +136,7 @@ export interface GetPendingRevisionsResponseElement {
   /** @format uuid */
   revisionId: string;
   author: GetPendingRevisionsResponseAuthor;
+  authorsNote: string;
   /** @format date-time */
   timestamp: string;
 }
@@ -151,6 +154,7 @@ export interface GetRevisionHistoryResponseElement {
   /** @format uuid */
   id: string;
   contributor: GetRevisionHistoryResponseAuthor;
+  authorsNote: string;
   /** @format date-time */
   timestamp: string;
   latestReview: GetRevisionHistoryResponseReview;

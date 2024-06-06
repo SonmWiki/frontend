@@ -4,6 +4,7 @@ export type ArticleEditorStoreReturnType = ReturnType<typeof useArticleEditorSto
 
 export type ArticleEditorStore = {
   title: string,
+  note: string,
   content: string,
   categories: string[]
 }
@@ -13,6 +14,7 @@ const useArticleEditorStore = defineStore({
   state: (): ArticleEditorStore => {
     return {
       title: "",
+      note: "",
       content: "",
       categories: []
     }

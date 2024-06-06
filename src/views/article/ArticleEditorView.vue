@@ -12,7 +12,7 @@ import { isNullOrWhitespace } from "@/utils/stringUtils"
 import { PrimeIcons } from "primevue/api"
 import { useVuelidate } from "@vuelidate/core"
 import { maxLength, required } from "@vuelidate/validators"
-import useThemeStore from "@/stores/ThemeStore";
+import useThemeStore from "@/stores/ThemeStore"
 
 const props = defineProps<{
   articleId?: string
@@ -20,6 +20,7 @@ const props = defineProps<{
 
 const isNewArticle = computed(() => isNullOrWhitespace(props.articleId))
 const title = ref("")
+const note = ref("")
 const content = ref("")
 const categories: Ref<GetCategoriesResponseElement[]> = ref([])
 const selectedCategories: Ref<string[]> = ref([])
@@ -31,9 +32,10 @@ const themeStore = useThemeStore()
 
 const rules = {
   title: { required, maxLength: maxLength(128) },
+  note: { required },
   content: { required }
 }
-const vuelidate = useVuelidate(rules, { title: title, content: content })
+const vuelidate = useVuelidate(rules, { title: title, note: note, content: content })
 
 const loadCategories = async () => {
   if (loadingCategories.value) return
@@ -76,6 +78,7 @@ const loadArticle = async () => {
 const saveDraft = (notify: boolean = true) => {
   if (isNewArticle.value) {
     editorStore.title = title.value
+    editorStore.note = note.value
     editorStore.content = content.value
     editorStore.categories = selectedCategories.value
     if (notify)
@@ -92,9 +95,11 @@ const submit = async () => {
   const requestData: CreateArticleRequest | EditArticleRequest = isNewArticle.value ? {
     title: title.value,
     content: content.value,
+    authorsNote: note.value,
     categoryIds: selectedCategories.value
   } : {
     content: content.value,
+    authorsNote: note.value,
     categoryIds: selectedCategories.value
   }
 
@@ -102,6 +107,13 @@ const submit = async () => {
 
   try {
     const result = (await request(requestData)).data
+    if (isNewArticle.value) {
+      title.value = ""
+      note.value = ""
+      content.value = ""
+      categories.value = []
+      saveDraft()
+    }
     toast.add({ severity: "success", summary: successSummary, detail: `id: ${result.id}`, life: 3000 })
   } catch (e: any) {
     if (e.isAxiosError) {
@@ -182,6 +194,15 @@ onUnmounted(() => {
             class="w-full"
           />
           <label for="categories">Categories</label>
+        </PrimeFloatLabel>
+        <PrimeFloatLabel class="w-full md:20rem mb-5">
+          <PrimeSkeleton v-if="loadingArticle" class="h-full w-full md:w-20rem fadein animation-duration-2000" />
+          <PrimeInputText
+            id="note"
+            v-model="note"
+            :disabled="loadingArticle"
+            class="w-full" />
+          <label for="note">Note</label>
         </PrimeFloatLabel>
         <div class="w-full h-full mb-5">
           <MdEditor

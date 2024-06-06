@@ -62,6 +62,7 @@ load()
     </RouterLink>
     <div class="text-xs text-color-secondary">Rev. {{ revision.revisionId }}</div>
     <div class="text-sm"><i class="pi pi-user"></i> {{ revision.author.name }}</div>
+    <div v-tooltip="revision.authorsNote" class="text-sm"><i class="pi pi-info"></i> Note</div>
     <div class="text-sm"><i class="pi pi-clock"></i>
       {{ moment(revision.timestamp, moment.ISO_8601).format("DD.MM.YYYY HH:mm") }}
     </div>
