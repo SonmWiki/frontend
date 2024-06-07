@@ -12,6 +12,7 @@ import useAuthStore from "@/stores/AuthStore"
 import { UserRole } from "@/types/UserRole"
 import RevisionHistoryList from "@/components/article/RevisionHistoryList.vue"
 import moment from "moment/moment"
+import { AppConstants } from "@/constants/AppConstants"
 
 const props = defineProps<{
   articleId?: string
@@ -30,6 +31,9 @@ const popup = ref()
 const articleData: Ref<GetArticleResponse | undefined> = ref()
 const loading = ref(true)
 const error = ref()
+
+const deleteDialogVisible = ref(false)
+
 
 const id = "preview-only"
 const scrollElement = document.documentElement
@@ -65,6 +69,28 @@ const editArticle = () => {
   router.push({ name: "articleEditor", params: { articleId: props.articleId } })
 }
 
+const onDeleteConfirm = async () => {
+  if (!articleData.value?.id) return
+  try {
+    loading.value = true
+    await wikiApi.api.deleteArticle(articleData.value?.id)
+    deleteDialogVisible.value = false
+    await router.replace({ name: "home" })
+  } catch (error: any) {
+    if (error.isAxiosError) {
+      if (error.response?.data?.detail != undefined) {
+        toast.add({
+          severity: "error",
+          summary: "There was an error deleting an article",
+          detail: error.response.data.detail
+        })
+      }
+    }
+    console.log(error)
+    loading.value = false
+  }
+}
+
 const onRevisionSelected = (revision: GetRevisionHistoryResponseElement | undefined) => {
   if (revision?.id != articleData.value?.revisionId || (props.revisionId && revision?.id != props.revisionId)) {
     router.replace({ name: "articles", params: { articleId: articleData.value?.id, revisionId: revision?.id } })
@@ -89,7 +115,7 @@ loadArticle()
 </script>
 
 <template>
-  <PrimeToast position="top-center" />
+  <PrimeToast/>
   <div class="flex">
     <div class="w-full">
       <div v-if="articleData && articleData.content != null" class="content pt-4">
@@ -106,12 +132,23 @@ loadArticle()
           <div class="flex align-items-center justify-content-between">
             <PrimeButton
               v-if="!hideEdit && (authStore.hasRole(UserRole.USER) || authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN))"
-              class="text-left"
-              :icon="PrimeIcons.PENCIL"
-              label="Edit this article"
-              size="small"
+              severity="secondary"
+              style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
+              rounded
               text
+              size="small"
+              :icon="PrimeIcons.PENCIL"
               @click="editArticle"
+            />
+            <PrimeButton
+              v-if="!hideEdit && (authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN))"
+              :icon="PrimeIcons.TRASH"
+              style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
+              severity="danger"
+              rounded
+              text
+              size="small"
+              @click="deleteDialogVisible=true"
             />
             <PrimeButton
               severity="secondary"
@@ -183,6 +220,31 @@ loadArticle()
       </div>
     </div>
   </div>
+  <PrimeDialog
+    v-model:visible="deleteDialogVisible"
+    modal
+    header="Delete article"
+    :position="'top'"
+    class="w-full md:w-30rem"
+    :breakpoints="AppConstants.dialogBreakpoints"
+    :closable="!loading"
+  >
+    Are you sure that you want to delete article: <b> {{ articleData?.title }} </b>?
+    This action cannot be undone!
+    <div class="flex justify-content-end gap-2 w-full mt-2">
+      <PrimeButton
+        type="button"
+        label="Cancel"
+        severity="secondary"
+      />
+      <PrimeButton
+        type="button"
+        severity="danger"
+        label="Confirm"
+        @click="onDeleteConfirm"
+      />
+    </div>
+  </PrimeDialog>
 </template>
 
 <style scoped>
