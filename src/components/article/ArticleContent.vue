@@ -69,6 +69,10 @@ const editArticle = () => {
   router.push({ name: "articleEditor", params: { articleId: props.articleId } })
 }
 
+const redirectArticle = () => {
+  router.push({ name: "redirectArticle", params: { articleId: props.articleId } })
+}
+
 const onDeleteConfirm = async () => {
   if (!articleData.value?.id) return
   try {
@@ -139,6 +143,16 @@ loadArticle()
               size="small"
               :icon="PrimeIcons.PENCIL"
               @click="editArticle"
+            />
+            <PrimeButton
+              v-if="!hideEdit && (authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN))"
+              severity="secondary"
+              style="max-height: 32px; max-width: 32px; font-size: 1em; padding: 0; z-index: 1"
+              rounded
+              text
+              size="small"
+              :icon="PrimeIcons.FAST_FORWARD"
+              @click="redirectArticle"
             />
             <PrimeButton
               v-if="!hideEdit && (authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN))"

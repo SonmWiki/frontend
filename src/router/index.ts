@@ -10,6 +10,7 @@ import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
 import ArticleEditorView from "@/views/article/ArticleEditorView.vue"
 import CategoriesEditorView from "@/views/CategoriesEditorView.vue"
+import RedirectArticleView from "@/views/article/RedirectArticleView.vue"
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -49,6 +50,13 @@ const router = createRouter({
       component: ArticleEditorView,
       props: true,
       meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
+    },
+    {
+      name: "redirectArticle",
+      path: "/articles/:articleId/redirect",
+      component: RedirectArticleView,
+      props: true,
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
     },
     {
       name: "navigationsEditor",
