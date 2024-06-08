@@ -42,6 +42,7 @@ watch(selectedArticle, () => {
   emit("articleSelect", selectedArticle.value?.id)
 })
 
+search()
 </script>
 
 <template>
