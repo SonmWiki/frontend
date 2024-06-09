@@ -101,6 +101,10 @@ const onRevisionSelected = (revision: GetRevisionHistoryResponseElement | undefi
   }
 }
 
+const onCategoryClicked = async (categoryId: string) => {
+  await router.push({ name: "categories", params: { id: categoryId } })
+}
+
 watch(
   () => props.articleId,
   () => {
@@ -119,7 +123,7 @@ loadArticle()
 </script>
 
 <template>
-  <PrimeToast/>
+  <PrimeToast />
   <div class="flex">
     <div class="w-full">
       <div v-if="articleData && articleData.content != null" class="content pt-4">
@@ -132,6 +136,14 @@ loadArticle()
             <div class="text-sm text-color-secondary">
               {{ moment(articleData.submittedTimestamp, moment.ISO_8601).format("DD.MM.YYYY HH:mm") }}
             </div>
+            <PrimeTag
+              v-for="category in articleData.categories"
+              :key="category.id"
+              class="m-1 cursor-pointer"
+              @click="onCategoryClicked(category.id)"
+            >
+              {{ category.name }}
+            </PrimeTag>
           </div>
           <div class="flex align-items-center justify-content-between">
             <PrimeButton
