@@ -2,7 +2,7 @@
 import { type Ref, ref, watch } from "vue"
 import type { SearchArticlesResponse, SearchArticlesResponseElement } from "@/api"
 import { wikiApi } from "@/service/WikiApiService"
-import { PrimeIcons } from "primevue/api"
+import { PrimeIcons } from "@primevue/core/api"
 import type { PageState } from "primevue/paginator"
 
 const searchTerm = defineModel<string>("searchTerm", { required: true })

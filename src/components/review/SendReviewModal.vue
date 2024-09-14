@@ -68,7 +68,7 @@ const onReviewSent = () => {
     :breakpoints="AppConstants.dialogBreakpoints"
   >
     <PrimeFloatLabel class="mt-5">
-      <PrimeDropdown
+      <PrimeSelect
         id="dropdown"
         v-model="selectedOption"
         option-label="label"

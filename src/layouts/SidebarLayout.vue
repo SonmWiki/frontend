@@ -23,9 +23,9 @@ const sidebarStore = useSidebarStore()
       <slot name="footer" />
     </template>
   </BaseLayout>
-  <PrimeSidebar v-model:visible="sidebarStore.mdSidebarVisible">
+  <PrimeDrawer v-model:visible="sidebarStore.mdSidebarVisible">
     <slot name="sidebar" />
-  </PrimeSidebar>
+  </PrimeDrawer>
 </template>
 
 <style scoped>

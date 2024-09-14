@@ -6,7 +6,7 @@ import { useToast } from "primevue/usetoast"
 import { wikiApi } from "@/service/WikiApiService"
 import type { GetArticleResponse, GetRevisionHistoryResponseElement } from "@/api"
 import useThemeStore from "@/stores/ThemeStore"
-import { PrimeIcons } from "primevue/api"
+import { PrimeIcons } from "@primevue/core/api"
 import router from "@/router"
 import useAuthStore from "@/stores/AuthStore"
 import { UserRole } from "@/types/UserRole"
@@ -185,7 +185,7 @@ loadArticle()
               rounded
               @click="togglePopup"
             />
-            <PrimeOverlayPanel ref="popup" :pt="{content: {style: 'padding: 0.5rem'}}">
+            <PrimePopover ref="popup" :pt="{content: {style: 'padding: 0.5rem'}}">
               <div class="flex flex-column">
                 <PrimeButton
                   class="text-left"
@@ -207,7 +207,7 @@ loadArticle()
                   <label for="revisionList">Revision</label>
                 </PrimeFloatLabel>
               </div>
-            </PrimeOverlayPanel>
+            </PrimePopover>
           </div>
         </div>
         <div>

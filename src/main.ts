@@ -28,9 +28,8 @@ import ToastService from "primevue/toastservice"
 import Tooltip from "primevue/tooltip"
 import Tree from "primevue/tree"
 import Avatar from "primevue/avatar"
-import OverlayPanel from "primevue/overlaypanel"
 import ConfirmDialog from "primevue/confirmdialog"
-import Sidebar from "primevue/sidebar"
+import Drawer from "primevue/drawer"
 import ToggleButton from "primevue/togglebutton"
 import MultiSelect from "primevue/multiselect"
 import AutoComplete from "primevue/autocomplete"
@@ -39,7 +38,7 @@ import Splitter from "primevue/splitter"
 import SplitterPanel from "primevue/splitterpanel"
 import { CodeDiff } from "v-code-diff"
 import Textarea from "primevue/textarea"
-import Dropdown from "primevue/dropdown"
+import Select from "primevue/Select"
 import Fieldset from "primevue/fieldset"
 import { createPinia } from "pinia"
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
@@ -59,8 +58,10 @@ import Badge from "primevue/badge"
 import BadgeDirective from "primevue/badgedirective"
 import Menubar from "primevue/menubar"
 import Toolbar from "primevue/toolbar"
-import InputSwitch from "primevue/inputswitch"
+import ToggleSwitch from "primevue/toggleswitch"
 import Divider from "primevue/divider"
+import Aura from "@primevue/themes/aura"
+import Popover from "primevue/popover"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -68,7 +69,15 @@ pinia.use(piniaPluginPersistedstate)
 const app = createApp(App)
 
 app.use(pinia)
-app.use(PrimeVue, { ripple: false })
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: '.app-dark'
+    }
+  },
+  ripple: false,
+})
 app.use(ConfirmationService)
 app.use(ToastService)
 app.use(DialogService)
@@ -83,7 +92,7 @@ app.use(router)
 
 app.directive("tooltip", Tooltip)
 app.directive("styleclass", StyleClass)
-app.directive('badge', BadgeDirective);
+app.directive("badge", BadgeDirective)
 
 app.component("PrimeAvatar", Avatar)
 app.component("PrimeButton", Button)
@@ -102,9 +111,9 @@ app.component("PrimeScrollTop", ScrollTop)
 app.component("PrimeSkeleton", Skeleton)
 app.component("PrimeToast", Toast)
 app.component("PrimeTree", Tree)
-app.component("PrimeOverlayPanel", OverlayPanel)
+app.component("PrimePopover", Popover)
 app.component("PrimeConfirmDialog", ConfirmDialog)
-app.component("PrimeSidebar", Sidebar)
+app.component("PrimeDrawer", Drawer)
 app.component("PrimeToggleButton", ToggleButton)
 app.component("PrimeMultiSelect", MultiSelect)
 app.component("PrimeAutoComplete", AutoComplete)
@@ -113,7 +122,7 @@ app.component("PrimeSplitter", Splitter)
 app.component("PrimeSplitterPanel", SplitterPanel)
 app.component("CodeDiff", CodeDiff)
 app.component("PrimeTextarea", Textarea)
-app.component("PrimeDropdown", Dropdown)
+app.component("PrimeSelect", Select)
 app.component("PrimeFieldset", Fieldset)
 app.component("PrimeDataTable", DataTable)
 app.component("PrimeColumn", Column)
@@ -127,7 +136,7 @@ app.component("PrimeTag", Tag)
 app.component("PrimeBadge", Badge)
 app.component("PrimeMenubar", Menubar)
 app.component("PrimeToolbar", Toolbar)
-app.component("PrimeInputSwitch", InputSwitch)
+app.component("PrimeToggleSwitch", ToggleSwitch)
 app.component("PrimeDivider", Divider)
 
 useThemeStore().applyTheme()

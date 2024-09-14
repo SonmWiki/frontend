@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
-import { PrimeIcons } from "primevue/api"
+import { PrimeIcons } from "@primevue/core/api"
 import { AppConstants } from "@/constants/AppConstants"
 
 const visible = defineModel<boolean>("visible")

@@ -5,7 +5,6 @@ html, body {
 }
 
 body {
-  background: var(--surface-ground) !important;
   margin: 0;
 }
 

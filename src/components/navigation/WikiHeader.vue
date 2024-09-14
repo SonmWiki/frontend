@@ -33,7 +33,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="w-full" style="background: var(--surface-section);">
+  <div class="w-full">
     <PrimeToolbar class="h-full p-0 border-none m-auto" style="max-width: 1728px;">
       <template #start>
         <PrimeButton
