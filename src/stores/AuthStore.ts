@@ -29,7 +29,7 @@ const useAuthStore = defineStore({
     loadUserData(keycloak: Keycloak) {
       this.username = keycloak.tokenParsed?.preferred_username
       this.accessToken = keycloak.token ?? null
-      const roleKey = keycloak.clientId ?? ""
+      const roleKey = import.meta.env.VITE_KEYCLOAK_RESOURCE_ACCESS_ROLE_KEY
       if (keycloak.resourceAccess && Object.prototype.hasOwnProperty.call(keycloak.resourceAccess, roleKey)) {
         this.roles = keycloak.resourceAccess[roleKey].roles
       } else {
