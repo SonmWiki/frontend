@@ -63,6 +63,10 @@ import Divider from "primevue/divider"
 import Aura from "@primevue/themes/aura"
 import Popover from "primevue/popover"
 
+//TODO уведомление юзера об обзоре на ревизию
+//TODO документация для создания frontend клиента keycloak
+
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
