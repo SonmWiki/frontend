@@ -1,4 +1,5 @@
 @import url("editor.css");
+@import 'tailwindcss';
 
 html, body {
   font-family: Inter, sans-serif;
