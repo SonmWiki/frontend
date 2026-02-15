@@ -1,7 +1,5 @@
 /* eslint-disable vue/multi-word-component-names */
 import "./assets/main.css"
-import "primeflex/primeflex.css"
-import "primeicons/primeicons.css"
 
 import { createApp } from "vue"
 import App from "./App.vue"
