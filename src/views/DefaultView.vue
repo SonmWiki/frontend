@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SidebarLayout from "@/layouts/SidebarLayout.vue"
 import WikiHeader from "@/components/navigation/WikiHeader.vue"
-import WikiSidebar from "@/components/navigation/WikiSidebar.vue"
+import WikiSidebar from "@/components/navigation/sidebar/WikiSidebar.vue"
 import WikiFooter from "@/components/navigation/WikiFooter.vue"
 import router from "@/router"
 import HomeView from "@/views/HomeView.vue"

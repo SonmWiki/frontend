@@ -3,7 +3,7 @@
 import { type Ref, ref, watch } from "vue"
 import type { TreeNode } from "primevue/treenode"
 import { wikiApi } from "@/service/WikiApiService"
-import { MapperService } from "@/service/MapperService"
+import { MapperService } from "@/components/navigation/sidebar/MapperService"
 import BaseLayout from "@/layouts/BaseLayout.vue"
 import WikiHeader from "@/components/navigation/WikiHeader.vue"
 import WikiFooter from "@/components/navigation/WikiFooter.vue"
