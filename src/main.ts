@@ -4,7 +4,7 @@ import "./assets/main.css"
 import { createApp } from "vue"
 import App from "./App.vue"
 import PrimeVue from "primevue/config"
-import Button from "primevue/button"
+import PrimeButton from "primevue/button"
 import Card from "primevue/card"
 import Checkbox from "primevue/checkbox"
 import ConfirmationService from "primevue/confirmationservice"
@@ -97,7 +97,7 @@ app.directive("styleclass", StyleClass)
 app.directive("badge", BadgeDirective)
 
 app.component("PrimeAvatar", Avatar)
-app.component("PrimeButton", Button)
+app.component("PrimeButton", PrimeButton)
 app.component("PrimeCard", Card)
 app.component("PrimeCheckbox", Checkbox)
 app.component("PrimeContextMenu", ContextMenu)
