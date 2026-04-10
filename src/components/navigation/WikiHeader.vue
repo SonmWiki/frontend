@@ -40,7 +40,7 @@ onBeforeMount(async () => {
       <div class="flex items-center">
         <button
           v-if="hasSidebarSwitch"
-          class="mr-2 p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer md:hidden"
+          class="mr-2 p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer md:hidden"
           @click="sidebarStore.toggleMdSidebar()"
         >
           <Bars3Icon class="size-6"></Bars3Icon>
@@ -48,7 +48,7 @@ onBeforeMount(async () => {
 
         <button
           v-if="hasSidebarSwitch"
-          class="mr-2 p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer hidden md:inline-flex"
+          class="mr-2 p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer hidden md:inline-flex"
           @click="sidebarStore.toggleSidebar()"
         >
           <Bars3Icon class="size-6"></Bars3Icon>
@@ -67,7 +67,7 @@ onBeforeMount(async () => {
         <RouterLink
           v-if="pendingRevisionCount > 0"
           to="/review"
-          class="relative mr-2 p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+          class="relative mr-2 p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer"
           aria-label="Review pending revisions"
         >
           <EyeIcon class="size-6"></EyeIcon>
@@ -79,7 +79,7 @@ onBeforeMount(async () => {
         </RouterLink>
 
         <button
-          class="relative p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer md:hidden"
+          class="relative p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer md:hidden"
           aria-label="Open search"
           @click="articleSearchVisible = true"
         >

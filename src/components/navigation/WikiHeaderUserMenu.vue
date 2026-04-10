@@ -98,7 +98,7 @@ onUnmounted(() => {
     <button
       id="user-menu-button"
       @click="toggleMenu"
-      class="relative p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+      class="relative p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer"
     >
       <IconAsyncComponent type="outline" name="UserIcon" class="size-6" />
     </button>
@@ -106,7 +106,7 @@ onUnmounted(() => {
     <div
       v-show="isMenuOpen"
       id="user-menu-dropdown"
-      class="absolute right-0 mt-2.5 w-60 origin-top-right bg-gray-900 rounded shadow-lg ring-2 ring-blue-300 focus:outline-none z-50 py-1"
+      class="absolute right-0 mt-2.5 w-68 origin-top-right bg-gray-900 rounded shadow-lg ring-2 ring-blue-300 focus:outline-none z-50 py-1"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="user-menu-button"
