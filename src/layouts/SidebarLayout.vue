@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import useSidebarStore from "@/stores/SidebarStore"
 import BaseLayout from "@/layouts/BaseLayout.vue"
 
@@ -12,7 +11,11 @@ const sidebarStore = useSidebarStore()
       <slot name="header" />
     </template>
     <template #default>
-      <aside class="sticky hidden md:pr-2 overflow-y-auto" :class="{'md:block': sidebarStore.sidebarVisible}">
+      <aside
+        class="sticky hidden md:pr-2 overflow-y-auto"
+        :class="{ 'md:block': sidebarStore.sidebarVisible }"
+        style="top: 5rem; height: calc(100vh - 7rem); min-width: fit-content"
+      >
         <slot name="sidebar" />
       </aside>
       <main class="w-full md:pl-2">
@@ -29,13 +32,4 @@ const sidebarStore = useSidebarStore()
 </template>
 
 <style scoped>
-aside {
-  top: 3rem;
-  height: calc(100vh - 5rem);
-  width: 400px;
-}
-
-main {
-  min-height: calc(100vh - 3rem)
-}
 </style>
