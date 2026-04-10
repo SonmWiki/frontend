@@ -1,119 +1,123 @@
 <script setup lang="ts">
-import { onBeforeMount, type Ref, ref } from "vue"
+import { onBeforeMount, ref } from "vue"
 import useAuthStore from "@/stores/AuthStore"
 import { UserRole } from "@/types/UserRole"
 import { wikiApi } from "@/service/WikiApiService"
 import ArticleSearchDialog from "@/components/article/ArticleSearchList.vue"
-import ThemeSwitch from "@/components/ThemeSwitch.vue"
 import WikiHeaderUserMenu from "@/components/navigation/WikiHeaderUserMenu.vue"
 import useSidebarStore from "@/stores/SidebarStore"
 import router from "@/router"
 import logo from "../../assets/logo.svg"
+import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/vue/24/solid"
+import { EyeIcon } from "@heroicons/vue/24/outline"
+import BaseDialog from "@/components/common/BaseDialog.vue"
+import IconAsyncComponent from "@/components/common/IconAsyncComponent.vue"
 
 const props = defineProps({
-  hasSidebarSwitch: Boolean
+  hasSidebarSwitch: Boolean,
 })
 
 const authStore = useAuthStore()
 const sidebarStore = useSidebarStore()
-const appName = import.meta.env.VITE_APP_NAME ? import.meta.env.VITE_APP_NAME : "Wiki"
+const appName = import.meta.env.VITE_APP_NAME || "Wiki"
 
 const searchTerm = ref("")
 const articleSearchVisible = ref(false)
-const pendingRevisionCount: Ref<number> = ref(0)
-
+const pendingRevisionCount = ref(0)
 
 onBeforeMount(async () => {
-    if (authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN))
-      pendingRevisionCount.value = (await wikiApi.api.getPendingRevisionsCount()).data.count
-    else
-      pendingRevisionCount.value = 0
+  if (authStore.hasRole(UserRole.EDITOR) || authStore.hasRole(UserRole.ADMIN)) {
+    pendingRevisionCount.value = (await wikiApi.api.getPendingRevisionsCount()).data.count
   }
-)
+})
 </script>
 
 <template>
-  <div class="w-full">
-    <PrimeToolbar class="h-full p-0 border-none m-auto" style="max-width: 1728px;">
-      <template #start>
-        <PrimeButton
+  <header
+    class="w-full bg-gray-900 border-b border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-800"
+  >
+    <div class="max-w-432 mx-auto h-16 flex items-center justify-between px-3 md:px-4">
+      <div class="flex items-center">
+        <button
           v-if="hasSidebarSwitch"
-          class="m-1 hidden md:inline-flex"
-          icon="pi pi-bars"
-          aria-label="Filter"
-          severity="secondary"
-          text
-          @click="sidebarStore.toggleSidebar()"
-        />
-        <PrimeButton
-          v-if="hasSidebarSwitch"
-          class="m-1 md:hidden"
-          icon="pi pi-bars"
-          severity="secondary"
-          text
+          class="mr-2 p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer md:hidden"
           @click="sidebarStore.toggleMdSidebar()"
-        />
-        <RouterLink to='/' class="no-underline m-1 text-color flex flex-row justify-content-center align-items-center">
-          <img
-            class="p-overlay-badge flex align-items-center justify-content-center w-2rem mr-2"
-            :src="logo"
-            alt="logo"
-          />
-          <b class="2">{{ appName }}</b>
+        >
+          <Bars3Icon class="size-6"></Bars3Icon>
+        </button>
+
+        <button
+          v-if="hasSidebarSwitch"
+          class="mr-2 p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer hidden md:inline-flex"
+          @click="sidebarStore.toggleSidebar()"
+        >
+          <Bars3Icon class="size-6"></Bars3Icon>
+        </button>
+
+        <RouterLink
+          to="/"
+          class="flex items-center no-underline text-primary font-bold text-xl hover:opacity-90 transition-opacity"
+        >
+          <img :src="logo" :alt="`${appName} logo`" class="w-8 h-8 mr-2 object-contain" />
+          <span>{{ appName }}</span>
         </RouterLink>
-      </template>
-      <template #end>
-        <RouterLink v-if="pendingRevisionCount != 0" to="/review">
-          <PrimeButton
-            class="m-1 p-button-icon-only overflow-visible"
-            severity="secondary"
-            text
+      </div>
+
+      <div class="flex items-center gap-1">
+        <RouterLink
+          v-if="pendingRevisionCount > 0"
+          to="/review"
+          class="relative mr-2 p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+          aria-label="Review pending revisions"
+        >
+          <EyeIcon class="size-6"></EyeIcon>
+          <span
+            class="absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-[0.65rem] font-bold text-white bg-red-500 rounded-full border-2 border-surface-50 dark:border-surface-800"
           >
-            <i v-badge.warning="pendingRevisionCount" class="pi pi-eye line-height-2 z-3" />
-          </PrimeButton>
+            {{ pendingRevisionCount }}
+          </span>
         </RouterLink>
-        <PrimeButton
-          severity="secondary"
-          aria-haspopup="true"
-          aria-controls="overlay_menu"
-          icon="pi pi-search"
-          class="m-1 md:hidden"
-          text
+
+        <button
+          class="relative p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer md:hidden"
+          aria-label="Open search"
           @click="articleSearchVisible = true"
-        />
-        <PrimeIconField class="m-1 md:block hidden" icon-position="left">
-          <PrimeInputIcon class="pi pi-search" />
-          <PrimeInputText
+        >
+          <MagnifyingGlassIcon class="size-6"></MagnifyingGlassIcon>
+        </button>
+        <div class="relative hidden md:inline">
+          <input
             v-model="searchTerm"
-            class="w-10rem"
-            placeholder="Search"
+            type="text"
+            class="peer py-2.5 pe-0 ps-8 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-line-2 disabled:opacity-50"
+            placeholder="Search articles"
             @input="articleSearchVisible = true"
+            @focus="articleSearchVisible = true"
           />
-        </PrimeIconField>
-        <ThemeSwitch />
+          <div
+            class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-1 peer-disabled:opacity-50 peer-disabled:pointer-events-none"
+          >
+            <IconAsyncComponent name="MagnifyingGlassIcon" class="size-6"></IconAsyncComponent>
+          </div>
+        </div>
         <WikiHeaderUserMenu />
-      </template>
-    </PrimeToolbar>
-    <PrimeDialog
-      v-model:visible="articleSearchVisible"
-      modal
-      maximizable
-      header="Search"
-      class="w-full md:w-30rem"
-      :breakpoints="{ '1199px': '75vw', '575px': '95vw' }"
-    >
+      </div>
+    </div>
+
+    <BaseDialog v-model="articleSearchVisible" title="Search articles">
+      <template #header />
       <ArticleSearchDialog
         v-model:search-term="searchTerm"
         @search="articleSearchVisible = true"
-        @article-select="value => { router.push({name:'articles', params: {articleId: value}}); articleSearchVisible = false }"
+        @article-select="
+          (value) => {
+            router.push({ name: 'articles', params: { articleId: value } })
+            articleSearchVisible = false
+          }
+        "
       />
-    </PrimeDialog>
-  </div>
+    </BaseDialog>
+  </header>
 </template>
 
-<style scoped>
-
-img {
-  object-fit: contain;
-}
-</style>
+<style scoped></style>
