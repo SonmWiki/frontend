@@ -98,7 +98,7 @@ onUnmounted(() => {
     <button
       id="user-menu-button"
       @click="toggleMenu"
-      class="relative p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer hidden md:inline-flex"
+      class="relative p-2 rounded-md border-2 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
     >
       <IconAsyncComponent type="outline" name="UserIcon" class="size-6" />
     </button>
