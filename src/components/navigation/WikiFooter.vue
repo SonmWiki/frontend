@@ -5,7 +5,7 @@ const appFullName = import.meta.env.VITE_APP_FULL_NAME ? import.meta.env.VITE_AP
 </script>
 
 <template>
-  <div class="flex flex-column align-items-center">
+  <div class="flex flex-col items-center">
     ©{{ (new Date()).getFullYear() }} {{ appFullName }}
   </div>
 </template>
