@@ -11,6 +11,7 @@ import { keycloakService } from "@/service/KeycloakService"
 import ArticleEditorView from "@/views/article/ArticleEditorView.vue"
 import CategoriesEditorView from "@/views/CategoriesEditorView.vue"
 import RedirectArticleView from "@/views/article/RedirectArticleView.vue"
+import ToastTestView from "@/views/test/ToastTestView.vue"
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -30,55 +31,63 @@ const router = createRouter({
           name: "articles",
           path: "articles/:articleId/:revisionId?",
           component: ArticleContent,
-          props: true
+          props: true,
         },
         {
           name: "articlesTable",
           path: "articles",
-          component: ArticlesTable
+          component: ArticlesTable,
         },
         {
           name: "categories",
           path: "categories/:id",
-          component: CategoryArticles
+          component: CategoryArticles,
         },
-      ]
+      ],
     },
     {
       name: "articleEditor",
       path: "/articles/editor/:articleId?",
       component: ArticleEditorView,
       props: true,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] }
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR, UserRole.USER] },
     },
     {
       name: "redirectArticle",
       path: "/articles/:articleId/redirect",
       component: RedirectArticleView,
       props: true,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
     },
     {
       name: "navigationsEditor",
       path: "/navigations/editor",
       component: NavigationsEditorView,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
     },
     {
       name: "categoriesEditor",
       path: "/categories/editor",
       component: CategoriesEditorView,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
     },
     {
       name: "review",
       path: "/review/:revisionId?",
       component: ReviewView,
       props: true,
-      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] }
-    }
-  ]
+      meta: { allowedRoles: [UserRole.ADMIN, UserRole.EDITOR] },
+    },
+  ],
 })
+
+if (import.meta.env.DEV) {
+  router.addRoute({
+    name: "test",
+    path: "/test/toast",
+    component: ToastTestView,
+  })
+}
 
 router.beforeEach(async (to, from) => {
   if (!keycloakService.isInitialized()) {

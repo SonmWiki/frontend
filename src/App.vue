@@ -3,6 +3,7 @@
 
 <template>
   <RouterView />
+  <ToastContainer />
 </template>
 
 <style scoped>

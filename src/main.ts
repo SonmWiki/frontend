@@ -60,6 +60,7 @@ import ToggleSwitch from "primevue/toggleswitch"
 import Divider from "primevue/divider"
 import Aura from "@primevue/themes/aura"
 import Popover from "primevue/popover"
+import toastPlugin from "@/plugins/toastPlugin"
 
 //TODO уведомление юзера об обзоре на ревизию
 //TODO документация для создания frontend клиента keycloak
@@ -75,13 +76,13 @@ app.use(PrimeVue, {
   theme: {
     preset: Aura,
     options: {
-      darkModeSelector: '.app-dark'
-    }
+      darkModeSelector: ".app-dark",
+    },
   },
   ripple: false,
 })
 app.use(ConfirmationService)
-app.use(ToastService)
+app.use(toastPlugin)
 app.use(DialogService)
 app.use(keycloakPlugin, {
   keycloakInitOptions: {
@@ -111,7 +112,6 @@ app.component("PrimeSelectButton", SelectButton)
 app.component("PrimeScrollPanel", ScrollPanel)
 app.component("PrimeScrollTop", ScrollTop)
 app.component("PrimeSkeleton", Skeleton)
-app.component("PrimeToast", Toast)
 app.component("PrimeTree", Tree)
 app.component("PrimePopover", Popover)
 app.component("PrimeConfirmDialog", ConfirmDialog)
