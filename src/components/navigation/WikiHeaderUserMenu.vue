@@ -5,6 +5,7 @@ import { UserRole } from "@/types/UserRole"
 import useAuthStore from "@/stores/AuthStore"
 import { keycloakService } from "@/service/KeycloakService"
 import IconAsyncComponent, { type HeroIconName } from "@/components/common/IconAsyncComponent.vue"
+import BracketButton from "@/components/common/BracketButton.vue"
 
 interface MenuItem {
   label: string
@@ -95,13 +96,14 @@ onUnmounted(() => {
 
 <template>
   <div class="relative" ref="dropdownContainer">
-    <button
+    <BracketButton
       id="user-menu-button"
+      class="mr-2 bg-transparent"
+      color="gray-400"
       @click="toggleMenu"
-      class="relative p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer"
     >
       <IconAsyncComponent type="outline" name="UserIcon" class="size-6" />
-    </button>
+    </BracketButton>
 
     <div
       v-show="isMenuOpen"

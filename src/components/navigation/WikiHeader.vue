@@ -12,6 +12,7 @@ import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/vue/24/solid"
 import { EyeIcon } from "@heroicons/vue/24/outline"
 import BaseDialog from "@/components/common/BaseDialog.vue"
 import IconAsyncComponent from "@/components/common/IconAsyncComponent.vue"
+import BracketButton from "@/components/common/BracketButton.vue"
 
 const props = defineProps({
   hasSidebarSwitch: Boolean,
@@ -33,26 +34,25 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <header
-    class="w-full bg-gray-900 border-b border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-800"
-  >
+  <header class="w-full bg-gray-900">
     <div class="max-w-432 mx-auto h-16 flex items-center justify-between px-3 md:px-4">
       <div class="flex items-center">
-        <button
+        <BracketButton
           v-if="hasSidebarSwitch"
-          class="mr-2 p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer md:hidden"
+          class="mr-2 bg-transparent md:hidden"
+          color="gray-400"
           @click="sidebarStore.toggleMdSidebar()"
         >
           <Bars3Icon class="size-6"></Bars3Icon>
-        </button>
-
-        <button
+        </BracketButton>
+        <BracketButton
           v-if="hasSidebarSwitch"
-          class="mr-2 p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer hidden md:inline-flex"
+          class="mr-2 bg-transparent hidden md:inline-flex"
+          color="gray-400"
           @click="sidebarStore.toggleSidebar()"
         >
           <Bars3Icon class="size-6"></Bars3Icon>
-        </button>
+        </BracketButton>
 
         <RouterLink
           to="/"
@@ -78,13 +78,14 @@ onBeforeMount(async () => {
           </span>
         </RouterLink>
 
-        <button
-          class="relative p-2 rounded-md border-2 border-transparent active:scale-95 hover:border-blue-300 hover:bg-gray-700 hover:cursor-pointer md:hidden"
-          aria-label="Open search"
+        <BracketButton
+          v-if="hasSidebarSwitch"
+          class="mr-2 bg-transparent md:hidden"
+          color="gray-400"
           @click="articleSearchVisible = true"
         >
           <MagnifyingGlassIcon class="size-6"></MagnifyingGlassIcon>
-        </button>
+        </BracketButton>
         <div class="relative hidden md:inline">
           <input
             v-model="searchTerm"
@@ -120,4 +121,5 @@ onBeforeMount(async () => {
   </header>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
