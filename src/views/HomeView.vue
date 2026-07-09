@@ -10,7 +10,6 @@ const articleData: Ref<GetArticleResponse | undefined> = ref()
 const loading = ref(true)
 const themeStore = useThemeStore()
 const loadArticle = async () => {
-
   articleData.value = undefined
   loading.value = true
 
@@ -29,20 +28,19 @@ loadArticle()
   <MdPreview
     v-if="articleData"
     language="en-US"
-    preview-theme='github'
+    preview-theme="github"
     :theme="themeStore.theme"
     :editor-id="id"
-    :model-value="articleData.content"
+    :model-value="articleData.content ?? undefined"
   />
   <div v-else>
     <h1>Looks like there is nothing on homepage here.</h1>
     <div>To populate this special page create article with title <b>HOME</b></div>
-    <div>You can do it
-      <RouterLink :to=" {name: 'articleEditor'}">here</RouterLink>
+    <div>
+      You can do it
+      <RouterLink :to="{ name: 'articleEditor' }">here</RouterLink>
     </div>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
