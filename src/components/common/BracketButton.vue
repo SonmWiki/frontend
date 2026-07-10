@@ -41,6 +41,7 @@ const sizeClasses = computed<string>(() => {
 
 const btnClasses = [
   "bracket-btn",
+  "inline-flex items-center justify-center",
   "relative backdrop-blur-xs border-2 rounded-md border-transparent text-white",
   "active:translate-y-px transition-transform duration-75",
   "hover:cursor-pointer select-none",
