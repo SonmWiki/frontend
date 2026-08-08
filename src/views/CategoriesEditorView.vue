@@ -1,31 +1,30 @@
 <script setup lang="ts">
-
-import { type Ref, ref, watch } from "vue"
-import type { TreeNode } from "primevue/treenode"
+import { type Ref, ref } from "vue"
 import { wikiApi } from "@/service/WikiApiService"
 import { MapperService } from "@/components/navigation/sidebar/MapperService"
-import BaseLayout from "@/layouts/BaseLayout.vue"
 import WikiHeader from "@/components/navigation/WikiHeader.vue"
 import WikiFooter from "@/components/navigation/WikiFooter.vue"
-import type { TreeExpandedKeys } from "primevue/tree"
-import { PrimeIcons } from "@primevue/core/api"
-import { AppConstants } from "@/constants/AppConstants"
 import { maxLength, required } from "@vuelidate/validators"
 import { useVuelidate } from "@vuelidate/core"
-import { useToast } from "primevue/usetoast"
+import { useToast } from "@/composables/useToast"
+import type { WikiSidebarTreeNode } from "@/components/navigation/sidebar/WikiSidebarTreeNode"
+import { AxiosError } from "axios"
+import IconAsyncComponent from "@/components/common/IconAsyncComponent.vue"
+import WikiTree from "@/components/navigation/WikiTree.vue"
+import SidebarLayout from "@/layouts/SidebarLayout.vue"
+import BracketButton from "@/components/common/BracketButton.vue"
+import BaseInput from "@/components/common/BaseInput.vue"
+import BaseDialog from "@/components/common/BaseDialog.vue"
 
-const categoriesTree: Ref<TreeNode[]> = ref([])
+const nodes: Ref<WikiSidebarTreeNode[]> = ref([])
+const expandedKeys = ref<Record<string | number, boolean>>({})
 const loading = ref(false)
-const expandedKeys: Ref<TreeExpandedKeys> = ref({})
 
-const selectedParentNode: Ref<TreeNode | undefined> = ref()
-const selectedNode: Ref<TreeNode | undefined> = ref()
+const selectedNode: Ref<WikiSidebarTreeNode | undefined> = ref()
 
-const createDialogVisible = ref(false)
 const createDialogCategoryName = ref("")
-
+const isSelectingParent = ref(false)
 const deleteDialogVisible = ref(false)
-
 
 const toast = useToast()
 
@@ -41,54 +40,65 @@ const loadCategoriesTree = async () => {
   try {
     loading.value = true
     let data = (await wikiApi.api.getCategoriesTree()).data.data
-    categoriesTree.value = data.map(MapperService.mapGetCategoriesTreeResponseElementToTreeNode)
+    nodes.value = data.map(MapperService.mapGetCategoriesTreeResponseElementToTreeNode)
     loading.value = false
   } catch (error) {
     console.error(error)
-    toast.add({ severity: "error", summary: "There was an error loading categories" })
+    toast.error("There was an error loading categories")
   }
 }
-const expandNode = (node: TreeNode) => {
+
+const expandNode = (node: WikiSidebarTreeNode) => {
   if (node.children && node.children.length) {
     expandedKeys.value[node.key] = true
-
-    node.children.forEach(x => expandNode(x))
+    node.children.forEach((x) => expandNode(x))
   }
 }
 
 const expandAll = () => {
-  for (let node of categoriesTree.value) {
+  for (let node of nodes.value) {
     expandNode(node)
   }
-
   expandedKeys.value = { ...expandedKeys.value }
 }
 
-const openCreate = (parentNode: TreeNode | undefined = undefined) => {
-  selectedParentNode.value = parentNode
-  createDialogVisible.value = true
+const startParentSelection = () => {
+  vuelidate.value.createDialogCategoryName.$touch()
+  if (vuelidate.value.createDialogCategoryName.$invalid) return
+  isSelectingParent.value = true
 }
 
-const openDelete = (node: TreeNode) => {
+const cancelCreation = () => {
+  isSelectingParent.value = false
+  createDialogCategoryName.value = ""
+  vuelidate.value.createDialogCategoryName.$reset() // Теперь отработает корректно
+}
+
+const onNodeClick = (node: WikiSidebarTreeNode) => {
+  if (isSelectingParent.value) {
+    onCreateConfirm(node)
+  }
+}
+
+const openDelete = (node: WikiSidebarTreeNode) => {
   selectedNode.value = node
   deleteDialogVisible.value = true
 }
 
-const onCreateConfirm = async () => {
+const onCreateConfirm = async (parentNode: WikiSidebarTreeNode | undefined = undefined) => {
   try {
     loading.value = true
-    await wikiApi.api.createCategory({ name: createDialogCategoryName.value, parentId: selectedParentNode.value?.key })
+    await wikiApi.api.createCategory({
+      name: createDialogCategoryName.value,
+      parentId: parentNode?.key ?? null,
+    })
     await loadCategoriesTree()
-    createDialogVisible.value = false
-  } catch (error) {
-    if (error.isAxiosError) {
-      if (error.response?.data?.detail != undefined) {
-        toast.add({
-          severity: "error",
-          summary: "There was an error creating a category",
-          detail: error.response.data.detail
-        })
-      }
+    cancelCreation()
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response?.data?.detail != undefined) {
+      toast.error(error.response.data.detail, {
+        title: "There was an error creating a category",
+      })
     }
     console.log(error)
     loading.value = false
@@ -96,155 +106,151 @@ const onCreateConfirm = async () => {
 }
 
 const onDeleteConfirm = async () => {
+  const key = selectedNode.value?.key
+  if (!key) return
+
   try {
     loading.value = true
-    await wikiApi.api.deleteCategory(selectedNode.value?.key)
+    await wikiApi.api.deleteCategory(key)
     await loadCategoriesTree()
     deleteDialogVisible.value = false
-  } catch (error) {
-    if (error.isAxiosError) {
-      if (error.response?.data?.detail != undefined) {
-        toast.add({
-          severity: "error",
-          summary: "There was an error deleting a category",
-          detail: error.response.data.detail
-        })
-      }
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response?.data?.detail != undefined) {
+      toast.error(error.response.data.detail, { title: "There was an error deleting a category" })
     }
     console.log(error)
     loading.value = false
   }
 }
 
-watch(createDialogCategoryName, () => {
-  vuelidate.value.createDialogCategoryName.$touch()
-})
-
 loadCategoriesTree().then(() => expandAll())
 </script>
 
 <template>
-  <BaseLayout>
+  <SidebarLayout>
     <template #header>
       <WikiHeader />
     </template>
-    <template #default>
-      <div class="container flex flex-column w-full">
-        <PrimeTree
-          v-model:expandedKeys="expandedKeys"
-          :value="categoriesTree"
-        >
-          <template #default="slotProps">
-            <div class="flex align-items-center" :class="{'gap-2': slotProps.node.icon }">
-              <span>{{ slotProps.node.icon }}</span>
-              <span>{{ slotProps.node.label }}</span>
-              <PrimeButton
-                severity="secondary"
-                rounded
-                class="h-2rem w-2rem ml-1"
-                text
-                :icon="PrimeIcons.PLUS"
-                @click="openCreate(slotProps.node)"
-              />
-              <PrimeButton
-                severity="secondary"
-                rounded
-                class="h-2rem w-2rem"
-                text
-                :icon="PrimeIcons.TRASH"
-                @click="openDelete(slotProps.node)"
-              />
+
+    <template #sidebar>
+      <WikiTree v-model:expanded-keys="expandedKeys" :nodes="nodes" aria-label="Categories tree">
+        <template #default="{ node }">
+          <div
+            class="flex align-items-center justify-content-between gap-2 py-1 px-1.5 rounded transition-colors w-full min-w-0"
+            :class="{
+              'hover:bg-layout-sidebar-hover': !isSelectingParent,
+              'cursor-pointer bg-blue-900 bg-opacity-20 animate-pulse': isSelectingParent,
+            }"
+            @click="onNodeClick(node)"
+          >
+            <div class="flex align-items-center flex-1 min-w-0" :class="{ 'gap-2': node.icon }">
+              <span v-if="node.icon" class="shrink-0">{{ node.icon }}</span>
+
+              <span
+                class="wrap-break-word flex-1 min-w-0"
+                :class="{ 'text-primary': isSelectingParent }"
+              >
+                {{ node.label }}
+              </span>
             </div>
-          </template>
-        </PrimeTree>
-        <PrimeButton
-          severity="secondary"
-          class="w-full"
-          type="button"
-          label="Add category"
-          icon="pi pi-plus"
-          :disabled="loading"
-          @click="openCreate()"
-        />
+
+            <div class="flex align-items-center gap-1 shrink-0">
+              <button
+                type="button"
+                class="p-1 rounded hover:bg-gray-700 focus:bg-gray-300 cursor-pointer border-none bg-transparent text-white flex items-center justify-center"
+                @click.stop="openDelete(node)"
+              >
+                <IconAsyncComponent type="outline" name="TrashIcon" class="size-3" />
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <template #empty> No categories available </template>
+      </WikiTree>
+    </template>
+
+    <template #default>
+      <div class="p-4 m-4 w-full flex-col gap-1.5">
+        <h3 class="m-0 text-xl font-medium text-white">Добавить категорию:</h3>
+
+        <div v-if="!isSelectingParent" style="display: flex; flex-direction: column; gap: 1rem">
+          <div style="display: flex; flex-direction: column; gap: 0.5rem">
+            <BaseInput
+              id="nativeCategoryName"
+              v-model="createDialogCategoryName"
+              placeholder="Input name..."
+              :disabled="loading"
+              :has-error="vuelidate.createDialogCategoryName.$error"
+              @blur="vuelidate.createDialogCategoryName.$touch()"
+            />
+          </div>
+
+          <div
+            v-if="vuelidate.createDialogCategoryName.$error"
+            style="display: flex; flex-direction: column; gap: 0.5rem"
+          >
+            <span
+              v-for="error in vuelidate.createDialogCategoryName.$errors"
+              :key="error.$uid"
+              class="text-xs bg-red-900 text-red-100 px-2 py-1 rounded w-max"
+            >
+              {{ error.$message }}
+            </span>
+          </div>
+
+          <BracketButton
+            color="emerald-400"
+            class="bg-emerald-950/60"
+            :disabled="
+              vuelidate.createDialogCategoryName.$invalid ||
+              loading ||
+              !createDialogCategoryName.trim()
+            "
+            @click="startParentSelection"
+          >
+            Добавить
+          </BracketButton>
+        </div>
+
+        <div v-else style="display: flex; flex-direction: column; gap: 1rem">
+          <p class="m-0 text-sm line-height-3 text-gray-300">
+            Кликните по нужной категории в дереве слева, чтобы сделать её родительской для
+            <span class="text-white font-semibold">"{{ createDialogCategoryName }}"</span>.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.5rem" class="mt-2">
+            <BracketButton
+              color="blue-400"
+              class="bg-blue-950/60"
+              :disabled="loading"
+              @click="onCreateConfirm(undefined)"
+            >
+              Без родителя
+            </BracketButton>
+            <BracketButton
+              color="red-400"
+              class="bg-red-950/60"
+              :disabled="loading"
+              @click="cancelCreation"
+            >
+              Отменить
+            </BracketButton>
+          </div>
+        </div>
       </div>
     </template>
+
     <template #footer>
       <WikiFooter />
     </template>
-  </BaseLayout>
+  </SidebarLayout>
 
-  <PrimeDialog
-    v-model:visible="createDialogVisible"
-    modal
-    header="Create category"
-    :position="'top'"
-    class="w-full md:w-30rem"
-    :breakpoints="AppConstants.dialogBreakpoints"
-    :closable="!loading"
-  >
-    <div v-if="selectedParentNode">
-      Parent category: <b> {{ selectedParentNode.label }} </b>
-    </div>
-    <PrimeFloatLabel class="mt-5">
-      <PrimeInputText
-        id="createDialogCategoryName"
-        v-model="createDialogCategoryName"
-        class="w-full"
-        :invalid="vuelidate.createDialogCategoryName.$error"
-        :disabled="loading"
-      />
-      <label for="createDialogCategoryName">Name</label>
-    </PrimeFloatLabel>
-    <PrimeTag v-for="error in vuelidate.createDialogCategoryName.$errors" :key="error.$uid" severity="danger">
-      {{ error.$message }}
-    </PrimeTag>
-    <div class="flex justify-content-end gap-2 w-full mt-2">
-      <PrimeButton
-        type="button"
-        label="Cancel"
-        severity="secondary"
-        :disabled="loading"
-      />
-      <PrimeButton
-        type="button"
-        label="Confirm"
-        :disabled="vuelidate.createDialogCategoryName.$error || loading"
-        @click="onCreateConfirm"
-      />
-    </div>
-  </PrimeDialog>
-
-  <PrimeDialog
-    v-model:visible="deleteDialogVisible"
-    modal
-    header="Delete category"
-    :position="'top'"
-    class="w-full md:w-30rem"
-    :breakpoints="AppConstants.dialogBreakpoints"
-    :closable="!loading"
-  >
-    Are you sure that you want to delete category: <b> {{ selectedNode?.label }} </b>?
-    This action cannot be undone!
-    <div class="flex justify-content-end gap-2 w-full mt-2">
-      <PrimeButton
-        type="button"
-        label="Cancel"
-        severity="secondary"
-        :disabled="loading"
-      />
-      <PrimeButton
-        type="button"
-        severity="danger"
-        label="Confirm"
-        @click="onDeleteConfirm"
-      />
-    </div>
-  </PrimeDialog>
-  <PrimeToast />
+  <BaseDialog v-model="deleteDialogVisible" title="Delete category" @confirm="onDeleteConfirm">
+    <template #header />
+    <span>Are you sure you want to delete <span class="font-bold">{{ selectedNode?.key }}</span> category?</span>
+    <template #footer />
+  </BaseDialog>
 </template>
 
-<style scoped>
-.container {
-  height: calc(100vh - 3rem);
-}
-</style>
+<style scoped></style>

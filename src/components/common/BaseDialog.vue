@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { watch, onUnmounted } from "vue"
 import IconAsyncComponent from "@/components/common/IconAsyncComponent.vue"
+import BracketButton from "@/components/common/BracketButton.vue"
 
 interface Props {
   title?: string
@@ -116,18 +117,20 @@ onUnmounted(() => {
             class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3"
           >
             <slot name="footer" :cancel="closeModal" :confirm="confirm">
-              <button
-                class="mr-2 p-2 rounded-md border-2 w-25 border-gray-700 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+              <BracketButton
+                class="mr-2 p-2 w-25"
+                color="gray-500"
                 @click="closeModal"
-              >
+                >
                 Cancel
-              </button>
-              <button
-                class="mr-2 p-2 rounded-md border-2 w-25 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+              </BracketButton>
+              <BracketButton
+                class="mr-2 p-2 w-25 bg-green-950/60"
+                color="green-500"
                 @click="confirm"
-              >
+                >
                 Confirm
-              </button>
+              </BracketButton>
             </slot>
           </div>
         </div>
