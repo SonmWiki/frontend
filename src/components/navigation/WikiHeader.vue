@@ -11,8 +11,8 @@ import logo from "../../assets/logo.svg"
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/vue/24/solid"
 import { EyeIcon } from "@heroicons/vue/24/outline"
 import BaseDialog from "@/components/common/BaseDialog.vue"
-import IconAsyncComponent from "@/components/common/IconAsyncComponent.vue"
 import BracketButton from "@/components/common/BracketButton.vue"
+import BaseInput from "@/components/common/BaseInput.vue"
 
 const props = defineProps({
   hasSidebarSwitch: Boolean,
@@ -86,21 +86,15 @@ onBeforeMount(async () => {
         >
           <MagnifyingGlassIcon class="size-6"></MagnifyingGlassIcon>
         </BracketButton>
-        <div class="relative hidden md:inline">
-          <input
-            v-model="searchTerm"
-            type="text"
-            class="peer py-2.5 pe-0 ps-8 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-line-2 disabled:opacity-50"
-            placeholder="Search articles"
-            @input="articleSearchVisible = true"
-            @focus="articleSearchVisible = true"
-          />
-          <div
-            class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-1 peer-disabled:opacity-50 peer-disabled:pointer-events-none"
-          >
-            <IconAsyncComponent name="MagnifyingGlassIcon" class="size-6"></IconAsyncComponent>
-          </div>
-        </div>
+
+        <BaseInput
+          v-model="searchTerm"
+          icon-name="MagnifyingGlassIcon"
+          placeholder="Search articles"
+          class="hidden md:inline"
+          @input="articleSearchVisible = true"
+          @focus="articleSearchVisible = true"
+        />
         <WikiHeaderUserMenu />
       </div>
     </div>
@@ -121,5 +115,4 @@ onBeforeMount(async () => {
   </header>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

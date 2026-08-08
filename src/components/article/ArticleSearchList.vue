@@ -2,7 +2,7 @@
 import { type Ref, ref, watch } from "vue"
 import type { SearchArticlesResponse, SearchArticlesResponseElement } from "@/api"
 import { wikiApi } from "@/service/WikiApiService"
-import { MagnifyingGlassIcon } from "@heroicons/vue/24/solid"
+import BaseInput from "@/components/common/BaseInput.vue"
 
 const searchTerm = defineModel<string>("searchTerm", { required: true })
 const loadingArticles = ref(false)
@@ -68,20 +68,12 @@ search()
 
 <template>
   <div class="flex flex-col w-full">
-    <div class="relative w-full">
-      <input
-        v-model="searchTerm"
-        type="text"
-        class="py-2.5 pe-0 ps-8 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-line-2 disabled:opacity-50 focus:outline-none transition-colors"
-        placeholder="Search articles"
-      />
-      <div
-        class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-1 peer-disabled:opacity-50 peer-disabled:pointer-events-none"
-      >
-        <MagnifyingGlassIcon class="size-6"></MagnifyingGlassIcon>
-      </div>
-    </div>
-
+    <BaseInput
+      v-model="searchTerm"
+      icon-name="MagnifyingGlassIcon"
+      placeholder="Search articles"
+      class="w-full"
+    />
     <div class="w-full mt-2">
       <div v-if="loadingArticles" class="py-4 text-center text-sm opacity-50">Loading...</div>
       <ul v-else-if="articles?.data && articles.data.length > 0" class="flex flex-col">
