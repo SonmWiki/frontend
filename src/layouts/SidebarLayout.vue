@@ -12,9 +12,9 @@ const sidebarStore = useSidebarStore()
     </template>
     <template #default>
       <aside
-        class="sticky hidden md:pr-2 overflow-y-auto"
+        class="sticky hidden md:pr-2 overflow-y-auto overflow-x-hidden w-full min-w-70 max-w-70"
         :class="{ 'md:block': sidebarStore.sidebarVisible }"
-        style="top: 5rem; height: calc(100vh - 7rem); min-width: fit-content"
+        style="top: 5rem; height: calc(100vh - 7rem)"
       >
         <slot name="sidebar" />
       </aside>
@@ -31,5 +31,4 @@ const sidebarStore = useSidebarStore()
   </PrimeDrawer>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

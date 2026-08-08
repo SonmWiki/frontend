@@ -199,7 +199,6 @@ onMounted(() => {
       </div>
     </template>
   </SidebarLayout>
-  <PrimeToast />
 </template>
 
 <style scoped>

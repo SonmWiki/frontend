@@ -123,7 +123,6 @@ loadArticle()
 </script>
 
 <template>
-  <PrimeToast />
   <div class="flex">
     <div class="w-full">
       <div v-if="articleData && articleData.content != null" class="content pt-4">

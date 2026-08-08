@@ -237,7 +237,6 @@ onUnmounted(() => {
       <WikiFooter />
     </template>
   </BaseLayout>
-  <PrimeToast />
 </template>
 
 <style scoped>

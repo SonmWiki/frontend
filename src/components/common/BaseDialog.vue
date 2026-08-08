@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { watch, onUnmounted, useSlots } from "vue"
+import { watch, onUnmounted } from "vue"
 import IconAsyncComponent from "@/components/common/IconAsyncComponent.vue"
 
 interface Props {
   title?: string
   modelValue: boolean
-  width?: string
   showClose?: boolean
   closeOnOverlay?: boolean
   dialogClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  title: undefined,
   dialogClass: "w-[95vw] md:w-[75vw] lg:w-[48rem]",
   showClose: true,
   closeOnOverlay: true,
@@ -73,9 +73,9 @@ onUnmounted(() => {
       <div
         v-if="modelValue"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-        @click.self="closeOnOverlay && closeModal()"
         role="dialog"
         aria-modal="true"
+        @click.self="closeOnOverlay && closeModal()"
       >
         <!-- Modal Container -->
         <div
@@ -95,9 +95,9 @@ onUnmounted(() => {
 
             <button
               v-if="showClose"
-              @click="closeModal"
               class="hover:text-gray-600 transition-colors"
               aria-label="Close"
+              @click="closeModal"
             >
               <IconAsyncComponent name="XMarkIcon" class="size-6 cursor-pointer" />
             </button>
@@ -117,14 +117,14 @@ onUnmounted(() => {
           >
             <slot name="footer" :cancel="closeModal" :confirm="confirm">
               <button
-                @click="closeModal"
                 class="mr-2 p-2 rounded-md border-2 w-25 border-gray-700 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+                @click="closeModal"
               >
                 Cancel
               </button>
               <button
-                @click="confirm"
                 class="mr-2 p-2 rounded-md border-2 w-25 border-blue-300 active:scale-95 hover:bg-gray-700 hover:cursor-pointer"
+                @click="confirm"
               >
                 Confirm
               </button>

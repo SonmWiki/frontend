@@ -117,7 +117,6 @@ watch(redirectToId, () => {
       @article-select="value => { articleSearchVisible = false; redirectToId = value }"
     />
   </PrimeDialog>
-  <PrimeToast />
 </template>
 
 <style scoped>

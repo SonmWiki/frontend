@@ -117,8 +117,6 @@ const onSubmit = async () => {
           </div>
         </form>
 
-        <PrimeToast />
-
         <PrimeDialog
           v-model:visible="visibleTerms"
           modal

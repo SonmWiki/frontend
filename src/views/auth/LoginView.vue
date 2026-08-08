@@ -76,7 +76,6 @@ const onSubmit = async () => {
           </div>
         </form>
 
-        <PrimeToast />
       </template>
 
     </PrimeCard>
