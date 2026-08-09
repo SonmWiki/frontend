@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useSidebarStore from "@/stores/SidebarStore"
 import BaseLayout from "@/layouts/BaseLayout.vue"
+import BaseDrawer from "@/components/common/BaseDrawer.vue"
 
 const sidebarStore = useSidebarStore()
 </script>
@@ -26,9 +27,9 @@ const sidebarStore = useSidebarStore()
       <slot name="footer" />
     </template>
   </BaseLayout>
-  <PrimeDrawer v-model:visible="sidebarStore.mdSidebarVisible">
+  <BaseDrawer v-model="sidebarStore.mdSidebarVisible" drawer-class="md:hidden">
     <slot name="sidebar" />
-  </PrimeDrawer>
+  </BaseDrawer>
 </template>
 
 <style scoped></style>

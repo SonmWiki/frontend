@@ -15,6 +15,7 @@ import SidebarLayout from "@/layouts/SidebarLayout.vue"
 import BracketButton from "@/components/common/BracketButton.vue"
 import BaseInput from "@/components/common/BaseInput.vue"
 import BaseDialog from "@/components/common/BaseDialog.vue"
+import useSidebarStore from "@/stores/SidebarStore"
 
 const nodes: Ref<WikiSidebarTreeNode[]> = ref([])
 const expandedKeys = ref<Record<string | number, boolean>>({})
@@ -27,6 +28,7 @@ const isSelectingParent = ref(false)
 const deleteDialogVisible = ref(false)
 
 const toast = useToast()
+const sidebarStore = useSidebarStore()
 
 const rules = {
   createDialogCategoryName: { required, maxLength: maxLength(128) },
@@ -66,6 +68,8 @@ const startParentSelection = () => {
   vuelidate.value.createDialogCategoryName.$touch()
   if (vuelidate.value.createDialogCategoryName.$invalid) return
   isSelectingParent.value = true
+  sidebarStore.sidebarVisible = true
+  sidebarStore.mdSidebarVisible = true
 }
 
 const cancelCreation = () => {
@@ -129,7 +133,7 @@ loadCategoriesTree().then(() => expandAll())
 <template>
   <SidebarLayout>
     <template #header>
-      <WikiHeader />
+      <WikiHeader :has-sidebar-switch="true" />
     </template>
 
     <template #sidebar>
@@ -171,7 +175,7 @@ loadCategoriesTree().then(() => expandAll())
     </template>
 
     <template #default>
-      <div class="p-4 m-4 w-full flex-col gap-1.5">
+      <div class="p-4 w-full flex-col gap-1.5">
         <h3 class="m-0 text-xl font-medium text-white">Добавить категорию:</h3>
 
         <div v-if="!isSelectingParent" style="display: flex; flex-direction: column; gap: 1rem">
@@ -248,7 +252,10 @@ loadCategoriesTree().then(() => expandAll())
 
   <BaseDialog v-model="deleteDialogVisible" title="Delete category" @confirm="onDeleteConfirm">
     <template #header />
-    <span>Are you sure you want to delete <span class="font-bold">{{ selectedNode?.key }}</span> category?</span>
+    <span
+      >Are you sure you want to delete
+      <span class="font-bold">{{ selectedNode?.key }}</span> category?</span
+    >
     <template #footer />
   </BaseDialog>
 </template>
